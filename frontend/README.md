@@ -2,7 +2,7 @@
 
 Interface de usuario usada como FrontEnd para la emisión de facturas y devoluciones a través de la red Bitcoin Lightning.
 
-## Configuración del entorno de ejecución en local
+## Configuración del entorno de ejecución en local (___VS Code___)
 
 Instrucciones para la ejecución del frontend en local usando exclusivamente Visual Studio Code.
 
