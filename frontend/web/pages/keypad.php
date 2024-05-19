@@ -1,5 +1,7 @@
 <section id="keypad">
     <div class="container">
+        <label for="display">Cantidad</label>
+        <input type="text" id="display" placeholder="sats" readonly>
         <div class="keypad">
             <button class="key">1</button>
             <button class="key">2</button>

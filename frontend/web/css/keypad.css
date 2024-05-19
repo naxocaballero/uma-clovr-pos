@@ -1,20 +1,42 @@
 #keypad {
   /* Container to center the keypad */
+  /* Label and input styles */
   /* Keypad styles */
   /* Key styles */
   /* Make the keypad responsive */
 }
 #keypad .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh; /* Ajuste de altura para ocupar toda la pantalla */
+}
+#keypad label {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+#keypad #display {
+  width: 200px; /* Width of 3 keys plus 2 gaps */
+  height: 40px;
+  font-size: 24px;
+  text-align: right;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #7b1af7;
+  border-radius: 10px;
+  outline: none;
 }
 #keypad .keypad {
   display: grid;
   grid-template-columns: repeat(3, 60px);
   grid-template-rows: repeat(4, 60px);
   gap: 10px;
+  border: 2px solid white; /* Borde de 2px de color blanco */
+  border-radius: 10px; /* Esquinas redondeadas */
+  padding: 10px; /* Espacio alrededor de las teclas */
 }
 #keypad .key {
   display: flex;
@@ -46,6 +68,11 @@
   #keypad .key {
     width: 50px;
     height: 50px;
+    font-size: 20px;
+  }
+  #keypad #display {
+    width: 170px; /* Adjust width for smaller keys */
+    height: 35px;
     font-size: 20px;
   }
 }
