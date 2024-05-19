@@ -4,7 +4,7 @@ Interface de usuario usada como FrontEnd para la emisión de facturas y devoluci
 
 ## Configuración del entorno de ejecución en local (___VS Code___)
 
-Instrucciones para la ejecución del frontend en local usando exclusivamente Visual Studio Code.
+Instrucciones para la ejecución del frontend en local usando exclusivamente Visual Studio Code en un equipo que corre sistema operativo MacOS (en un futuro próximo presentaré la versión para Windows cuando avance con el proyecto).
 
 1. Instalar PHP en la máquina. En el caso de macOS puedes usar __brew__ (`brew install php`).
 2. Instalar la extensión de VSCode __"PHP Server"__ _(creada por brapifra)_.
