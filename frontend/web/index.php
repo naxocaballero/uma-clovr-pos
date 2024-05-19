@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="./" />
 
     <!-- Enlace a los archivos CSS -->
@@ -17,7 +16,7 @@
     <link rel="shortcut icon" href="img/favicon/favicon.ico" />
 
     <!-- Viewport and Apple stuff -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#7b1af7" />
     <meta name="description" content="Punto de venta Bitcoin Lightning Network de Clovr Labs." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
