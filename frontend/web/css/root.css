@@ -1,0 +1,47 @@
+:root {
+    --theme-color: #7b1af7;
+    --bg-button: #fff;
+    --bg-ln-button: #7b1af7;
+    --bg-keypad: #f7b11a;
+    --bg-action: #00aa28;
+
+    --head-height: 5rem;
+    --plus: 2rem;
+    --header-width: 980px;
+    --max-width: 1114px;
+
+    --title-size: 2.6rem;
+    --subtitle-size: calc(var(--title-size) * .8);
+    --text-size: 1.8rem;
+
+    --feature-title-size: 1.6rem;
+    --feature-text-size: 1.4rem;
+
+    --faqs-title-size: 1.6rem;
+    --faqs-text-size: 1.4rem;
+
+    --subheader-title: 1.8rem;
+
+    --titulo-size: 56px;
+    --titulo-line-height: calc(var(--titulo-size) + 10px);
+
+    --intro-size: 20px;
+    --intro-line-height: calc(var(--intro-size) + 17px);
+
+}
+
+.text-bold{
+    font-weight: bold;
+}
+
+.text-italic{
+    font-style: italic;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-justify {
+    text-align:justify
+}
