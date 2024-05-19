@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 				handleInput(value);
 			}
 		});
+
+		key.addEventListener("touchstart", () => {
+			key.classList.add("active");
+		});
+
+		key.addEventListener("touchend", () => {
+			key.classList.remove("active");
+		});
 	});
 
 	document.addEventListener("keydown", (event) => {

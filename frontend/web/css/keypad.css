@@ -75,6 +75,9 @@
 #keypad .key:hover {
   background-color: #5e13c4;
 }
+#keypad .key:active {
+  background-color: #5e13c4;
+}
 #keypad .key:focus {
   outline: none;
   box-shadow: 0 0 5px #7b1af7;
@@ -87,6 +90,16 @@
   #keypad .key {
     height: 3.125rem;
     font-size: 1.25rem; /* Ajuste de tamaño de fuente relativo */
+  }
+  #keypad .key:hover {
+    background-color: unset;
+  }
+  #keypad .key:active {
+    background-color: #5e13c4;
+  }
+  #keypad .key:focus {
+    outline: none;
+    box-shadow: 0 0 5px #7b1af7;
   }
   #keypad #display {
     height: 2.1875rem;
