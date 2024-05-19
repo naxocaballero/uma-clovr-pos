@@ -23,17 +23,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	});
 
 	function handleInput(value) {
-		if (value === "," || value === ".") {
-			value = ".";
-		}
-		const newValue = display.value + value;
+		const currentValue = display.value.replace(/\./g, ''); // Remove existing dots for easier processing
+		const newValue = currentValue + (value === "." ? "" : value); // Prevent adding dots manually
+		
 		if (isValidInput(newValue)) {
-			display.value = newValue;
+			display.value = formatNumber(newValue);
 		}
 	}
 
 	function isValidInput(input) {
-		const regex = /^\d{0,8}(\.\d{0,3})?$/;
+		const regex = /^\d{0,8}(\,\d{0,3})?$/;
 		return regex.test(input);
+	}
+
+	function formatNumber(input) {
+		const parts = input.split(",");
+		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+		return parts.join(",");
 	}
 });

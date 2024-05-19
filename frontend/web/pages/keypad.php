@@ -14,7 +14,7 @@
             <button class="key">9</button>
             <button class="key">C</button>
             <button class="key">0</button>
-            <button class="key">.</button>
+            <button class="key">,</button>
         </div>
     </div>
 </section>
