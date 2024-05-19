@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/root.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" type="text/css" href="css/keypad.css?<?php echo rand(0,999);?>" />
+    <link rel="stylesheet" type="text/css" href="css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/footer.css" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png" />
@@ -17,7 +19,7 @@
 
     <!-- Viewport and Apple stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#7b1af7" />
+    <meta name="theme-color" content="#8cc63f" />
     <meta name="description" content="Punto de venta Bitcoin Lightning Network de Clovr Labs." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -26,19 +28,30 @@
     <meta name="application-name" content="Clovr PoS">
     <meta name="msapplication-TileColor" content="#ffffff" />
 
-    <title>Clovr PoS</title>
+    <title>UMA Clovr PoS</title>
 </head>
 
 <body>
     <header>
-        <h1>Clovr PoS</h1>
-        <h2>Lightning Network</h2>
+        <div class="header-container">
+            <div class="header-left">
+                <img src="img/icons/logo.svg" alt="Clovr UMA Logo">
+                <span>UMA Clovr PoS</span>
+            </div>
+            <nav class="header-right">
+                <ul>
+                    <li><a href="#operar">Operar</a></li>
+                    <li><a href="#transacciones">Transacciones</a></li>
+                    <li><a href="#ayuda">Ayuda</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
-        hola
+        
     </main>
     <footer>
-        <p>&copy; 2024 Clovr Labs 🍀. Todos los derechos reservados.</p>
+        <p>&copy; 2024 UMA Clovr <em class="logo"></em> Todos los derechos reservados.</p>
     </footer>
     <!-- Enlace al archivo JavaScript -->
     <script src="js/keypad.js?<?php echo rand(0,999);?>"></script>
