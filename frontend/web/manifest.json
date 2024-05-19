@@ -1,8 +1,8 @@
 {
     "name": "Clovr PoS",
     "lang": "es-ES",
-    "short_name": "PoS",
-    "description": "Punto de venta LN Colvr labs.",
+    "short_name": "Clovr PoS",
+    "description": "Punto de venta Bitcoin Lightning Network de Clovr Labs.",
     "start_url": "/index.php",
     "scope": "/",
     "display": "standalone",
