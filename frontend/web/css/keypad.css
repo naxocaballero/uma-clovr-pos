@@ -85,11 +85,10 @@
 @media (max-width: 400px) {
   #keypad .keypad {
     grid-template-columns: repeat(3, 1fr); /* Usar fracciones para flexibilidad */
-    grid-template-rows: repeat(4, 3.125rem); /* Ajuste para menor tamaño de tecla */
+    grid-template-rows: repeat(4, 2.5em); /* Ajuste para menor tamaño de tecla */
   }
   #keypad .key {
-    height: 3.125rem;
-    font-size: 1.25rem; /* Ajuste de tamaño de fuente relativo */
+    height: 2.5em;
   }
   #keypad .key:hover {
     background-color: unset;
@@ -99,10 +98,9 @@
   }
   #keypad .key:focus {
     outline: none;
-    box-shadow: 0 0 5px #7b1af7;
   }
   #keypad #display {
-    height: 2.1875rem;
-    font-size: 3rem; /* Ajuste de tamaño de fuente relativo */
+    height: 1.5em;
+    font-size: 4rem; /* Ajuste de tamaño de fuente relativo */
   }
 }
