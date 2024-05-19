@@ -6,7 +6,7 @@ ini_set("display_errors", E_ALL);
 
 <head>
     <title>
-        PoS - Clovr Labs
+        Clovr PoS
     </title>
 
     <base href="./">
