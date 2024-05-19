@@ -7,7 +7,7 @@
 
     <!-- Enlace a los archivos CSS -->
     <link rel="stylesheet" type="text/css" href="css/root.css" />
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" type="text/css" href="css/keypad.css?<?php echo rand(0,999);?>" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png" />
@@ -30,12 +30,16 @@
 </head>
 
 <body>
+    <header>
+        <h1>Clovr PoS</h1>
+        <h2>Lightning Network</h2>
+    </header>
     <main>
-        <?php
-        require('pages/keypad.php');
-        ?>
+        hola
     </main>
-
+    <footer>
+        <p>&copy; 2024 Clovr Labs 🍀. Todos los derechos reservados.</p>
+    </footer>
     <!-- Enlace al archivo JavaScript -->
     <script src="js/keypad.js?<?php echo rand(0,999);?>"></script>
 </body>
