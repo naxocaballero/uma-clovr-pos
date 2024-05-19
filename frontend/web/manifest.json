@@ -1,0 +1,36 @@
+{
+    "name": "Clovr PoS",
+    "lang": "es-ES",
+    "short_name": "PoS",
+    "description": "Punto de venta LN Colvr labs.",
+    "start_url": "/index.php",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#7b1af7",
+    "background_color": "#7b1af7",
+    "status_bar_backgroundColor": "#7b1af7",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "img/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "img/favicon/android-icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "img/favicon/mstile-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "img/favicon/mstile-icon-70x70.png",
+            "sizes": "70x70",
+            "type": "image/png"
+        }
+    ]
+}

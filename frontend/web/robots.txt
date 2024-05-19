@@ -1,0 +1,7 @@
+User-agent: *
+#Disallow: /
+Disallow: /js/
+Disallow: /lib/
+Disallow: /ajax/
+Allow: /
+
