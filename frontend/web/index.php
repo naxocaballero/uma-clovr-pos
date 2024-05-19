@@ -8,7 +8,7 @@
     <!-- Enlace a los archivos CSS -->
     <link rel="stylesheet" type="text/css" href="css/root.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <link rel="stylesheet" type="text/css" href="css/keypad.css" />
+    <link rel="stylesheet" type="text/css" href="css/keypad.css?<?php echo rand(0,999);?>" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png" />
@@ -37,7 +37,7 @@
     </main>
 
     <!-- Enlace al archivo JavaScript -->
-    <script src="js/keypad.js"></script>
+    <script src="js/keypad.js?<?php echo rand(0,999);?>"></script>
 </body>
 
 </html>
