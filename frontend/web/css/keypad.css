@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #keypad {
   /* Container to center the keypad */
   /* Label and input styles */
@@ -11,45 +12,63 @@
   justify-content: center;
   align-items: center;
   height: 100vh; /* Ajuste de altura para ocupar toda la pantalla */
+  max-width: 400px; /* Ancho máximo de 400px */
+  margin: 0 auto; /* Centrar horizontalmente */
+  padding: 10px;
+  box-sizing: border-box; /* Incluir padding en el ancho total */
 }
 #keypad label {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 3rem; /* Tamaño de fuente relativo */
+  margin-bottom: 0.625rem; /* Ajustar margen inferior */
   color: var(--text-color);
   font-weight: bold;
+  width: 100%; /* Ajustar al ancho del contenedor */
+  text-align: center; /* Centrar texto */
 }
 #keypad #display {
-  width: 200px; /* Width of 3 keys plus 2 gaps */
-  height: 40px;
-  font-size: 24px;
+  width: 100%; /* Ajustar al ancho del contenedor */
+  height: 1.5em;
+  font-size: 4rem; /* Tamaño de fuente mayor en unidades relativas */
   text-align: right;
-  padding-right: 10px;
-  margin-bottom: 20px;
+  padding-right: 0.625rem;
+  margin-bottom: 1.25rem;
   border: 2px solid #7b1af7;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   outline: none;
+  box-sizing: border-box; /* Incluir padding en el ancho total */
+}
+#keypad #display::-moz-placeholder {
+  color: #d4d4d4; /* Cambia esto al color deseado */
+  opacity: 1; /* Para asegurar que el color se aplique en todos los navegadores */
+}
+#keypad #display::placeholder {
+  color: #d4d4d4; /* Cambia esto al color deseado */
+  opacity: 1; /* Para asegurar que el color se aplique en todos los navegadores */
 }
 #keypad .keypad {
   display: grid;
-  grid-template-columns: repeat(3, 60px);
-  grid-template-rows: repeat(4, 60px);
+  grid-template-columns: repeat(3, 1fr); /* Usar fracciones para flexibilidad */
+  grid-template-rows: repeat(4, 2.5em);
   gap: 10px;
+  font-size: 2.5rem; /* Tamaño de fuente relativo */
   border: 2px solid white; /* Borde de 2px de color blanco */
   border-radius: 10px; /* Esquinas redondeadas */
   padding: 10px; /* Espacio alrededor de las teclas */
+  box-sizing: border-box; /* Incluir padding en el ancho total */
+  width: 100%; /* Ajustar al ancho del contenedor */
 }
 #keypad .key {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: inherit; /* Tamaño de fuente relativo */
   font-weight: bold;
-  width: 60px;
-  height: 60px;
+  width: 100%; /* Ajustar al ancho de la celda */
+  height: 2.5em; /* Altura en función del tamaño de la fuente */
   background-color: #7b1af7;
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -62,17 +81,15 @@
 }
 @media (max-width: 400px) {
   #keypad .keypad {
-    grid-template-columns: repeat(3, 50px);
-    grid-template-rows: repeat(4, 50px);
+    grid-template-columns: repeat(3, 1fr); /* Usar fracciones para flexibilidad */
+    grid-template-rows: repeat(4, 3.125rem); /* Ajuste para menor tamaño de tecla */
   }
   #keypad .key {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+    height: 3.125rem;
+    font-size: 1.25rem; /* Ajuste de tamaño de fuente relativo */
   }
   #keypad #display {
-    width: 170px; /* Adjust width for smaller keys */
-    height: 35px;
-    font-size: 20px;
+    height: 2.1875rem;
+    font-size: 3rem; /* Ajuste de tamaño de fuente relativo */
   }
 }
