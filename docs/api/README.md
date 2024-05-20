@@ -26,4 +26,4 @@ Definir y documentar la API que servirá de puente entre el frontend y el backen
 ## Notas adicionales
 Asegurarse de que la especificación sea flexible para posibles cambios y expansiones futuras.
 
-<img src="docs/imagenes/Captura de pantalla 2024-05-20 a las 14.13.17.png">
+<img src="docs/imagenes/Captura de pantalla 2024-05-20 a las 14.13.17.png" alt="Cómo ejecutar PHP Server" style="width:100%">
