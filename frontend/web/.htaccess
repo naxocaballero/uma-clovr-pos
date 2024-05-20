@@ -1,0 +1,14 @@
+AddType image/webp .webp
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|swf|svg|webp)$">
+        Header set Cache-Control "max-age=0, public" 
+    </FilesMatch>
+
+    <FilesMatch "\.(js|css|swf)$">
+        Header set Cache-Control "max-age=0"
+    </FilesMatch>
+</IfModule>
+
+
+
