@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	const display = document.getElementById("display");
 	const keys = document.querySelectorAll(".key");
 
-	keys.forEach((key) => {
+	keys.forEach((key) => { 
 		key.addEventListener("click", () => {
 			const value = key.textContent;
 			if (value === "C") {
