@@ -49,7 +49,7 @@
     </header>
 
     <main>
-    <?php
+        <?php
     require("pages/keypad.php");
     ?>
     </main>
@@ -58,6 +58,21 @@
     </footer>
     <!-- Enlace al archivo JavaScript -->
     <script src="js/keypad.js?<?php echo rand(0,999);?>"></script>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registrado con éxito:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('Error al registrar el ServiceWorker:', error);
+                });
+        });
+    }
+    </script>
+    
 </body>
 
 </html>

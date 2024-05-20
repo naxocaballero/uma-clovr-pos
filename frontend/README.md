@@ -8,7 +8,9 @@ Interface de usuario usada como FrontEnd para la emisión de facturas y devoluci
 
    `https://github.com/markettes/uma-clovr-pos.git`
 
-## Configuración del entorno de ejecución en local (___VS Code___)
+## Configuración del entorno de ejecución en local
+
+### 1. Usando ___VS Code___
 
 Instrucciones para la ejecución del frontend en local usando exclusivamente Visual Studio Code en un equipo que corre sistema operativo MacOS (en un futuro próximo presentaré la versión para Windows cuando avance con el proyecto).
 
@@ -20,6 +22,16 @@ Instrucciones para la ejecución del frontend en local usando exclusivamente Vis
 3. Para ejecutar el archivo __index.php__ desde VSCode, hacer clic con el __botón derecho__ en cualquier zona del código de __index.php__ y ejecutar ___"PHP Server: Serve project"___.
 
    ![Ejecución PHP Server desde VS Code](readme/screenshot1.png)
+
+### 2. Usando XAMPP (___imprescindible necesario para probar la versión PWA con service-worker___)
+
+1. Instalar XAMPP descargándolo desde la web del desarrollador.
+
+   > https://www.apachefriends.org/es/download.html
+
+2. Clonar el contenido de la carpeta web del repositorio dentro de __"/Applications/XAMPP/xamppfiles/htdocs"__
+
+3. Acceder a la web mediante https://localhost _(aceptar el certificado autofirmado)_
 
 
 ## Uso de la aplicación web
