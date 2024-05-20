@@ -8,7 +8,6 @@
     <!-- Enlace a los archivos CSS -->
     <link rel="stylesheet" type="text/css" href="css/root.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/styles.css?<?php echo rand(0,999);?>" />
-    <link rel="stylesheet" type="text/css" href="css/keypad.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/header.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/main.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/footer.css?<?php echo rand(0,999);?>" />
@@ -36,29 +35,24 @@
         <div class="header-container">
             <div class="header-left">
                 <img src="img/icons/logo.svg" alt="Clovr UMA Logo">
-                <span>UMA Clovr PoS</span>
+                <span class="text-bold">UMA Clovr PoS</span>
             </div>
             <nav class="header-right">
                 <ul>
-                    <li><a href="#operar">Operar</a></li>
-                    <li><a href="#transacciones">Transacciones</a></li>
-                    <li><a href="#ayuda">Ayuda</a></li>
+                    <li><a href="#operar"><em class="operar"></em>Operar</a></li>
+                    <li><a href="#transacciones"><em class="transacciones"></em>Transacciones</a></li>
+                    <li><a href="#ayuda"><em class="ayuda"></em>Ayuda</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main>
-        <?php
-    require("pages/keypad.php");
-    ?>
+
     </main>
     <footer>
         <p>&copy; 2024 <em class="logo"></em> <b>UMA Clovr PoS</b>. Todos los derechos reservados.</p>
     </footer>
-    <!-- Enlace al archivo JavaScript -->
-    <script src="js/keypad.js?<?php echo rand(0,999);?>"></script>
-    <!--<script src="js/app.js?<?php echo rand(0,999);?>"></script>-->
 
 </body>
 
