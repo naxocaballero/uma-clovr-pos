@@ -23,7 +23,7 @@ Instrucciones para la ejecución del frontend en local usando exclusivamente Vis
 
    ![Ejecución PHP Server desde VS Code](readme/screenshot1.png)
 
-### 2. Usando XAMPP (___imprescindible necesario para probar la versión PWA con service-worker___)
+### 2. Usando XAMPP (___imprescindible y necesario para usar la versión alternativa PWA con service-worker___)
 
 1. Instalar XAMPP descargándolo desde la web del desarrollador.
 
