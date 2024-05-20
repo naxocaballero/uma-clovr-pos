@@ -1,0 +1,43 @@
+footer {
+  width: 100%;
+  background-color: #8cc63f;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  footer {
+    height: auto;
+    padding: 1rem 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.footer-container p {
+  text-align: center;
+  margin: 0;
+}
+
+.logo {
+  display: inline-block;
+  height: 1.5em;
+  aspect-ratio: 1/1;
+  background: url("../img/icons/logo.svg") no-repeat center center;
+  background-size: contain;
+  vertical-align: middle;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+}
