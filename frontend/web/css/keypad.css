@@ -1,38 +1,31 @@
 @charset "UTF-8";
 #keypad {
   /* Container to center the keypad */
-  /* Label and input styles */
-  /* Keypad styles */
-  /* Key styles */
-  /* Make the keypad responsive */
+  /* Estilos para input display */
+  /* Estilos del keypad */
+  /* Estilos de las teclas */
+  /* Responsivo para pantallas más pequeñas */
 }
 #keypad .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ajuste de altura para ocupar toda la pantalla */
   max-width: 400px; /* Ancho máximo de 400px */
   margin: 0 auto; /* Centrar horizontalmente */
   padding: 10px;
   box-sizing: border-box; /* Incluir padding en el ancho total */
-}
-#keypad label {
-  font-size: 3rem; /* Tamaño de fuente relativo */
-  margin-bottom: 0.625rem; /* Ajustar margen inferior */
-  color: var(--text-color);
-  font-weight: bold;
-  width: 100%; /* Ajustar al ancho del contenedor */
-  text-align: center; /* Centrar texto */
+  width: 100%; /* Ajuste al 100% del ancho del contenedor padre */
 }
 #keypad #display {
   width: 100%; /* Ajustar al ancho del contenedor */
-  height: 1.5em;
-  font-size: 4rem; /* Tamaño de fuente mayor en unidades relativas */
-  text-align: right;
+  height: 4rem;
+  font-size: 2em; /* Tamaño de fuente mayor en unidades relativas */
+  font-family: system-ui;
+  text-align: center;
   padding-right: 0.625rem;
   margin-bottom: 1.25rem;
-  border: 2px solid #7b1af7;
+  border: 2px solid #8cc63f;
   border-radius: 0.625rem;
   outline: none;
   box-sizing: border-box; /* Incluir padding en el ancho total */
@@ -48,7 +41,7 @@
 #keypad .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Usar fracciones para flexibilidad */
-  grid-template-rows: repeat(4, 2.5em);
+  grid-template-rows: repeat(4, 2em);
   gap: 10px;
   font-size: 2.5rem; /* Tamaño de fuente relativo */
   border: 2px solid white; /* Borde de 2px de color blanco */
@@ -57,6 +50,24 @@
   box-sizing: border-box; /* Incluir padding en el ancho total */
   width: 100%; /* Ajustar al ancho del contenedor */
 }
+#keypad .generate-button {
+  width: 100%;
+  height: 4rem;
+  background-color: #7f47dd;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin-top: 1rem;
+  border-radius: 0.625rem;
+}
+#keypad .generate-button:hover {
+  background-color: #48218a;
+}
+#keypad .generate-button:focus {
+  outline: none;
+}
 #keypad .key {
   display: flex;
   justify-content: center;
@@ -64,8 +75,8 @@
   font-size: inherit; /* Tamaño de fuente relativo */
   font-weight: bold;
   width: 100%; /* Ajustar al ancho de la celda */
-  height: 2.5em; /* Altura en función del tamaño de la fuente */
-  background-color: #7b1af7;
+  height: 2em; /* Altura en función del tamaño de la fuente */
+  background-color: #8cc63f;
   color: white;
   border: none;
   border-radius: 0.625rem;
@@ -73,31 +84,33 @@
   transition: background-color 0.3s;
 }
 #keypad .key:hover {
-  background-color: #5e13c4;
+  background-color: #5a8d18;
 }
 #keypad .key:active {
-  background-color: #5e13c4;
+  background-color: #5a8d18;
 }
 #keypad .key:focus {
   outline: none;
-  box-shadow: 0 0 5px #7b1af7;
+}
+#keypad .key.active {
+  box-shadow: none; /* Eliminar sombra después de 1 segundo */
+  background-color: #5a8d18;
 }
 @media (max-width: 400px) {
-  #keypad .keypad {
-    grid-template-columns: repeat(3, 1fr); /* Usar fracciones para flexibilidad */
-    grid-template-rows: repeat(4, 2.5em); /* Ajuste para menor tamaño de tecla */
-  }
-  #keypad .key {
-    height: 2.5em;
-  }
   #keypad .key:hover {
-    background-color: unset;
+    background-color: #8cc63f;
   }
   #keypad .key:active {
-    background-color: #5e13c4;
+    background-color: #5a8d18;
   }
   #keypad .key:focus {
     outline: none;
+  }
+  #keypad .generate-button:hover {
+    background-color: #7f47dd;
+  }
+  #keypad .generate-button:active {
+    background-color: #48218a;
   }
   #keypad #display {
     height: 4rem;

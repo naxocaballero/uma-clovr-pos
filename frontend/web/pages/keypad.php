@@ -1,6 +1,6 @@
 <section id="keypad">
     <div class="container">
-        <label for="display">Cantidad</label>
+
         <input type="text" id="display" placeholder="sats" readonly>
         <div class="keypad">
             <button class="key">1</button>
@@ -16,5 +16,6 @@
             <button class="key">0</button>
             <button class="key">,</button>
         </div>
+        <button class="generate-button">Generar invoice</button>
     </div>
 </section>

@@ -19,5 +19,15 @@ Instrucciones para la ejecución del frontend en local usando exclusivamente Vis
 2. Instalar la extensión de VSCode __"PHP Server"__ _(creada por brapifra)_.
 3. Para ejecutar el archivo __index.php__ desde VSCode, hacer clic con el __botón derecho__ en cualquier zona del código de __index.php__ y ejecutar ___"PHP Server: Serve project"___.
 
-   ![Logo del Proyecto](readme/screenshot1.png)
+   ![Ejecución PHP Server desde VS Code](readme/screenshot1.png)
+
+
+## Uso de la aplicación web
+
+Esta webApp puede ser ejecutada en cualquier navegador web. Está preparada para ser instalada como PWA en cualquier dispositivo que lo soporte (Android, iOS, Mac, ...).
+
+   ![PWA en Mac](readme/screenshot2.png)
+   ![Springboard iPhone](readme/screenshot3.png)
+   ![PWA en iPhone](readme/screenshot4.png)
+
  

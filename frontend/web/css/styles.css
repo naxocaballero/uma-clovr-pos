@@ -1,10 +1,16 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+       user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none; /* Desactiva la selección de texto en Safari */
+  -webkit-touch-callout: none; /* Desactiva el menú de llamada táctil en Safari */
+  touch-action: pan-x pan-y;
 }
 
 html,
@@ -12,13 +18,11 @@ body {
   height: 100%;
   font-family: Arial, sans-serif;
   color: #333;
-  background-color: #f8f9fa;
-}
-
-body {
+  background-color: #8cc63f;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100%;
+  overscroll-behavior: none;
 }
 
 main {

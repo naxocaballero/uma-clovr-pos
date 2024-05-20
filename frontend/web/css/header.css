@@ -2,6 +2,7 @@ header {
   width: 100%;
   background-color: #8cc63f;
   color: #ffffff;
+  flex-shrink: 0;
 }
 header .header-container {
   width: 100%;

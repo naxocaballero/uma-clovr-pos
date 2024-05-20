@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			} else {
 				handleInput(value);
 			}
-			key.classList.add("active");
+			//key.classList.add("active");
 			setTimeout(() => {
 				key.classList.remove("active");
-			}, 500);
+			}, 300); // Remover la clase active después de 1 segundo
 		});
 
 		key.addEventListener("touchstart", () => {
@@ -21,9 +21,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		});
 
 		key.addEventListener("touchend", () => {
-			setTimeout(() => {
-				key.classList.remove("active");
-			}, 500);
+			key.classList.remove("active");
+			
+		});
+
+		key.addEventListener("touchcancel", () => {
+			key.classList.remove("active");
 		});
 	});
 
@@ -40,22 +43,33 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		if (value === "." || value === ",") {
 			value = ",";
 		}
-		const currentValue = display.value.replace(/\./g, ''); // Remove existing dots for easier processing
-		const newValue = currentValue + value;
 
-		if (isValidInput(newValue)) {
-			display.value = formatNumber(newValue);
+		const currentValue = display.value.replace(/\./g, "");
+
+		// Nueva lógica para manejar la entrada del 0 inicial
+		if (currentValue === "0") {
+			if (value === ",") {
+				display.value = "0,";
+			} else if (value >= "1" && value <= "9") {
+				display.value = value;
+			}
+		} else {
+			const newValue = currentValue + value;
+			if (isValidInput(newValue)) {
+				display.value = formatNumber(newValue);
+			}
 		}
 	}
 
 	function isValidInput(input) {
-		// No leading zeros unless the number is zero or starts with 0, and then a decimal
+		// No ceros a la izquierda a menos que el número sea cero o empiece con 0 y luego un decimal
 		const regex = /^(?!0\d)(\d{0,8})(,\d{0,3})?$/;
 		return regex.test(input);
 	}
 
 	function formatNumber(input) {
 		const parts = input.split(",");
+		// Añadir puntos cada tres dígitos
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		return parts.join(",");
 	}
