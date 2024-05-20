@@ -1,4 +1,4 @@
-# Clovr PoS FrontEnd
+# UMA Clovr PoS [FrontEnd]
 
 Interface de usuario usada como FrontEnd para la emisión de facturas y devoluciones a través de la red Bitcoin Lightning.
 
