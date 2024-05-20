@@ -3,6 +3,7 @@ header {
   background-color: #8cc63f;
   color: #ffffff;
   flex-shrink: 0;
+  border: none;
 }
 header .header-container {
   width: 100%;

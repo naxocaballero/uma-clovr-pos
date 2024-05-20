@@ -47,6 +47,7 @@
             </nav>
         </div>
     </header>
+
     <main>
     <?php
     require("pages/keypad.php");

@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			} else {
 				handleInput(value);
 			}
-			//key.classList.add("active");
+			key.classList.add("active");
 			setTimeout(() => {
 				key.classList.remove("active");
-			}, 300); // Remover la clase active después de 1 segundo
+			}, 10); // Remover la clase active después de 1 segundo
 		});
 
 		key.addEventListener("touchstart", () => {

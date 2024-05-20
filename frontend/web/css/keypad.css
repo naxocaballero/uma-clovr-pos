@@ -11,7 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 400px; /* Ancho máximo de 400px */
+  max-width: 500px; /* Ancho máximo de 400px */
   margin: 0 auto; /* Centrar horizontalmente */
   padding: 10px;
   box-sizing: border-box; /* Incluir padding en el ancho total */
