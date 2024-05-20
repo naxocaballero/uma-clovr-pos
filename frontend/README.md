@@ -39,9 +39,9 @@ Instrucciones para la ejecución del frontend en local usando exclusivamente Vis
 Esta webApp puede ser ejecutada en cualquier navegador web. Está preparada para ser instalada como PWA en cualquier dispositivo que lo soporte (Android, iOS, Mac, ...). Es solo un primer ejemplo de interface. 
 La versión móvil tendrá el menú en el inferior como la mayoría de aplicaciones nativas.
 
-   <img src="readme/screenshot3.png" alt="Springboard iPhone" style="width:400px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="readme/screenshot4.png" alt="PWA en iPhone" style="width:400px;">
+   <img src="docs/imagenes/screenshot3.png" alt="Springboard iPhone" style="width:400px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="docs/imagenes/screenshot4.png" alt="PWA en iPhone" style="width:400px;">
 
-   <img src="readme/screenshot2.png" alt="PWA en Mac con Chrome" style="width:100%;">
+   <img src="docs/imagenes/screenshot2.png" alt="PWA en Mac con Chrome" style="width:100%;">
 
 
  

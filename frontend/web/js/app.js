@@ -1,22 +1,15 @@
 function ajax(options) {
     var xhr = new XMLHttpRequest();
     
-    // Configura el método y la URL
-    xhr.open(options.method || 'GET', options.url, true);
+    xhr.open(options.method || 'POST', options.url, true);
 
-    // Configura las cabeceras
-    if (options.headers) {
-        for (var key in options.headers) {
-            if (options.headers.hasOwnProperty(key)) {
-                xhr.setRequestHeader(key, options.headers[key]);
-            }
-        }
-    }
+    // Configurar las cabeceras
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
-    // Configura la respuesta en formato JSON si se requiere
-    xhr.responseType = options.responseType || 'json';
+    // Configurar tipo de respuesta
+    xhr.responseType = 'json';
 
-    // Configura el manejador de eventos para la respuesta
+    // Manejar la respuesta
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
             if (options.success) {
@@ -29,18 +22,23 @@ function ajax(options) {
         }
     };
 
-    // Configura el manejador de eventos para errores
+    // Manejar errores
     xhr.onerror = function() {
         if (options.error) {
             options.error(xhr.statusText);
         }
     };
 
-    // Envía la solicitud con datos si se proporcionan
-    if (options.method === 'POST' || options.method === 'PUT') {
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhr.send(JSON.stringify(options.data));
-    } else {
-        xhr.send();
+    // Configurar tiempo de espera
+    if (options.timeout) {
+        xhr.timeout = options.timeout;
+        xhr.ontimeout = function() {
+            if (options.error) {
+                options.error('Request timed out');
+            }
+        };
     }
+
+    // Enviar la solicitud con datos JSON
+    xhr.send(JSON.stringify(options.data));
 }

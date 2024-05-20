@@ -58,6 +58,7 @@
     </footer>
     <!-- Enlace al archivo JavaScript -->
     <script src="js/keypad.js?<?php echo rand(0,999);?>"></script>
+    <script src="js/app.js?<?php echo rand(0,999);?>"></script>
 
     <script>
     if ('serviceWorker' in navigator) {
@@ -72,7 +73,7 @@
         });
     }
     </script>
-    
+
 </body>
 
 </html>
