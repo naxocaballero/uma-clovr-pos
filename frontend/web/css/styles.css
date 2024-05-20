@@ -1,4 +1,13 @@
 @charset "UTF-8";
+:root {
+  --bg-color: #7b1af7;
+  --bg-button: #fff;
+  --bg-ln-button: #7b1af7;
+  --bg-keypad: #f7b11a;
+  --bg-action: #00aa28;
+  --text-color: #fff;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -31,4 +40,203 @@ body {
 
 html::-webkit-scrollbar {
   display: none;
+}
+
+header {
+  width: 100%;
+  background-color: #8cc63f; /* Color de fondo de ejemplo para el header */
+  color: #ffffff; /* Color de texto de ejemplo para el header */
+  flex-shrink: 0;
+  border: none;
+}
+header .header-container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto; /* Centrar el contenedor */
+  display: flex;
+  justify-content: space-between; /* Espacio entre los elementos de la izquierda y derecha */
+  align-items: center; /* Centrar verticalmente los elementos */
+  padding: 0.5rem; /* Espacio interno */
+}
+@media (max-width: 768px) {
+  header .header-container {
+    padding: 0.3rem;
+  }
+}
+header .header-container .header-left {
+  display: flex;
+  align-items: center; /* Centrar verticalmente los elementos */
+}
+@media (max-width: 768px) {
+  header .header-container .header-left {
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+header .header-container .header-left img {
+  width: auto; /* Ajusta el ancho de la imagen */
+  height: 3rem; /* Mantiene la proporción de la imagen */
+  margin-right: 0.5rem; /* Espacio entre la imagen y el texto */
+}
+@media (max-width: 768px) {
+  header .header-container .header-left img {
+    width: 4rem; /* Ocultar el título en la versión móvil */
+    margin: 0;
+  }
+}
+header .header-container .header-left span {
+  font-size: 1.2rem; /* Tamaño del texto */
+}
+@media (max-width: 768px) {
+  header .header-container .header-left span {
+    display: none; /* Ocultar el título en la versión móvil */
+  }
+}
+header .header-container .header-right ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+  align-items: center;
+}
+header .header-container .header-right ul li {
+  margin-left: 4rem; /* Espacio entre los elementos de la lista */
+}
+header .header-container .header-right ul li a {
+  text-decoration: none; /* Eliminar subrayado del enlace */
+  color: #ffffff; /* Color de texto de los enlaces */
+}
+header .header-container .header-right ul li a:hover {
+  text-decoration: underline; /* Subrayar al pasar el cursor */
+}
+header .header-container .header-right ul li em {
+  display: inline-block;
+  height: 1.2em; /* Ajusta el ancho de la imagen */
+  aspect-ratio: 1/1; /* Mantiene una proporción de 1:1 */
+  background-size: contain;
+  vertical-align: middle;
+  margin-left: 0.3em; /* Espacio entre el texto y la imagen */
+  margin-right: 0.6em; /* Espacio entre el texto y la imagen */
+}
+header .header-container .header-right ul li em.operar {
+  background: url("../img/icons/cash-register-solid.svg") no-repeat center center;
+}
+header .header-container .header-right ul li em.transacciones {
+  background: url("../img/icons/list-check-solid.svg") no-repeat center center;
+}
+header .header-container .header-right ul li em.ajustes {
+  background: url("../img/icons/gear-solid.svg") no-repeat center center;
+}
+@media (max-width: 768px) {
+  header .header-right {
+    display: none; /* Ocultar el menú en pantallas pequeñas */
+  }
+}
+
+footer .footer-container {
+  width: 100%;
+  background-color: #8cc63f;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  footer .footer-container {
+    height: auto;
+    padding: 1rem 0;
+    margin-bottom: 0.5rem;
+    display: none;
+  }
+}
+footer .footer-container .logo {
+  display: inline-block;
+  height: 1.5em;
+  aspect-ratio: 1/1;
+  background: url("../img/icons/logo.svg") no-repeat center center;
+  background-size: contain;
+  vertical-align: middle;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+}
+footer .footer-menu {
+  width: 100%;
+  background-color: #8cc63f;
+  color: #ffffff;
+  display: none;
+  height: 6rem;
+}
+@media (max-width: 768px) {
+  footer .footer-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+footer .footer-menu nav {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+footer .footer-menu nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+}
+footer .footer-menu nav ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+footer .footer-menu nav ul li em {
+  display: inline-block;
+  height: 1.8em; /* Ajusta el ancho de la imagen */
+  aspect-ratio: 1/1; /* Mantiene una proporción de 1:1 */
+  background-size: contain;
+  vertical-align: middle;
+  margin: 0.3rem auto;
+}
+footer .footer-menu nav ul li em.operar {
+  background: url("../img/icons/cash-register-solid.svg") no-repeat center center;
+}
+footer .footer-menu nav ul li em.transacciones {
+  background: url("../img/icons/list-check-solid.svg") no-repeat center center;
+}
+footer .footer-menu nav ul li em.ajustes {
+  background: url("../img/icons/gear-solid.svg") no-repeat center center;
+}
+footer .footer-menu nav ul li span {
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #ffffff; /* Color de texto de los enlaces */
+}
+
+main {
+  overflow-y: auto;
+  height: 100%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  max-width: 100%;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  main {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
 }
