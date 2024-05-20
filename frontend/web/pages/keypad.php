@@ -19,3 +19,18 @@
         <button class="generate-button">Generar invoice</button>
     </div>
 </section>
+
+<script>
+
+ajax({
+    method: 'GET',
+    url: 'https://jsonplaceholder.typicode.com/posts',
+    success: function(response) {
+        console.log('Success:', response);
+    },
+    error: function(error) {
+        console.error('Error:', error);
+    }
+});
+
+</script>
