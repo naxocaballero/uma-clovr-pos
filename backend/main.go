@@ -67,7 +67,22 @@ func (c *Controller) initDatabase() {
 	}
 }
 
-func (c *Controller) createInvoice(_ *gin.Context) {
+func (ctrl *Controller) createTransaction(amount float64, invoiceID uint) (*Transaction, error) {
+	newTransaction := Transaction{
+		Amount:       amount,
+		InvoiceID:    invoiceID,
+		CreationDate: time.Now(),
+		Status:       Pending,
+	}
+
+	if err := ctrl.Database.Create(&newTransaction).Error; err != nil {
+		return nil, err
+	}
+
+	return &newTransaction, nil
+}
+
+func (ctrl *Controller) createInvoice(c *gin.Context) {
 	log.Println("Solicitud para crear un invoice")
 	// Crear invoice
 }
