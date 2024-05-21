@@ -7,6 +7,7 @@
 
     <!-- Enlace a los archivos CSS -->
     <link rel="stylesheet" type="text/css" href="css/styles.css?<?php echo rand(0,999);?>" />
+    <link rel="stylesheet" type="text/css" href="css/keypad.css?<?php echo rand(0,999);?>" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png" />
@@ -44,7 +45,9 @@
     </header>
 
     <main>
-
+    <?php
+    require("pages/keypad.php");
+    ?>
     </main>
     <footer>
         <div class="footer-container">
@@ -61,6 +64,8 @@
         </div>
 
     </footer>
+
+    <script src="js/keypad.js"></script>
 
 </body>
 

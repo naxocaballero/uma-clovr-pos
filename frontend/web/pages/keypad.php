@@ -41,8 +41,9 @@ document.querySelector('.generate-button').addEventListener('click', function() 
         memo: 'Pago de prueba' // Ejemplo de memo
     };
 
-    console.log(amount);
+    console.log(invoiceData);
 
+    /*
     ajax({
         method: 'POST',
         url: 'http://localhost:8080/generate-invoice', // URL de tu API en Golang
@@ -56,6 +57,7 @@ document.querySelector('.generate-button').addEventListener('click', function() 
             console.error('Error:', error);
         }
     });
+    */
 
 });
 </script>
