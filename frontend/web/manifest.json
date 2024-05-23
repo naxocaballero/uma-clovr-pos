@@ -1,14 +1,14 @@
 {
-    "name": "Clovr PoS",
+    "name": "UMA Clovr PoS",
     "lang": "es-ES",
-    "short_name": "Clovr PoS",
-    "description": "Punto de venta Bitcoin Lightning Network de Clovr Labs.",
-    "start_url": "/index.php",
+    "short_name": "UMA Clovr PoS",
+    "description": "Punto de venta Bitcoin Lightning Network de UMA Clovr.",
+    "start_url": "index.php",
     "scope": "/",
     "display": "standalone",
-    "theme_color": "#7b1af7",
-    "background_color": "#7b1af7",
-    "status_bar_backgroundColor": "#7b1af7",
+    "theme_color": "#8cc63f",
+    "background_color": "#8cc63f",
+    "status_bar_backgroundColor": "#8cc63f",
     "orientation": "portrait",
     "icons": [
         {
