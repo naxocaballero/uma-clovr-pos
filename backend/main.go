@@ -16,7 +16,6 @@ type Controller struct {
 
 type TransactionStatus string
 
-//goland:noinspection ALL
 const (
 	Pending TransactionStatus = "PENDIENTE"
 	Paid    TransactionStatus = "PAGADO"
