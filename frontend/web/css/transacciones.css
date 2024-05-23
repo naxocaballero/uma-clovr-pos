@@ -1,0 +1,84 @@
+#transacciones {
+  display: none;
+}
+#transacciones.active {
+  display: block;
+}
+@media (max-width: 768px) {
+  #transacciones {
+    width: 90vw;
+  }
+  #transacciones h2 {
+    font-size: 8.5vw;
+    margin-bottom: 1rem;
+    color: #171717;
+    padding-top: 2.7vh;
+  }
+  #transacciones .buscar {
+    width: 100%;
+    padding: 1.6vw 2.5vw;
+    border: 0;
+    border-radius: 12px;
+    font-size: 4.5vw;
+    outline: none;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #dadada;
+    color: #333333;
+  }
+  #transacciones .buscar::-webkit-input-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar::-moz-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar:-ms-input-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar::-ms-input-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar::placeholder {
+    color: #808080;
+  }
+}
+#transacciones .container {
+  padding-top: 4vh;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 9vh);
+}
+#transacciones .container .item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px;
+  border-bottom: 0.9px solid #cccccc;
+}
+#transacciones .container .item:nth-last-child(1) {
+  border-bottom: none;
+}
+#transacciones .container .item .item-info {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+#transacciones .container .item .item-info h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+#transacciones .container .item .item-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+#transacciones .container .item .btn-view {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}

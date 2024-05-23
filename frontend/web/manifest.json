@@ -6,10 +6,9 @@
     "start_url": "index.php",
     "scope": "/",
     "display": "standalone",
-    "theme_color": "#8cc63f",
-    "background_color": "#8cc63f",
-    "status_bar_backgroundColor": "#8cc63f",
     "orientation": "portrait",
+    "theme_color": "transparent",
+    "background_color": "transparent",
     "icons": [
         {
             "src": "img/favicon/android-chrome-512x512.png",

@@ -1,0 +1,181 @@
+@charset "UTF-8";
+#invoice {
+  height: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: none;
+  /* Estilos para div display */
+}
+@media (max-width: 768px) {
+  #invoice {
+    width: 100vw;
+  }
+  #invoice.active {
+    display: block;
+  }
+  #invoice h2 {
+    font-size: 8.5vw;
+    color: #171717;
+    width: 90vw;
+    margin: 0 auto;
+    padding-top: 2.7vh;
+    margin-bottom: 2vh;
+  }
+}
+#invoice .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  max-width: 500px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  height: unset;
+}
+#invoice .title {
+  font-size: clamp(1.5rem, 10vw, 5rem);
+  font-weight: bold;
+  margin-bottom: 3vh;
+}
+#invoice .display {
+  width: 100%;
+  height: clamp(1rem, 12vh, 5rem);
+  font-size: clamp(1rem, 10vw, 5rem);
+  font-family: system-ui;
+  padding: 0.5rem;
+  margin-bottom: clamp(0.5rem, 2vh, 2rem);
+  border-top: 1px solid #dadada;
+  border-bottom: 1px solid #dadada;
+  outline: none;
+  background-color: rgba(200, 200, 210, 0.6);
+  color: rgb(70, 70, 90);
+  font-weight: bold;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative; /* Necesario para el pseudo-elemento */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+#invoice .display.empty {
+  visibility: visible; /* Visible cuando está vacío */
+  color: rgba(70, 70, 90, 0.3);
+  font-weight: normal;
+  font-size: clamp(1rem, 7vw, 5rem);
+}
+#invoice .pad {
+  /* Estilos del keypad */
+}
+#invoice .pad .keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
+  font-size: 2rem;
+  border-radius: 10px;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+}
+#invoice .pad .generate-button {
+  width: 100%;
+  height: clamp(2rem, 8vh, 4rem);
+  background-color: #7f47dd;
+  color: white;
+  font-size: clamp(1rem, 6vw, 1.5rem);
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin-bottom: clamp(0.5rem, 1vh, 1rem);
+  border-radius: 0.625rem;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+#invoice .pad .generate-button:hover {
+  background-color: #48218a;
+}
+#invoice .pad .generate-button:focus {
+  outline: none;
+}
+#invoice .pad .key {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: clamp(1rem, 8vw, 5rem);
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  background-color: #8cc63f;
+  color: white;
+  border: none;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  padding: 10% 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+#invoice .pad .key:hover {
+  background-color: #5a8d18;
+}
+#invoice .pad .key:active {
+  background-color: #5a8d18;
+}
+#invoice .pad .key:focus {
+  outline: none;
+}
+#invoice .pad .key.active {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background-color: #5a8d18;
+}
+@media (max-width: 768px) {
+  #invoice .pad {
+    width: 90vw;
+  }
+  #invoice .pad .key:hover {
+    background-color: #8cc63f;
+  }
+  #invoice .pad .key:active {
+    background-color: #5a8d18;
+  }
+  #invoice .pad .key:focus {
+    outline: none;
+  }
+  #invoice .pad .generate-button:hover {
+    background-color: #7f47dd;
+  }
+  #invoice .pad .generate-button:active {
+    background-color: #48218a;
+  }
+}
