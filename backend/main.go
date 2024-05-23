@@ -19,6 +19,7 @@ type TransactionStatus string
 const (
 	Pending TransactionStatus = "PENDIENTE"
 	Paid    TransactionStatus = "PAGADO"
+	Expired TransactionStatus = "EXPIRADO"
 )
 
 type Transaction struct {
