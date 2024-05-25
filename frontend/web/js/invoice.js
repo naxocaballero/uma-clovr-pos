@@ -44,12 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let invoiceData = {
             amount: amount,
-            expiration: 900, 
-            memo: "Pago de prueba", 
+            expiration: 300, 
+            memo: "Creación de invoice", 
         };
 
         console.log(invoiceData);
-        alert(JSON.stringify(invoiceData, null, 2));
+        alert("Datos enviados para creación de invoice. A la espera de respuesta.");
 
         fetch("http://localhost:8080/invoices", {
             method: "POST",
@@ -61,11 +61,17 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((response) => response.json())
         .then((data) => {
             console.log("Success:", data);
-            alert("Invoice creada con éxito.");
+            /*
+            Debo recibir los siguientes datos:
+            1. Payment Request para generar el QR y para mostrarlo.
+            2. Timestamp de la generación de factura en el nodo.
+            3. Id de la transacción en la base de datos (índice interno).
+            4. Estado de la transacción (confirmado, pendiente, cancelado, rechazado, expirado, ...) (Aunque está recién creada, y no puede estar en estado confirmado, lo que pido es que se me envíe todo el registro de la BBDD de esta transacción, para Yo presentar en el Frontend lo que me interese).
+            5. En caso de "error" en la creación de factura, quiero recibir también el mensaje de error.
+            */
         })
         .catch((error) => {
             console.error("Error:", error);
-            alert("No se han recibido datos de la API.");
         });
 
         display.textContent = "satoshis";
