@@ -20,4 +20,4 @@
 			<button class="generate-button">Generar invoice</button>
 		</div>
 	</div>
-</section>
+</section> 
