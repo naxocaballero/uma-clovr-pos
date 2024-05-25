@@ -13,6 +13,7 @@
 @media (max-width: 768px) {
   #invoice {
     width: 100vw;
+    height: auto;
   }
   #invoice.active {
     display: block;
@@ -52,7 +53,7 @@
   margin-bottom: 3vh;
 }
 #invoice .display {
-  width: 100%;
+  width: 100dvw;
   height: clamp(1rem, 12vh, 5rem);
   font-size: clamp(1rem, 10vw, 5rem);
   font-family: system-ui;

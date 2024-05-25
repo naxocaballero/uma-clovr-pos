@@ -11,7 +11,6 @@ const keys = document.querySelectorAll(".key");
 
 keys.forEach((key) => {
 	key.addEventListener("click", () => {
-
 		const value = key.textContent;
 		if (value === "Del") {
 			display.textContent = "satoshis";
@@ -106,33 +105,34 @@ document.querySelector(".generate-button").addEventListener("click", function ()
 	}
 
 	let invoiceData = {
-		method: "createInvoice",
-		payload: {
 			amount: amount,
-			expiration: 900, // Ejemplo de expiración en segundos (15 minutos)
-			memo: "Pago de prueba", // Ejemplo de memo
-		},
-	};
+			expiration: 900, 
+			memo: "Pago de prueba", 
+		};
 
 	console.log(invoiceData);
 	alert(JSON.stringify(invoiceData, null, 2));
 
+	// Llamada a la API POST /invoices usando fetch
+	fetch("http://localhost:8080/invoices", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(invoiceData),
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log("Success:", data);
+			alert("Invoice creada con éxito.");
+		})
+		.catch((error) => {
+			console.error("Error:", error);
+			alert("No se han recibido datos de la API.");
+		});
+
+
 	display.textContent = "satoshis";
 	updatePlaceholder(display);
 
-	/*
-    ajax({
-        method: 'POST',
-        url: 'http://localhost:8080/generate-invoice', // URL de tu API en Golang
-        data: invoiceData,
-        timeout: 5000, // Tiempo de espera en milisegundos
-        success: function(response) {
-            console.log('Success:', response);
-            document.getElementById('display').textContent = response.invoice; // Asume que el JSON de respuesta tiene un campo 'invoice'
-        },
-        error: function(error) {
-            console.error('Error:', error);
-        }
-    });
-    */
 });

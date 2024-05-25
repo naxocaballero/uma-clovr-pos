@@ -5,7 +5,6 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none; /* Desactiva el menú de llamada táctil en Safari */
   -ms-touch-action: pan-y;
       touch-action: pan-y;
@@ -13,13 +12,20 @@
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: auto;
 }
 
-html,
-body {
-  height: 100%;
+html {
   font-family: Arial, sans-serif;
   color: #606060;
+  overflow: hidden; /* Ocultar la barra de desplazamiento en html y body */
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -27,27 +33,14 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  min-height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100vh;
   width: 100vw;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-smooth: auto;
-  overflow: hidden; /* Ocultar la barra de desplazamiento en html y body */
-  margin: 0;
-  padding: 0;
-  border: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
 }
-@media (max-width: 768px) {
-  html,
-  body {
-    display: block;
-    height: 99.92vh;
-    background-color: #fafafa;
-  }
-}
-
 /* Ocultar scrollbar en WebKit (Safari) */
 ::-webkit-scrollbar {
   display: none;

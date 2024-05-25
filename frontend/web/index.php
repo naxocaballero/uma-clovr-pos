@@ -53,8 +53,8 @@
         <?php
         if(file_exists("pages/invoice.html"))
         require("pages/invoice.html");
-        if(file_exists("pages/transacciones.html"))
-        require("pages/transacciones.html");
+        if(file_exists("pages/transacciones.php"))
+        require("pages/transacciones.php");
         if(file_exists("pages/ajustes.html"))
         require("pages/ajustes.html");
         ?>
@@ -69,7 +69,8 @@
             <div class="fondo-footer-menu"></div>
             <nav class="menu" id="footer-menu">
                 <ul>
-                    <li class="active" data-template="invoice">
+                    <li class="" data-template="invoice">
+                        <!-- class="active" -->
                         <em class="operar">
                             <?php
                             $svgFile = 'img/icons/cash-register-solid.svg';
@@ -83,7 +84,8 @@
                         </em>
                         <span>Crear Invoice</span></a>
                     </li>
-                    <li class="" data-template="transacciones"><em class="transacciones">
+                    <li class="active" data-template="transacciones">
+                        <em class="transacciones">
                             <?php
                             $svgFile = 'img/icons/list-check-solid.svg';
                             if (file_exists($svgFile)) {
@@ -93,7 +95,8 @@
                                 echo 'Error: SVG file not found.';
                             }
                             ?>
-                        </em><span>Transacciones</span></a></li>
+                        </em><span>Transacciones</span></a>
+                    </li>
                     <li data-template="ajustes"><em class="ajustes">
                             <?php
                             $svgFile = 'img/icons/gear-solid.svg';
@@ -110,6 +113,7 @@
         </div>
 
     </footer>
+
 
     <script src="js/functions.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
