@@ -51,12 +51,12 @@
     </header>
     <main>
         <?php
-        if(file_exists("pages/invoice.html"))
-        require("pages/invoice.html");
+        if(file_exists("pages/invoice.php"))
+        require("pages/invoice.php");
         if(file_exists("pages/transacciones.php"))
         require("pages/transacciones.php");
-        if(file_exists("pages/ajustes.html"))
-        require("pages/ajustes.html");
+        if(file_exists("pages/ajustes.php"))
+        require("pages/ajustes.php");
         ?>
     </main>
 
@@ -69,7 +69,7 @@
             <div class="fondo-footer-menu"></div>
             <nav class="menu" id="footer-menu">
                 <ul>
-                    <li class="" data-template="invoice">
+                    <li class="active" data-template="invoice">
                         <!-- class="active" -->
                         <em class="operar">
                             <?php
@@ -84,7 +84,7 @@
                         </em>
                         <span>Crear Invoice</span></a>
                     </li>
-                    <li class="active" data-template="transacciones">
+                    <li class="" data-template="transacciones">
                         <em class="transacciones">
                             <?php
                             $svgFile = 'img/icons/list-check-solid.svg';

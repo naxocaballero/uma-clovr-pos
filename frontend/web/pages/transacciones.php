@@ -1,4 +1,4 @@
-<section id="transacciones" class="active">
+<section id="transacciones" class="">
 	<h2>Buscar</h2>
 	<input type="text" name="buscar" class="buscar" placeholder="Buscar transacción ..." />
 
