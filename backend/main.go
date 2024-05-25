@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -28,6 +29,7 @@ type Transaction struct {
 	InvoiceID    uint              `json:"invoice_id"`
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
+	Timeout      time.Duration     `json:"timeout"`
 }
 
 var (
@@ -68,17 +70,21 @@ func (c *Controller) initDatabase() {
 	}
 }
 
-func (c *Controller) createInvoice(_ *gin.Context) {
+func (c *Controller) createInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para crear un invoice")
 	// Crear invoice
 }
 
-func (c *Controller) payInvoice(_ *gin.Context) {
+func (c *Controller) payInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para pagar un invoice")
 	// Pagar invoice
 }
 
-func (c *Controller) getTransactions(_ *gin.Context) {
-	log.Println("Solicitud para obtener las transacciones")
-	// Obtener transacciones de la BD
+func (c *Controller) getTransactions(ctx *gin.Context) {
+	log.Println("Solicitud para obtener todas las transacciones")
+	var transactions []Transaction
+	result := c.Database.Find(&Transaction{})
+	result.Scan(&transactions)
+
+	ctx.IndentedJSON(http.StatusOK, transactions)
 }
