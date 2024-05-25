@@ -82,9 +82,15 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 
 func (c *Controller) getTransactions(ctx *gin.Context) {
 	log.Println("Solicitud para obtener todas las transacciones")
-	var transactions []Transaction
-	result := c.Database.Find(&Transaction{})
-	result.Scan(&transactions)
 
+	var transactions []Transaction
+
+	if result := c.Database.Find(&transactions); result.Error != nil {
+		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
+		return
+	}
+
+	// Devuelve la lista de transacciones como una respuesta JSON
 	ctx.IndentedJSON(http.StatusOK, transactions)
 }
