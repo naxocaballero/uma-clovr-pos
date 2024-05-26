@@ -1,0 +1,126 @@
+@charset "UTF-8";
+#transacciones {
+  display: none;
+}
+#transacciones.active {
+  display: block;
+}
+@media (max-width: 768px) {
+  #transacciones {
+    width: 90vw;
+    padding-bottom: calc(env(safe-area-inset-bottom));
+  }
+  #transacciones h2 {
+    font-size: 8.9vw;
+    margin-bottom: 1rem;
+    color: #000000;
+    padding-top: 2.7vh;
+  }
+  #transacciones .buscar {
+    width: 100%;
+    padding: 1.6vw 2.5vw;
+    border: 0;
+    border-radius: 12px;
+    font-size: 4.5vw;
+    outline: none;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #dadada;
+    color: #333333;
+  }
+  #transacciones .buscar::-webkit-input-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar::-moz-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar:-ms-input-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar::-ms-input-placeholder {
+    color: #808080;
+  }
+  #transacciones .buscar::placeholder {
+    color: #808080;
+  }
+}
+#transacciones .container {
+  padding-top: 4vh;
+}
+#transacciones .container .item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  -webkit-box-shadow: 0px 0px 5px 0px #e6e6e6;
+          box-shadow: 0px 0px 5px 0px #e6e6e6;
+  font-size: 1rem;
+  gap: 0.7rem;
+}
+#transacciones .container .item.payment {
+  color: #21861c;
+}
+#transacciones .container .item.refund {
+  color: #ae2222;
+}
+#transacciones .container .item.refund .item-price::before {
+  content: "- ";
+}
+#transacciones .container .item .item-status em {
+  display: inline-block;
+  height: 2.5vh; /* Ajusta el ancho de la imagen */
+  aspect-ratio: 1/1; /* Mantiene una proporción de 1:1 */
+  vertical-align: middle;
+  margin: 0.4rem auto;
+}
+#transacciones .container .item .item-status em.confirmed svg {
+  fill: #21861c;
+}
+#transacciones .container .item .item-status em.pending svg {
+  fill: orange;
+}
+#transacciones .container .item .item-status em.cancelled svg {
+  fill: #ae2222;
+}
+#transacciones .container .item .item-info {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+#transacciones .container .item .item-info h4 span {
+  font-size: 0.9em;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+  color: #aaaaaa;
+}
+#transacciones .container .item .item-info h4 span::before {
+  content: "(#";
+}
+#transacciones .container .item .item-info h4 span::after {
+  content: ")";
+}
+#transacciones .container .item .item-info .item-memo {
+  color: #777777;
+}
+#transacciones .container .item .item-price {
+  font-weight: bold;
+  white-space: nowrap;
+}
+#transacciones .container .item .btn-view {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}
