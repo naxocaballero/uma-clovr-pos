@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/hex"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/lightningnetwork/lnd/lnrpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -25,15 +28,17 @@ const (
 
 type Transaction struct {
 	gorm.Model
-	Amount       float64           `json:"amount"`
-	InvoiceID    uint              `json:"invoice_id"`
+	Amount       uint64            `json:"amount"`
+	InvoiceID    string            `json:"invoice_id"`
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
-	Timeout      time.Duration     `json:"timeout"`
+	Timeout      uint64            `json:"timeout"`
 }
 
 var (
 	dbConnectionString = "host=localhost user=admin password=adminpw dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Berlin"
+	nodoVenta          lnrpc.LightningClient
+	nodoUsuario        lnrpc.LightningClient
 )
 
 func main() {
@@ -86,8 +91,63 @@ func (c *Controller) initDatabase() {
 }
 
 func (c *Controller) createInvoice(ctx *gin.Context) {
-	log.Println("Solicitud para crear un invoice")
-	// Crear invoice
+	// Recibimos el valor de la invoice por un parámetro
+	// Opcionalmente, también es posible que recibamos el temporizador de la invoice a crear
+	var amount = ctx.Param("amount")
+	var timeout = ctx.Param("timeout")
+
+	// Creamos un objeto de la clase transaction inicialmente vacío
+	var newTransaction Transaction
+
+	if timeout == "-1" {
+		// No se ha recibido ningún timeout válido, por lo que le asignamos un valor por defecto
+		newTransaction.Timeout = 900
+	} else {
+		// Convertimos la cadena recibida en un float64
+		timeout, err := strconv.ParseUint(timeout, 10, 64)
+		if err != nil {
+			log.Println("Error convirtiendo el tiempo a uint64:", err)
+			return
+		}
+		// Lo asignamos
+		newTransaction.Timeout = timeout
+	}
+
+	// Repetimos la conversión para el parámetro amount
+	amountInt, err := strconv.ParseUint(amount, 10, 64)
+	if err != nil {
+		log.Println("Error convirtiendo la cantidad a float:", err)
+		return
+	}
+	newTransaction.Amount = amountInt
+
+	// Asignamos el tiempo de creación actual y estado pendiente de la transacción
+	newTransaction.Status = Pending
+	newTransaction.CreationDate = time.Now()
+
+	// Creamos la invoice utilizando el cliente
+	invoiceID, err := createInvoiceAux(nodoVenta, ctx, int64(amountInt))
+	if err != nil {
+		log.Println("", err)
+		return
+	}
+	newTransaction.InvoiceID = invoiceID
+
+	c.Database.Create(&newTransaction)
+	ctx.JSON(http.StatusCreated, newTransaction)
+}
+
+// Función auxiliar
+func createInvoiceAux(client lnrpc.LightningClient, ctx *gin.Context, amount int64) (string, error) {
+	invoice := &lnrpc.Invoice{
+		Value: amount,
+	}
+
+	resp, err := client.AddInvoice(ctx, invoice)
+	if err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(resp.RHash), err
 }
 
 func (c *Controller) payInvoice(ctx *gin.Context) {
