@@ -5,7 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"io/ioutil"
 	"log"
+	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -15,7 +18,6 @@ type Controller struct {
 
 type TransactionStatus string
 
-//goland:noinspection ALL
 const (
 	Pending TransactionStatus = "PENDIENTE"
 	Paid    TransactionStatus = "PAGADO"
@@ -28,6 +30,7 @@ type Transaction struct {
 	InvoiceID    uint              `json:"invoice_id"`
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
+	Expiration   uint64            `json:"timeout"`
 }
 
 var (
@@ -73,9 +76,58 @@ func (c *Controller) createInvoice(_ *gin.Context) {
 	// Crear invoice
 }
 
-func (c *Controller) payInvoice(_ *gin.Context) {
+func (c *Controller) payInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para pagar un invoice")
-	// Pagar invoice
+
+	paymentRequest := ctx.Param("paymentRequest")
+	/* Por ahora no se le da uso a amount
+	amount, err := strconv.ParseUint(ctx.Param("amount"), 10, 64)
+	if err != nil {
+		log.Println("Error al leer la cantidad del pago:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al leer la cantidad del pago"})
+		return
+	}*/
+	transactionId, err := strconv.ParseUint(ctx.Param("transactionId"), 10, 32)
+	if err != nil {
+		log.Println("Error al leer el ID:", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID de transacción no válido"})
+		return
+	}
+
+	//Consulto la transaccion
+	var transaction Transaction
+	if err := c.Database.First(&transaction, transactionId).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Println("La transaccion no existe:", err)
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "La transaccion no existe"}) //Devuelve un 404
+		} else {
+			log.Println("Error al buscar la transaccion:", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al buscar la transaccion"})
+		}
+		return
+	}
+
+	//Obtengo la URI del cliente desde el archivo
+	uri, err := ioutil.ReadFile("uriUsuario")
+	if err != nil {
+		log.Println("Error al leer el archivo uriUsuario:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error interno"})
+		return
+	}
+
+	//Realizar el pago
+	err = PagarInvoice(string(uri), paymentRequest)
+	if err != nil {
+		log.Println("Error al pagar el invoice:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al pagar el invoice"})
+		return
+	}
+	transaction.Status = Paid
+
+	//Actualizo el estado de la transaccion
+	c.Database.Save(&transaction)
+
+	ctx.JSON(http.StatusOK, transaction)
 }
 
 func (c *Controller) getTransactions(_ *gin.Context) {
