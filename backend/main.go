@@ -38,7 +38,6 @@ type Transaction struct {
 var (
 	dbConnectionString = "host=localhost user=admin password=adminpw dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Berlin"
 	nodoVenta          lnrpc.LightningClient
-	nodoUsuario        lnrpc.LightningClient
 )
 
 func main() {
@@ -66,13 +65,6 @@ func main() {
 	nodoVenta, conn, err := Conectar(uriVenta)
 	if err != nil {
 		log.Fatalf("Error %v creando el cliente del punto de venta", err)
-	}
-	defer conn.Close()
-
-	// Para el usuario
-	nodoUsuario, conn, err := Conectar(uriUsuario)
-	if err != nil {
-		log.Fatalf("Error %v creando el cliente del usuario", err)
 	}
 	defer conn.Close()
 }
