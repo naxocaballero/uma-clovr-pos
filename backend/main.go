@@ -32,7 +32,7 @@ type Transaction struct {
 	InvoiceID    string            `json:"invoice_id"`
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
-	Timeout      uint64            `json:"timeout"`
+	Expiretion   uint64            `json:"timeout"`
 }
 
 var (
@@ -94,23 +94,23 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 	// Recibimos el valor de la invoice por un parámetro
 	// Opcionalmente, también es posible que recibamos el temporizador de la invoice a crear
 	var amount = ctx.Param("amount")
-	var timeout = ctx.Param("timeout")
+	var expiration = ctx.Param("timeout")
 
 	// Creamos un objeto de la clase transaction inicialmente vacío
 	var newTransaction Transaction
 
-	if timeout == "-1" {
-		// No se ha recibido ningún timeout válido, por lo que le asignamos un valor por defecto
-		newTransaction.Timeout = 900
+	if expiration == "" {
+		// No se ha recibido ningún timeout, por lo que utilizamos el valor por defecto
+		newTransaction.Expiretion = 900
 	} else {
 		// Convertimos la cadena recibida en un float64
-		timeout, err := strconv.ParseUint(timeout, 10, 64)
+		timeout, err := strconv.ParseUint(expiration, 10, 64)
 		if err != nil {
 			log.Println("Error convirtiendo el tiempo a uint64:", err)
 			return
 		}
 		// Lo asignamos
-		newTransaction.Timeout = timeout
+		newTransaction.Expiretion = timeout
 	}
 
 	// Repetimos la conversión para el parámetro amount
