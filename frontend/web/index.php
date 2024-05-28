@@ -133,7 +133,8 @@ require("lib/functions.php");
 
     <script src="js/functions.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/invoice.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
-
+    <script src="js/serviceWorker.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
+    <script src="js/imagePWA.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
 
 
