@@ -38,6 +38,7 @@ type Transaction struct {
 
 var (
 	dbConnectionString = "host=localhost user=admin password=adminpw dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Berlin"
+	uriVenta           = "TODO"
 	nodoVenta          lnrpc.LightningClient
 	conn               *grpc.ClientConn
 )
@@ -144,7 +145,7 @@ func (c *Controller) getTransactions(ctx *gin.Context) {
 
 	var transactions []Transaction
 
-	if result := c.Database.Find(&transactions); result.Error != nil {
+	if result := c.Database.Find(&transactions).Where("status == PAGADO"); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return
