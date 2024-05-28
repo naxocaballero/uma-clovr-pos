@@ -10,6 +10,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/lightningnetwork/lnd/lnrpc"
+	"google.golang.org/grpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -38,6 +39,7 @@ type Transaction struct {
 var (
 	dbConnectionString = "host=localhost user=admin password=adminpw dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Berlin"
 	nodoVenta          lnrpc.LightningClient
+	conn               *grpc.ClientConn
 )
 
 func main() {
@@ -62,7 +64,7 @@ func main() {
 
 	// Crear los clientes lnd
 	// Para el punto de venta
-	nodoVenta, conn, err := Conectar(uriVenta)
+	nodoVenta, conn, err = Conectar(uriVenta)
 	if err != nil {
 		log.Fatalf("Error %v creando el cliente del punto de venta", err)
 	}
@@ -118,28 +120,18 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 	newTransaction.CreationDate = time.Now()
 
 	// Creamos la invoice utilizando el cliente
-	invoiceID, err := createInvoiceAux(nodoVenta, ctx, int64(amountInt))
-	if err != nil {
-		log.Println("", err)
-		return
+	invoice := &lnrpc.Invoice{
+		Value: int64(amountInt),
 	}
-	newTransaction.InvoiceID = invoiceID
+
+	resp, err := nodoVenta.AddInvoice(ctx, invoice)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, nil)
+	}
+	newTransaction.InvoiceID = hex.EncodeToString(resp.RHash)
 
 	c.Database.Create(&newTransaction)
 	ctx.JSON(http.StatusCreated, newTransaction)
-}
-
-// Función auxiliar
-func createInvoiceAux(client lnrpc.LightningClient, ctx *gin.Context, amount int64) (string, error) {
-	invoice := &lnrpc.Invoice{
-		Value: amount,
-	}
-
-	resp, err := client.AddInvoice(ctx, invoice)
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(resp.RHash), err
 }
 
 func (c *Controller) payInvoice(ctx *gin.Context) {

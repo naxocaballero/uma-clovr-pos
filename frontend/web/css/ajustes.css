@@ -1,0 +1,21 @@
+#ajustes {
+  display: none;
+}
+#ajustes.active {
+  display: block;
+}
+@media (max-width: 768px) {
+  #ajustes {
+    width: 90vw;
+  }
+  #ajustes h2 {
+    font-size: 8.5vw;
+    margin-bottom: 1rem;
+    color: #171717;
+    padding-top: 2.7vh;
+  }
+}
+#ajustes .container {
+  padding-top: 4vh;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 9vh);
+}

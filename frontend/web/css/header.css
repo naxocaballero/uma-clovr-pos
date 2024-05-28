@@ -1,0 +1,131 @@
+@charset "UTF-8";
+header {
+  z-index: 1;
+  width: 100vw;
+  background-color: #8cc63f; /* Color de fondo de ejemplo para el header */
+  color: #ffffff; /* Color de texto de ejemplo para el header */
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  -ms-touch-action: none;
+      touch-action: none;
+  padding-top: env(safe-area-inset-top);
+  background-color: rgba(249, 249, 251, 0.8);
+  -webkit-backdrop-filter: blur(15px);
+          backdrop-filter: blur(15px);
+  color: #707070;
+  opacity: 0; /* Estado inicial */
+  border-bottom: 0.9px solid rgba(0, 0, 0, 0.2);
+}
+header .header-container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto; /* Centrar el contenedor */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; /* Espacio entre los elementos de la izquierda y derecha */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Centrar verticalmente los elementos */
+  padding: 0.5rem; /* Espacio interno */
+}
+@media (max-width: 768px) {
+  header .header-container {
+    padding: 0.3rem;
+    height: 3rem;
+  }
+}
+header .header-container .header-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Centrar verticalmente los elementos */
+}
+@media (max-width: 768px) {
+  header .header-container .header-left {
+    width: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    height: 100%;
+  }
+}
+header .header-container .header-left img {
+  width: auto; /* Ajusta el ancho de la imagen */
+  height: 3rem; /* Mantiene la proporción de la imagen */
+  margin-right: 0.5rem; /* Espacio entre la imagen y el texto */
+}
+@media (max-width: 768px) {
+  header .header-container .header-left img {
+    height: 100%; /* Ocultar el título en la versión móvil */
+    margin: 0;
+    display: none;
+  }
+}
+header .header-container .header-left span {
+  font-size: 1rem; /* Tamaño del texto */
+}
+@media (max-width: 768px) {
+  header .header-container .header-left span {
+    color: #000000;
+    font-weight: bold;
+  }
+}
+header .header-container .header-right ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+header .header-container .header-right ul li {
+  margin-left: 4rem; /* Espacio entre los elementos de la lista */
+}
+header .header-container .header-right ul li a {
+  text-decoration: none; /* Eliminar subrayado del enlace */
+  color: #ffffff; /* Color de texto de los enlaces */
+}
+header .header-container .header-right ul li a:hover {
+  text-decoration: underline; /* Subrayar al pasar el cursor */
+}
+header .header-container .header-right ul li em {
+  display: inline-block;
+  height: 1.2em; /* Ajusta el ancho de la imagen */
+  aspect-ratio: 1/1; /* Mantiene una proporción de 1:1 */
+  background-size: contain;
+  vertical-align: middle;
+  margin-left: 0.3em; /* Espacio entre el texto y la imagen */
+  margin-right: 0.6em; /* Espacio entre el texto y la imagen */
+}
+header .header-container .header-right ul li em.operar {
+  background: url("../img/icons/cash-register-solid.svg") no-repeat center center;
+}
+header .header-container .header-right ul li em.transacciones {
+  background: url("../img/icons/list-check-solid.svg") no-repeat center center;
+}
+header .header-container .header-right ul li em.ajustes {
+  background: url("../img/icons/gear-solid.svg") no-repeat center center;
+}
+@media (max-width: 768px) {
+  header .header-right {
+    display: none; /* Ocultar el menú en pantallas pequeñas */
+  }
+}
