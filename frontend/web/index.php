@@ -77,11 +77,14 @@ require("lib/functions.php");
         ?>
     </main>
 
+
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 <em class="logo"></em> <b>UMA Clovr PoS</b>. Todos los derechos reservados.</p>
         </div>
         <div class="footer-menu">
+            <div class="borde-footer-menu"></div>
+            <div class="fondo-footer-menu"></div>
             <div class="borde-footer-menu"></div>
             <div class="fondo-footer-menu"></div>
             <nav class="menu" id="footer-menu">
