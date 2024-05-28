@@ -54,4 +54,17 @@ _(adjunto nuevas capturas de pantalla del Frontend)_
 </div>
 &nbsp;
 
+(___27-05-2024: Actualización sección de transacciones___) Se ha terminado casi el UI y el UX de la sección transacciones. Ya funciona recibiendo por fetch un json con una estructura determinada que se puede modificar en función de cómo lo vaya a entregar el backend.
+_(adjunto nuevas capturas de pantalla del Frontend)_
+
+<div style="text-align: center; width: 100%;">
+   <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.17.30.png" alt="" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.18.52.png" alt="" style="width:24%;">
+</div>
+&nbsp;
+&nbsp;
+<div style="text-align: center; width: 100%;">
+   <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.18.23.png" alt="" style="width:24%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.21.36.png" alt="" style="width:24%;">
+</div>
+&nbsp;
+
 
