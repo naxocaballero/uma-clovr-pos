@@ -1,18 +1,15 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-	
 	let header = document.querySelector("header");
 	let main = document.querySelector("main");
 	let footer = document.querySelector("footer .fondo-footer-menu");
 
-	if (!isWebClip()) {
+	if (isWebClip()) {
 		let footerMenu = document.querySelector("footer");
-
 		if (footerMenu) {
-			footerMenu.style.minHeight = "8vh";
+			footerMenu.style.minHeight = "10vh";
 		} else {
 			console.log("El elemento footer .footer-menu no se encontró.");
 		}
-	} else {
 		main.classList.add("standalone");
 	}
 
@@ -33,7 +30,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		let diferencia = mainHeight - scrollPosition - containerHeight;
 
-		console.log(diferencia);
+		//console.log(diferencia);
 
 		if (diferencia > 10 && diferencia <= 30) {
 			// Hago la transición
@@ -47,16 +44,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		}
 	});
 
-	function changeColor(className, element) {
-		const containers = document.querySelectorAll("#footer-menu em." + element);
-		containers.forEach((container) => {
-			const svgElement = container.querySelector("svg");
-			if (svgElement) {
-				svgElement.setAttribute("class", className);
-			}
-		});
-	}
-
 	const menuItems = document.querySelectorAll(".menu li");
 	const sections = document.querySelectorAll("main section");
 
@@ -64,6 +51,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		item.addEventListener("click", function () {
 			const template = this.getAttribute("data-template");
 			const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
+			const transactions = document.querySelector("#transacciones .container");
+
+			transactions.innerHTML = "";
 
 			// Asegúrate de que todos los sections no estén activos
 			sections.forEach((i) => i.classList.remove("active"));
@@ -71,6 +61,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			// Activa la sección seleccionada
 			if (contentSection) {
 				contentSection.classList.add("active");
+
+				if (template === "transacciones") {
+					llamada("ajax/generateRandomTransactions.php");
+				}
+
 				mainScrollable();
 			}
 
@@ -81,17 +76,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		});
 	});
 
-	if (isMainScrollable()) {
-		// Se puede hacer scroll.
-		console.log("se puede hacer scroll");
-	} else {
-		// No se puede hacer scroll. Presento los elementos estáticos y bloqueo el comportamiento de scroll.
-		//main.style.touchAction = "none";
-		console.log("no se puede hacer scroll");
-	}
+	// Activa la sección visible al establecer un valor en el menú (próposito mientras desarrollo)
+	activarSeccionDesdeInicio();
 
+	// Comprueba si el contenido central es mayor que el viewport para permitir touch-action y overflow.
 	mainScrollable();
 
-	// Hacer clic en el primer botón "invoice"
-	//document.querySelector('#footer-menu li[data-template="invoice"]').click();
+	// Invocar la función deshabilitar teclas de flecha para evitar scroll indeseado por teclado.
+	disableArrowKeysExceptInTextInputs();
+
+	//observeClassChange(document.querySelector("section#transacciones"));
+	llamada("ajax/generateRandomTransactions.php");
 });

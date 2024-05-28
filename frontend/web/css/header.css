@@ -13,7 +13,7 @@ header {
   -ms-touch-action: none;
       touch-action: none;
   padding-top: env(safe-area-inset-top);
-  background-color: rgba(249, 249, 251, 0.85);
+  background-color: rgba(249, 249, 251, 0.8);
   -webkit-backdrop-filter: blur(15px);
           backdrop-filter: blur(15px);
   color: #707070;

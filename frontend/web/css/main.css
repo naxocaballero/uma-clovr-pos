@@ -16,7 +16,7 @@
     -webkit-box-pack: start;
         -ms-flex-pack: start;
             justify-content: flex-start;
-    overflow-x: hidden;
+    overflow: hidden;
     overflow-y: auto; /* Permitir desplazamiento en el main */
     -webkit-overflow-scrolling: touch; /* Desplazamiento suave en iOS */
     -ms-scroll-chaining: none;
@@ -27,9 +27,11 @@
     bottom: 0;
     padding-right: 0;
     padding-left: 0;
-    padding-top: calc(env(safe-area-inset-top));
+    padding-top: 1rem;
     padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
     background-color: #f2f2f7;
+    -ms-touch-action: pan-y !important;
+        touch-action: pan-y !important;
   }
   main.standalone {
     height: 100vh;
