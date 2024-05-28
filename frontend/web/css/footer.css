@@ -118,10 +118,10 @@ footer .footer-menu nav ul li {
   width: 30%;
 }
 footer .footer-menu nav ul li.active {
-  color: #7f47dd;
+  color: #0081fc;
 }
 footer .footer-menu nav ul li.active svg {
-  fill: #7f47dd;
+  fill: #0081fc;
 }
 footer .footer-menu nav ul li em {
   display: inline-block;
