@@ -29,11 +29,9 @@ function mainScrollable() {
 		if (scrollHeight > clientHeight) {
 			main.classList.remove("no-scroll");
 			footer.style.opacity = 1;
-			console.log("si");
 		} else {
 			main.classList.add("no-scroll");
 			footer.style.opacity = 0;
-			console.log("no");
 		}
 	});
 }
@@ -65,4 +63,42 @@ function unloadScript(url) {
 			scripts[i].parentNode.removeChild(scripts[i]);
 		}
 	}
+}
+
+// Provisional mientras desarrollo...
+function activarSeccionDesdeInicio() {
+	// Obtener todos los elementos <li> del menú del pie de página
+	const menuItems = document.querySelectorAll("#footer-menu li");
+
+	// Iterar sobre cada elemento <li> para verificar si tiene la clase .active
+	menuItems.forEach((item) => {
+		if (item.classList.contains("active")) {
+			// Obtener el valor del atributo data-template
+			const template = item.getAttribute("data-template");
+
+			// Buscar la sección cuyo id coincida con el valor de data-template
+			const section = document.getElementById(template);
+
+			// Si la sección existe, añadir la clase .active
+			if (section) {
+				section.classList.add("active");
+			}
+		}
+	});
+}
+
+// Definir la función para deshabilitar las teclas de flecha
+function disableArrowKeysExceptInTextInputs() {
+	const disableArrowKeys = (event) => {
+		const activeElement = document.activeElement;
+		const isTextInput = activeElement.tagName === "INPUT" && activeElement.type === "text";
+
+		// Verificar si la tecla presionada es una tecla de flecha y el elemento activo no es un campo de texto
+		if (!isTextInput && (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+			event.preventDefault();
+		}
+	};
+
+	// Agregar el event listener para keydown
+	document.addEventListener("keydown", disableArrowKeys);
 }

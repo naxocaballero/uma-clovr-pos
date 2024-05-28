@@ -52,6 +52,10 @@
   font-weight: bold;
   margin-bottom: 3vh;
 }
+#invoice #display {
+  -ms-touch-action: none;
+      touch-action: none;
+}
 #invoice .display {
   width: 100dvw;
   height: clamp(1rem, 12vh, 5rem);

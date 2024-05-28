@@ -1,4 +1,4 @@
-<section id="invoice" class="active">
+<section id="invoice" class="">
 	<h2>Crear Invoice</h2>
     <div class="container">    
 		<div id="display" class="display empty">satoshis</div>
