@@ -32,7 +32,7 @@ type Transaction struct {
 	InvoiceID    string            `json:"invoice_id"`
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
-	Expiretion   uint64            `json:"timeout"`
+	Expiration   uint64            `json:"expiration"`
 }
 
 var (
@@ -93,7 +93,7 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 
 	if expiration == "" {
 		// No se ha recibido ningún timeout, por lo que utilizamos el valor por defecto
-		newTransaction.Expiretion = 900
+		newTransaction.Expiration = 900
 	} else {
 		// Convertimos la cadena recibida en un float64
 		timeout, err := strconv.ParseUint(expiration, 10, 64)
@@ -102,7 +102,7 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 			return
 		}
 		// Lo asignamos
-		newTransaction.Expiretion = timeout
+		newTransaction.Expiration = timeout
 	}
 
 	// Repetimos la conversión para el parámetro amount
