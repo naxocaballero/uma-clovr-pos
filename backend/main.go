@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -96,6 +95,7 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 
 	//Consulto la transaccion
 	var transaction Transaction
+
 	if err := c.Database.First(&transaction, transactionId).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			log.Println("La transaccion no existe:", err)
@@ -107,16 +107,17 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 		return
 	}
 
-	//Obtengo la URI del cliente desde el archivo
-	uri, err := ioutil.ReadFile("uriUsuario")
+	/* No util si vamos a tener una variable uriVenta
+	//Obtengo la URI de la tienda desde el archivo
+	uri, err := ioutil.ReadFile("uriVenta)
 	if err != nil {
-		log.Println("Error al leer el archivo uriUsuario:", err)
+		log.Println("Error al leer el archivo uriVenta:", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error interno"})
 		return
-	}
+	}*/
 
 	//Realizar el pago
-	err = PagarInvoice(string(uri), paymentRequest)
+	err = PagarInvoice(uriVenta, paymentRequest)
 	if err != nil {
 		log.Println("Error al pagar el invoice:", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al pagar el invoice"})
