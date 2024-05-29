@@ -6,12 +6,13 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 	"log"
 	"net/url"
 	"strings"
+
+	"github.com/lightningnetwork/lnd/lnrpc"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 func Conectar(uri string) (lnrpc.LightningClient, *grpc.ClientConn, error) {
