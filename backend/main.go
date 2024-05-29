@@ -73,9 +73,8 @@ func (c *Controller) initDatabase() {
 	}
 }
 
-func (c *Controller) createInvoice(_ *gin.Context) {
+func (c *Controller) createInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para crear un invoice")
-	// Crear invoice
 }
 
 func (c *Controller) payInvoice(ctx *gin.Context) {
