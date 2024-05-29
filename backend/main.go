@@ -18,18 +18,21 @@ type Controller struct {
 type TransactionStatus string
 
 const (
-	Pending TransactionStatus = "PENDIENTE"
-	Paid    TransactionStatus = "PAGADO"
-	Expired TransactionStatus = "EXPIRADO"
+	Pending   TransactionStatus = "PENDIENTE"
+	Paid      TransactionStatus = "PAGADO"
+	Expired   TransactionStatus = "EXPIRADO"
+	Refounded TransactionStatus = "DEVUELTA"
 )
 
 type Transaction struct {
 	gorm.Model
-	Amount       float64           `json:"amount"`
+	Amount       uint              `json:"amount"`
 	InvoiceID    uint              `json:"invoice_id"`
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
 	Expiration   uint64            `json:"timeout"`
+	RefoundID    uint              `json:"refound_id"`
+	Description  string            `json:"memo"`
 }
 
 var (
@@ -78,8 +81,10 @@ func (c *Controller) createInvoice(_ *gin.Context) {
 func (c *Controller) payInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para pagar un invoice")
 
+	//Obtengo los parametros de la llamada
+
 	paymentRequest := ctx.Param("paymentRequest")
-	/* Por ahora no se le da uso a amount
+	/* El amount lo saco de paymentRequest
 	amount, err := strconv.ParseUint(ctx.Param("amount"), 10, 64)
 	if err != nil {
 		log.Println("Error al leer la cantidad del pago:", err)
@@ -93,7 +98,8 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 		return
 	}
 
-	//Consulto la transaccion
+	//Consulto la transaccion que se quiere devolver
+
 	var transaction Transaction
 
 	if err := c.Database.First(&transaction, transactionId).Error; err != nil {
@@ -107,26 +113,36 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 		return
 	}
 
-	/* No util si vamos a tener una variable uriVenta
-	//Obtengo la URI de la tienda desde el archivo
-	uri, err := ioutil.ReadFile("uriVenta)
-	if err != nil {
-		log.Println("Error al leer el archivo uriVenta:", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error interno"})
+	if transaction.Status != Paid { //Compruebo que la transaccion fue pagada
+		log.Println("No se puede devolver una transaccion que no ha sido pagada")
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "La transaccion no existe"})
 		return
-	}*/
+	}
 
-	//Realizar el pago
-	err = PagarInvoice(uriVenta, paymentRequest)
+	//Realizar el pago (se comprueba que paymentRequest pida el mismo amount
+
+	err = PagarInvoice(uriVenta, paymentRequest, transaction.Amount)
 	if err != nil {
 		log.Println("Error al pagar el invoice:", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al pagar el invoice"})
 		return
 	}
-	transaction.Status = Paid
 
 	//Actualizo el estado de la transaccion
+
+	transaction.Status = Refounded
 	c.Database.Save(&transaction)
+
+	//Guardo la nueva transacción en la BD
+
+	var nuevaTransaccion Transaction
+	nuevaTransaccion.Status = Paid
+	nuevaTransaccion.RefoundID = transaction.ID
+	nuevaTransaccion.Description = "Devolución: " + transaction.Description
+	nuevaTransaccion.CreationDate = time.Now()
+	nuevaTransaccion.Amount = transaction.Amount
+
+	c.Database.Save(&nuevaTransaccion)
 
 	ctx.JSON(http.StatusOK, transaction)
 }
