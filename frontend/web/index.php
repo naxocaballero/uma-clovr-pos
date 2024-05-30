@@ -2,6 +2,9 @@
 <?php
 require("lib/functions.php");
 ?>
+<?php
+require("lib/functions.php");
+?>
 <html lang="es">
 
 <head>
@@ -22,14 +25,37 @@ require("lib/functions.php");
     <link rel="shortcut icon" href="/img/favicon/favicon.ico" />
 
     <meta name="description" content="Punto de venta Bitcoin Lightning Network de Clovr Labs." />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png" />
+    <link rel="mask-icon" href="/apple-touch-icon.png" color="#ffffff" />
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico" />
+
+    <meta name="description" content="Punto de venta Bitcoin Lightning Network de Clovr Labs." />
 
     <!-- Viewport and Apple stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-title" content="UMA Clovr PoS">
+    <meta name="apple-mobile-web-app-title" content="UMA Clovr PoS">
 
     <!-- Archivo de manifiesto para PWA -->
+    <!-- Archivo de manifiesto para PWA -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- Metaetiquetas específicas para iOS -->
+    <link rel="apple-touch-icon" href="https://192.168.88.135/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://192.168.88.135/img/favicon/ios/120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://192.168.88.135/img/favicon/ios/144.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://192.168.88.135/img/favicon/ios/167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://192.168.88.135/img/favicon/ios/180.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="https://192.168.88.135/img/favicon/ios/192.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="https://192.168.88.135/img/favicon/ios/256.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="https://192.168.88.135/img/favicon/ios/512.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8cc63f">
+
+
 
     <!-- Metaetiquetas específicas para iOS -->
     <link rel="apple-touch-icon" href="https://192.168.88.135/apple-touch-icon.png">
@@ -52,6 +78,7 @@ require("lib/functions.php");
 </head>
 
 <body>
+
 
     <header>
         <div class="header-container">
@@ -84,11 +111,14 @@ require("lib/functions.php");
     </main>
 
 
+
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 <em class="logo"></em> <b>UMA Clovr PoS</b>. Todos los derechos reservados.</p>
         </div>
         <div class="footer-menu">
+            <div class="borde-footer-menu"></div>
+            <div class="fondo-footer-menu"></div>
             <div class="borde-footer-menu"></div>
             <div class="fondo-footer-menu"></div>
             <div class="borde-footer-menu"></div>
@@ -123,6 +153,7 @@ require("lib/functions.php");
                             ?>
                         </em><span>Transacciones</span></a>
                     </li>
+                    <li class="" data-template="ajustes"><em class="ajustes">
                     <li class="" data-template="ajustes"><em class="ajustes">
                             <?php
                             $svgFile = 'img/icons/gear-solid.svg';

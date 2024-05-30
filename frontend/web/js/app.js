@@ -4,8 +4,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	let footer = document.querySelector("footer .fondo-footer-menu");
 
 	if (isWebClip()) {
+	if (isWebClip()) {
 		let footerMenu = document.querySelector("footer");
 		if (footerMenu) {
+			footerMenu.style.minHeight = "10vh";
 			footerMenu.style.minHeight = "10vh";
 		} else {
 			console.log("El elemento footer .footer-menu no se encontró.");
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		let diferencia = mainHeight - scrollPosition - containerHeight;
 
+		//console.log(diferencia);
 		//console.log(diferencia);
 
 		if (diferencia > 10 && diferencia <= 30) {

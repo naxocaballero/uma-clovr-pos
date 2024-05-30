@@ -1,6 +1,8 @@
 <section id="transacciones" class="">
     <h2>Buscar</h2>
     <input type="text" name="buscar" class="buscar" placeholder="Buscar transacción ..." />
+    <h2>Buscar</h2>
+    <input type="text" name="buscar" class="buscar" placeholder="Buscar transacción ..." />
 
     <div class="container" id="transactions-container">
 

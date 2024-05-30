@@ -8,6 +8,7 @@ footer {
     bottom: 0;
     width: 100%;
     min-height: 8vh;
+    min-height: 8vh;
     -ms-touch-action: none;
         touch-action: none;
   }
@@ -66,6 +67,7 @@ footer .footer-menu .fondo-footer-menu {
   bottom: 0;
   width: 100%;
   border-top: 0.9px solid rgba(0, 0, 0, 0.2);
+  opacity: 0;
   opacity: 0;
 }
 footer .footer-menu nav {
