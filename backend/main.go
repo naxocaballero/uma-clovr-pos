@@ -4,7 +4,6 @@ import (
 	"encoding/hex"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -29,16 +28,16 @@ const (
 
 type Transaction struct {
 	gorm.Model
-	Amount       uint64            `json:"amount"`
-	InvoiceID    string            `json:"invoice_id"`
-	CreationDate time.Time         `json:"creation_date"`
-	Status       TransactionStatus `json:"status"`
-	Expiration   uint64            `json:"expiration"`
+	Amount         uint64            `json:"amount"`
+	RHash          string            `json:"r_hash"`
+	PaymentRequest string            `json:"payment_request"`
+	CreationDate   time.Time         `json:"creation_date"`
+	Status         TransactionStatus `json:"status"`
+	Expiration     uint64            `json:"expiration"`
 }
 
 var (
 	dbConnectionString = "host=localhost user=admin password=adminpw dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Berlin"
-	uriVenta           = "TODO"
 	nodoVenta          lnrpc.LightningClient
 	conn               *grpc.ClientConn
 )
@@ -47,9 +46,17 @@ func main() {
 	controller := Controller{}
 	controller.initDatabase()
 
+	// Inicializar nodoVenta
+	var err error
+	nodoVenta, conn, err = Conectar(uriVenta)
+	if err != nil {
+		log.Fatalf("Error %v creando el cliente del punto de venta", err)
+	}
+	defer conn.Close()
+
 	router := gin.Default()
 
-	//Setup CORS
+	// Setup CORS
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))
@@ -58,18 +65,16 @@ func main() {
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
 
-	err := router.Run("0.0.0.0:8080")
-	if err != nil {
-		return
-	}
+	go func() {
+		if err := router.Run("0.0.0.0:8080"); err != nil {
+			log.Fatalf("Error iniciando el servidor: %v", err)
+		}
+	}()
 
-	// Crear los clientes lnd
-	// Para el punto de venta
-	nodoVenta, conn, err = Conectar(uriVenta)
-	if err != nil {
-		log.Fatalf("Error %v creando el cliente del punto de venta", err)
-	}
-	defer conn.Close()
+	// AQUI VA EL CODIGO PARA COMPROBAR EL ESTADO DE LAS TRANSACCIONES
+
+	// Bloquear el main thread
+	select {}
 }
 
 func (c *Controller) initDatabase() {
@@ -88,33 +93,34 @@ func (c *Controller) initDatabase() {
 func (c *Controller) createInvoice(ctx *gin.Context) {
 	// Recibimos el valor de la invoice por un parámetro
 	// Opcionalmente, también es posible que recibamos el temporizador de la invoice a crear
-	var amount = ctx.Param("amount")
-	var expiration = ctx.Param("timeout")
+
+	// Definimos una estructura para recibir los parámetros JSON
+	type CreateInvoiceRequest struct {
+		Amount     uint64 `json:"amount"`
+		Expiration uint64 `json:"expiration,omitempty"`
+	}
+
+	var req CreateInvoiceRequest
+	if err := ctx.BindJSON(&req); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	log.Println("Amount: ", req.Amount)
 
 	// Creamos un objeto de la clase transaction inicialmente vacío
 	var newTransaction Transaction
 
-	if expiration == "" {
+	if req.Expiration == 0 {
 		// No se ha recibido ningún timeout, por lo que utilizamos el valor por defecto
 		newTransaction.Expiration = 900
 	} else {
-		// Convertimos la cadena recibida en un float64
-		timeout, err := strconv.ParseUint(expiration, 10, 64)
-		if err != nil {
-			log.Println("Error convirtiendo el tiempo a uint64:", err)
-			return
-		}
 		// Lo asignamos
-		newTransaction.Expiration = timeout
+		newTransaction.Expiration = req.Expiration
 	}
 
-	// Repetimos la conversión para el parámetro amount
-	amountInt, err := strconv.ParseUint(amount, 10, 64)
-	if err != nil {
-		log.Println("Error convirtiendo la cantidad a float:", err)
-		return
-	}
-	newTransaction.Amount = amountInt
+	newTransaction.Amount = req.Amount
 
 	// Asignamos el tiempo de creación actual y estado pendiente de la transacción
 	newTransaction.Status = Pending
@@ -122,17 +128,23 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 
 	// Creamos la invoice utilizando el cliente
 	invoice := &lnrpc.Invoice{
-		Value: int64(amountInt),
+		Value: int64(req.Amount),
 	}
+
+	log.Println(newTransaction)
 
 	resp, err := nodoVenta.AddInvoice(ctx, invoice)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, nil)
 	}
-	newTransaction.InvoiceID = hex.EncodeToString(resp.RHash)
+	newTransaction.RHash = hex.EncodeToString(resp.RHash)
+	newTransaction.PaymentRequest = resp.PaymentRequest
 
 	c.Database.Create(&newTransaction)
-	ctx.JSON(http.StatusCreated, newTransaction)
+
+	respuesta := map[string]interface{}{"r_hash": newTransaction.RHash, "id": newTransaction.ID, "payment_request": newTransaction.PaymentRequest, "expiration": newTransaction.Expiration}
+
+	ctx.JSON(http.StatusCreated, respuesta)
 }
 
 func (c *Controller) payInvoice(ctx *gin.Context) {
@@ -145,7 +157,7 @@ func (c *Controller) getTransactions(ctx *gin.Context) {
 
 	var transactions []Transaction
 
-	if result := c.Database.Find(&transactions).Where("status == PAGADO"); result.Error != nil {
+	if result := c.Database.Where("status = ?", Paid).Find(&transactions); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return
