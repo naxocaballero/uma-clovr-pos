@@ -65,16 +65,10 @@ func main() {
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
 
-	go func() {
-		if err := router.Run("0.0.0.0:8080"); err != nil {
-			log.Fatalf("Error iniciando el servidor: %v", err)
-		}
-	}()
-
-	// AQUI VA EL CODIGO PARA COMPROBAR EL ESTADO DE LAS TRANSACCIONES
-
-	// Bloquear el main thread
-	select {}
+	err = router.Run("0.0.0.0:8080")
+	if err != nil {
+		return
+	}
 }
 
 func (c *Controller) initDatabase() {
