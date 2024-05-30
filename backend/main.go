@@ -53,6 +53,7 @@ func main() {
 	router.POST("/invoices", controller.createInvoice)
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
+	router.GET("/list", controller.getList)
 
 	err := router.Run("0.0.0.0:8080")
 	if err != nil {
@@ -85,8 +86,32 @@ func (c *Controller) getTransactions(ctx *gin.Context) {
 	log.Println("Solicitud para obtener todas las transacciones")
 
 	var transactions []Transaction
-
 	if result := c.Database.Where("status = ?", Paid).Find(&transactions); result.Error != nil {
+		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
+		return
+	}
+
+	// Devuelve la lista de transacciones como una respuesta JSON
+	ctx.IndentedJSON(http.StatusOK, transactions)
+}
+
+func (c *Controller) getList(ctx *gin.Context) {
+	type transactionsListRequest struct {
+		ID              int `json:"id"`
+		NumeroRegistros int `json:"numero_registros"`
+	}
+
+	var data transactionsListRequest
+	if err := ctx.BindJSON(&data); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	// Lista de transacciones a devolver que cumplan los requisitos
+	var transactions []Transaction
+	if result := c.Database.Where("id >= ?", data.ID).Limit(data.NumeroRegistros).Find(&transactions); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return
