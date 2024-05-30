@@ -225,7 +225,7 @@ function setupConfirmPayButton(button, actions, item) {
         console.log("Parámetros enviados:", invoiceData)
 
         try {
-            const response = await fetch('https://localhost:8080/pay', {
+            const response = await fetch('https://192.168.88.135:8080/pay', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
