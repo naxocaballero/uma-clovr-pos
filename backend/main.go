@@ -53,6 +53,7 @@ func main() {
 	router.POST("/invoices", controller.createInvoice)
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
+	router.GET("/transaction", controller.getTransaction)
 	router.GET("/list", controller.getList)
 
 	err := router.Run("0.0.0.0:8080")
@@ -94,6 +95,31 @@ func (c *Controller) getTransactions(ctx *gin.Context) {
 
 	// Devuelve la lista de transacciones como una respuesta JSON
 	ctx.IndentedJSON(http.StatusOK, transactions)
+}
+
+func (c *Controller) getTransaction(ctx *gin.Context) {
+	log.Println("Solicitud para la transacción indicada")
+
+	type transactionRequest struct {
+		ID int `json:"id"`
+	}
+
+	var data transactionRequest
+	if err := ctx.BindJSON(&data); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	var transaction Transaction
+	if result := c.Database.Where("id = ?", data.ID).First(&transaction); result.Error != nil {
+		log.Println("Error al obtener la transacción de la base de datos:", result.Error)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacción"})
+		return
+	}
+
+	// Devuelve la transacción como una respuesta JSON
+	ctx.IndentedJSON(http.StatusOK, transaction)
 }
 
 func (c *Controller) getList(ctx *gin.Context) {
