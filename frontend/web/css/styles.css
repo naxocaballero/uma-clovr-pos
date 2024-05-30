@@ -45,7 +45,11 @@ body {
   overflow: hidden;
   -ms-touch-action: none;
       touch-action: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: auto;
 }
+
 /* Ocultar scrollbar en WebKit (Safari) */
 ::-webkit-scrollbar {
   display: none;

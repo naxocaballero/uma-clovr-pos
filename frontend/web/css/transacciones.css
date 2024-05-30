@@ -282,11 +282,10 @@
   border-radius: 12px;
   border: none;
   color: white;
-  font-size: 1em;
-  font-weight: bold;
-  line-height: 1.5em;
+  font-size: clamp(1em, 2.1vh, 2em);
+  padding: clamp(0.5em, 1.8vh, 2em);
+  font-weight: 600;
   margin: 1rem 0 0.5rem 0;
-  padding: 0.6em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -354,12 +353,11 @@
   border-radius: 12px;
   border: none;
   color: white;
-  font-size: 1em;
-  font-weight: bold;
-  line-height: 1.5em;
+  font-size: clamp(1em, 2.1vh, 2em);
+  padding: clamp(0.5em, 1.8vh, 2em);
+  font-weight: 600;
   width: 90%;
   margin: 1rem 0 0.5rem 0;
-  padding: 0.5em;
 }
 #transacciones .container .item .item-actions .action-refund .capture-container .video {
   width: 30vh;

@@ -9,9 +9,9 @@ require("lib/functions.php");
 
     <!-- Enlace a los archivos CSS -->
     <link rel="stylesheet" type="text/css" href="css/styles.css?<?php echo rand(0,999);?>" />
+    <link rel="stylesheet" type="text/css" href="css/footer.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/header.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/main.css?<?php echo rand(0,999);?>" />
-    <link rel="stylesheet" type="text/css" href="css/footer.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/invoice.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/transacciones.css?<?php echo rand(0,999);?>" />
     <link rel="stylesheet" type="text/css" href="css/ajustes.css?<?php echo rand(0,999);?>" />
@@ -68,16 +68,7 @@ require("lib/functions.php");
             </nav>
         </div>
     </header>
-    <main class="">
-        <?php
-        if(file_exists("pages/invoice.php"))
-        require("pages/invoice.php");
-        if(file_exists("pages/transacciones.php"))
-        require("pages/transacciones.php");
-        if(file_exists("pages/ajustes.php"))
-        require("pages/ajustes.php");
-        ?>
-    </main>
+
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 <em class="logo"></em> <b>UMA Clovr PoS</b>. Todos los derechos reservados.</p>
@@ -89,7 +80,7 @@ require("lib/functions.php");
             <div class="fondo-footer-menu"></div>
             <nav class="menu" id="footer-menu">
                 <ul>
-                    <li data-template="invoice">
+                    <li class="active" data-template="invoice">
                         <!-- class="active" -->
                         <em class="operar">
                             <?php
@@ -104,7 +95,7 @@ require("lib/functions.php");
                         </em>
                         <span>Crear Invoice</span></a>
                     </li>
-                    <li class="active" data-template="transacciones">
+                    <li class="" data-template="transacciones">
                         <em class="transacciones">
                             <?php
                             $svgFile = 'img/icons/list-check-solid.svg';
@@ -133,6 +124,19 @@ require("lib/functions.php");
         </div>
 
     </footer>
+
+
+    <main class="">
+        <?php
+        if(file_exists("pages/invoice.php"))
+        require("pages/invoice.php");
+        if(file_exists("pages/transacciones.php"))
+        require("pages/transacciones.php");
+        if(file_exists("pages/ajustes.php"))
+        require("pages/ajustes.php");
+        ?>
+    </main>
+    
 
     <script src="js/functions.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/invoice.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
