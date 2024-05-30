@@ -20,4 +20,5 @@
 			<button class="generate-button">Generar invoice</button>
 		</div>
 	</div>
+	<div id="result" style="width: 90%; font-family: monospace;"></div>
 </section> 

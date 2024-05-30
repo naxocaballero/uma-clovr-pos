@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(invoiceData);
         
 
-        fetch("https://localhost:8080/invoices", {
+        fetch("https://192.168.88.135:8080/invoices", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -59,6 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((response) => response.json())
         .then((data) => {
             console.log("Success:", data);
+            const result = document.getElementById('result');
+
+            result.innerText = JSON.stringify(data, null, 2);
+            mainScrollable();
             /*
             Debo recibir los siguientes datos:
             1. Payment Request para generar el QR y para mostrarlo.

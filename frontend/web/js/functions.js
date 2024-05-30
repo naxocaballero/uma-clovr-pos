@@ -260,7 +260,7 @@ function getTransactionsAPI(url) {
 
 				// Compruebo el tamaño del nuevo main actualizado y decido si activar scroll o no
 				mainScrollable();
-			}, 1);
+			}, 0);
 		})
 		.catch((error) => console.error("Error al cargar los datos:", error));
 }
@@ -341,4 +341,39 @@ function generateRandomTransactions(transactions) {
 			`;
 	});
 	return html;
+}
+
+
+function setupMenuListeners() {
+	const menuItems = document.querySelectorAll(".menu li");
+	const sections = document.querySelectorAll("main section");
+
+	menuItems.forEach((item) => {
+		item.addEventListener("click", function () {
+			const template = this.getAttribute("data-template");
+			const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
+			const transactions = document.querySelector("#transacciones .container");
+
+			transactions.innerHTML = "";
+
+			// Asegúrate de que todos los sections no estén activos
+			sections.forEach((i) => i.classList.remove("active"));
+
+			// Activa la sección seleccionada
+			if (contentSection) {
+				contentSection.classList.add("active");
+
+				if (template === "transacciones") {
+					getTransactionsAPI("ajax/generateRandomTransactions.php");
+				}
+
+				mainScrollable();
+			}
+
+			menuItems.forEach((i) => i.classList.remove("active"));
+			this.classList.add("active");
+
+			// En cada llamada compruebo si el contenido requiere scroll y actuo en consecuencia.
+		});
+	});
 }

@@ -147,9 +147,6 @@ require("lib/functions.php");
     <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     
 
-
-
-
 </body>
 
 </html>
