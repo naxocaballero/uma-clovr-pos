@@ -6,12 +6,13 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 	"log"
 	"net/url"
 	"strings"
+
+	"github.com/lightningnetwork/lnd/lnrpc"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 func Conectar(uri string) (lnrpc.LightningClient, *grpc.ClientConn, error) {
@@ -88,7 +89,7 @@ func parse(uri string) (LndConnectParams, error) {
 	}
 
 	if parsed.Scheme != "lndconnect" {
-		return LndConnectParams{}, fmt.Errorf("invalid scheme: %s", parsed.Scheme)
+		return LndConnectParams{}, fmt.Errorf("Esquema inválido: %s", parsed.Scheme)
 	}
 
 	host := parsed.Hostname()
@@ -98,13 +99,18 @@ func parse(uri string) (LndConnectParams, error) {
 	}
 
 	cert := parsed.Query().Get("cert")
-
 	macaroon := parsed.Query().Get("macaroon")
 	decodedMacaroon, err := base64.RawURLEncoding.DecodeString(macaroon)
 	if err != nil {
-		return LndConnectParams{}, fmt.Errorf("error decoding macaroon: %w", err)
+		return LndConnectParams{}, fmt.Errorf("Error decodificando el macaroon: %v", err)
 	}
 	macaroon = hex.EncodeToString(decodedMacaroon)
+
+	decodedCert, err := base64.RawURLEncoding.DecodeString(cert)
+	if err != nil {
+		return LndConnectParams{}, fmt.Errorf("Error decodificando el certificado: %v", err)
+	}
+	cert = hex.EncodeToString(decodedCert)
 
 	return LndConnectParams{
 		Host:     host,

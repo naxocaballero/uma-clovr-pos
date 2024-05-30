@@ -13,9 +13,9 @@ header {
   -ms-touch-action: none;
       touch-action: none;
   padding-top: env(safe-area-inset-top);
-  background-color: rgba(249, 249, 251, 0.7);
-  -webkit-backdrop-filter: blur(30px);
-          backdrop-filter: blur(30px);
+  background-color: rgba(249, 249, 251, 0.8);
+  -webkit-backdrop-filter: blur(15px);
+          backdrop-filter: blur(15px);
   color: #707070;
   opacity: 0; /* Estado inicial */
   border-bottom: 0.9px solid rgba(0, 0, 0, 0.2);
