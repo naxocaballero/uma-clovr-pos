@@ -18,10 +18,10 @@ type Controller struct {
 type TransactionStatus string
 
 const (
-	Pending   TransactionStatus = "PENDIENTE"
-	Paid      TransactionStatus = "PAGADO"
-	Expired   TransactionStatus = "EXPIRADO"
-	Refounded TransactionStatus = "DEVUELTA"
+	Pending  TransactionStatus = "PENDIENTE"
+	Paid     TransactionStatus = "PAGADO"
+	Expired  TransactionStatus = "EXPIRADO"
+	Refunded TransactionStatus = "DEVUELTA"
 )
 
 type Transaction struct {
@@ -31,7 +31,7 @@ type Transaction struct {
 	CreationDate time.Time         `json:"creation_date"`
 	Status       TransactionStatus `json:"status"`
 	Expiration   uint64            `json:"timeout"`
-	RefoundID    uint              `json:"refound_id"`
+	RefundId     uint              `json:"refund_id"`
 	Description  string            `json:"memo"`
 }
 
@@ -111,7 +111,7 @@ func (c *Controller) getList(ctx *gin.Context) {
 
 	// Lista de transacciones a devolver que cumplan los requisitos
 	var transactions []Transaction
-	if result := c.Database.Where("id >= ?", data.ID).Limit(data.NumeroRegistros).Find(&transactions); result.Error != nil {
+	if result := c.Database.Where("id >= ?", data.ID).Order("id ASC").Limit(data.NumeroRegistros).Find(&transactions); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return
