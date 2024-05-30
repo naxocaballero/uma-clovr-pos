@@ -168,6 +168,7 @@
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
+  will-change: height, opacity;
 }
 #transacciones .container .item .item-actions.expanded {
   height: auto;
@@ -180,15 +181,18 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
-#transacciones .container .item .item-actions .action-info.disabled,
-#transacciones .container .item .item-actions .action-refund.disabled {
-  color: #cccccc;
-}
-#transacciones .container .item .item-actions .action-refund button {
+#transacciones .container .item .item-actions .action-refund button.cancel-refund {
   background-color: #c31c1c;
   border-radius: 10px;
   border: none;
@@ -198,8 +202,142 @@
   width: 90%;
   margin: 1rem 0 0.5rem 0;
   padding: 0.5em;
-  -ms-touch-action: none;
-      touch-action: none;
+  display: none;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 90%;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1.5em;
+  margin: 1rem 0 0.5rem 0;
+  padding: 0.6em;
+  width: 5rem;
+  height: 5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options button em {
+  background-size: cover;
+  display: block;
+  height: 75%;
+  aspect-ratio: 1/1;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options button.paste-pr {
+  background-color: #e7a415;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options button.paste-pr em {
+  background: url("/img/icons/paste-regular.svg") center no-repeat;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options button.qr-pr {
+  background-color: #c31c1c;
+}
+#transacciones .container .item .item-actions .action-refund .refund-options button.qr-pr em {
+  background: url("/img/icons/qrcode-solid.svg") center no-repeat;
+}
+#transacciones .container .item .item-actions .action-refund .action-buttons {
+  display: none;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 90%;
+  gap: 1rem;
+}
+#transacciones .container .item .item-actions .action-refund .action-buttons button {
+  border-radius: 12px;
+  border: none;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1.5em;
+  margin: 1rem 0 0.5rem 0;
+  padding: 0.6em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  min-width: 50%;
+}
+#transacciones .container .item .item-actions .action-refund .action-buttons button.confirm-pay {
+  background-color: #0081fc;
+}
+#transacciones .container .item .item-actions .action-refund .action-buttons button.cancel-pay {
+  background-color: #c31c1c;
+}
+#transacciones .container .item .item-actions .action-refund .payment-request {
+  font-size: 1.2em;
+  color: #0081fc;
+  width: 90%;
+  margin: 0.5rem 0;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-weight: bold;
+}
+#transacciones .container .item .item-actions .action-refund .payment-request span {
+  color: #777777;
+  margin: 0.5rem 0;
+  font-size: 0.8em;
+  text-align: center;
+  width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
+  font-weight: normal;
+}
+#transacciones .container .item .item-actions .action-refund .capture-container {
+  display: none;
+  height: 30vh;
+  width: 30vh;
+  background-color: black;
+  margin: 0.5rem;
+}
+#transacciones .container .item .item-actions .action-refund .video {
+  width: 100%;
+  height: auto;
+  display: none;
 }
 #transacciones .spinner {
   display: none;

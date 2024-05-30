@@ -47,6 +47,8 @@ require("lib/functions.php");
 
 
     <title>UMA Clovr PoS</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner@1.4.1/qr-scanner.umd.min.js"></script>
 </head>
 
 <body>
@@ -66,6 +68,10 @@ require("lib/functions.php");
             </nav>
         </div>
     </header>
+    <div id="captura">
+        
+    </div>
+    
     <main class="">
         <?php
         if(file_exists("pages/invoice.php"))
@@ -89,7 +95,7 @@ require("lib/functions.php");
             <div class="fondo-footer-menu"></div>
             <nav class="menu" id="footer-menu">
                 <ul>
-                    <li class="active" data-template="invoice">
+                    <li data-template="invoice">
                         <!-- class="active" -->
                         <em class="operar">
                             <?php
@@ -104,7 +110,7 @@ require("lib/functions.php");
                         </em>
                         <span>Crear Invoice</span></a>
                     </li>
-                    <li class="" data-template="transacciones">
+                    <li class="active" data-template="transacciones">
                         <em class="transacciones">
                             <?php
                             $svgFile = 'img/icons/list-check-solid.svg';
@@ -139,6 +145,8 @@ require("lib/functions.php");
     <script src="js/serviceWorker.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/imagePWA.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
+    
+
 
 
 

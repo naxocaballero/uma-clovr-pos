@@ -22,212 +22,311 @@
             </g>
         </svg>
     </div>
-
-
+    <canvas id="canvas" style="display: none;"></canvas>
 </section>
 
 <script>
-function generateRandomTransactions(transactions) {
-    let html = '';
-    transactions.forEach(transaction => {
-        const {
-            typeKey,
-            status,
-            typeName,
-            idTx,
-            title,
-            date,
-            amount
-        } = transaction;
-
-        let actions = '';
-        switch (status) {
-            case "confirmed":
-                if (typeKey === "payment") {
-                    actions += '<div class="action-info"></div><div class="action-refund"><button>Realizar devolución</button></div>';
-                } else if (typeKey === "refund") {
-                    actions += '<div class="action-info"></div><div class="action-refund"></div>';
-                }
-                break;
-            case "pending":
-                if (typeKey === "payment") {
-                    actions += '<div class="action-info"></div><div class="action-refund disabled"><button disabled>Realizar devolución</button></div>';
-                } else if (typeKey === "refund") {
-                    actions += '<div class="action-info"></div><div class="action-refund"></div>';
-                }
-                break;
-            case "expired":
-                actions += '<div class="action-info"></div><div class="action-refund"></div>';
-                break;
-            default:
-                break;
-        }
-
-        html += `
-				<div class="item ${typeKey} ${status}">
-					<div class="item-container">
-						<div class="item-status"></div>
-						<div class="item-info">
-							<h3>${typeName} <span>${idTx}</span></h3>
-							<span class="item-memo">${title}</span>
-							<span class="item-date">${new Date(date * 1000).toLocaleDateString()}</span>
-						</div>
-						<div class="item-amount">${amount} €</div>
-					</div>
-					<div class="item-actions">
-						${actions}
-					</div>
-				</div>
-			`;
-    });
-    return html;
+function toggleActions(item, items) {
+    const actions = item.parentElement.querySelector('.item-actions');
+    if (actions.classList.contains('expanded')) {
+        collapseActions(actions);
+        item.parentElement.classList.remove("active");
+    } else {
+        expandActions(item, items, actions);
+    }
 }
 
-function llamada(url) {
-    const spinner = document.getElementById('spinner');
-    const container = document.getElementById('transactions-container');
+function collapseActions(actions) {
+    actions.style.transition = 'height 0.2s ease-in-out, opacity 0.1s ease-in-out';
+    actions.style.height = '0';
+    actions.style.opacity = '0';
+    actions.classList.remove('expanded');
+}
 
-    container.style.transition = 'none';
-    container.style.opacity = 0;
+function expandActions(item, items, actions) {
+    items.forEach(i => {
+        if (i.parentElement !== item.parentElement) {
+            collapseActions(i.parentElement.querySelector('.item-actions'));
+            i.parentElement.classList.remove("active");
+        }
+    });
 
-    // Mostrar el spinner
-    spinner.style.display = 'block';
+    item.parentElement.classList.add("active");
+    actions.classList.add('expanded');
 
-    // Llamada AJAX para obtener los datos desde PHP
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            const newContent = generateRandomTransactions(data);
+    const height = getElementDimensions(actions).scrollHeight + 'px';
+    actions.style.height = '0';
+    actions.style.opacity = '0';
 
-            // Esperar el tiempo restante antes de actualizar el contenido y ocultar el spinner
-            setTimeout(() => {
-                // Ocultar el spinner
-                spinner.style.display = 'none';
+    requestAnimationFrame(() => {
+        actions.style.transition = 'height 0.2s ease-in-out, opacity 0.2s ease-in-out 0.1s';
+        actions.style.height = height;
+        actions.style.opacity = '1';
+        item.parentElement.style.transition = "box-shadow 0.3s";
+        actions.style.transform = 'translate3d(0, 0, 0)';
+    });
 
-                // Actualizar el contenido del contenedor con fade-in
-                container.style.opacity = 0;
-                container.innerHTML = newContent;
-                container.style.transition = 'opacity 1s';
-                container.style.opacity = 1;
+    scrollToElement(item);
 
-                // Añadir eventos a los nuevos elementos del DOM
-                addEventListeners();
+    const refundQR = item.parentElement.querySelector("button.qr-pr");
+    if (refundQR) {
+        setupRefundButtonQR(refundQR, actions, item);
+    }
 
-                // Compruebo el tamaño del nuevo main actualizado y decido si activar scroll o no
-                mainScrollable();
-            }, 2000);
-        })
-        .catch(error => console.error('Error al cargar los datos:', error));
+    const refundPaste = item.parentElement.querySelector("button.paste-pr");
+    if (refundPaste) {
+        setupRefundButtonPaste(refundPaste, actions, item);
+    }
+
+    const cancelPay = item.parentElement.querySelector("button.cancel-pay");
+    if (cancelPay) {
+        setupCancelPayButton(cancelPay, actions, item);
+    }
+
+    const confirmPay = item.parentElement.querySelector("button.confirm-pay");
+    if (confirmPay) {
+        setupConfirmPayButton(confirmPay, actions, item);
+    }
+}
+
+function setupRefundButtonQR(button, actions, item) {
+    async function handleRefundButtonClick() {
+        console.log("Activo cámara de fotos para escanear un QR");
+
+        const buttons = button.parentElement;
+        const captureContainer = button.closest('.action-refund').querySelector(".capture-container");
+        const captureDimension = getElementDimensions(captureContainer);
+
+        buttons.style.display = "none";
+
+        try {
+            await startCamera(button.closest('.action-refund').querySelector("video"), captureContainer, actions, item);
+        } catch (err) {
+            console.error('Error al acceder a la cámara: ', err);
+            buttons.style.display = "block";
+        }
+    }
+
+    button.removeEventListener('click', handleRefundButtonClick);
+    button.addEventListener('click', handleRefundButtonClick);
+}
+
+function setupRefundButtonPaste(button, actions, item) {
+    async function handleRefundButtonClick() {
+        console.log("Pego el Payment Request en el campo adecuado");
+
+        try {
+            const text = await navigator.clipboard.readText();
+
+            const buttons = button.parentElement;
+            const captureContainer = button.closest('.action-refund').querySelector(".capture-container");
+            const captureDimension = getElementDimensions(captureContainer);
+
+            buttons.style.display = "none";
+
+            const paymentRequest = button.closest('.action-refund').querySelector('.payment-request');
+            paymentRequest.querySelector('span').innerText = text;
+            paymentRequest.style.display = "flex";
+
+            const actionButtons = button.closest('.action-refund').querySelector('.action-buttons');
+            actionButtons.style.display = "flex";
+
+            const items = document.querySelectorAll('#transactions-container .item .item-container');
+            expandActions(item, items, actions)
+        } catch (err) {
+            console.error('Error al acceder al clipboard: ', err);
+            buttons.style.display = "block";
+        }
+    }
+
+    button.removeEventListener('click', handleRefundButtonClick);
+    button.addEventListener('click', handleRefundButtonClick);
+}
+
+function setupCancelPayButton(button, actions, item) {
+    function handleCancelPayClick() {
+        const refundOptions = button.closest('.action-refund').querySelector('.refund-options');
+        const paymentRequest = button.closest('.action-refund').querySelector('.payment-request');
+        const actionButtons = button.closest('.action-refund').querySelector('.action-buttons');
+
+        paymentRequest.style.display = "none";
+        actionButtons.style.display = "none";
+
+        setTimeout(() => {
+            refundOptions.style.display = "flex";
+        }, 500);
+
+        collapseActions(actions);
+        item.parentElement.classList.remove("active");
+    }
+
+    button.removeEventListener('click', handleCancelPayClick);
+    button.addEventListener('click', handleCancelPayClick);
+}
+
+function setupConfirmPayButton(button, actions, item) {
+    async function handleConfirmPayClick() {
+        const paymentRequest = item.parentElement.querySelector('.payment-request span').innerText;
+        const itemId = item.parentElement.querySelector('.item-info h3 span').innerText;
+
+        const invoiceData = {
+            payment_request: paymentRequest,
+            id: itemId
+        };
+
+        console.log("Parámetros enviados:", invoiceData)
+
+        try {
+            const response = await fetch('https://localhost:8080/pay', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(invoiceData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la llamada a la API');
+            }
+
+            const data = await response.json();
+            console.log('Respuesta de la API:', data);
+        } catch (err) {
+            console.error('Error al confirmar el pago:', err);
+        }
+    }
+
+    // Asegurarse de que el event listener solo se añade una vez
+    button.removeEventListener('click', handleConfirmPayClick);
+    button.addEventListener('click', handleConfirmPayClick);
+}
+
+async function startCamera(video, captureContainer, actions, item) {
+    if (document.hidden) return;
+
+    if (video.srcObject) {
+        let tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+        console.log("Detengo el stream, y paro la cámara");
+    }
+
+    try {
+        const constraints = {
+            video: {
+                aspectRatio: {
+                    ideal: 1
+                },
+                facingMode: {
+                    exact: "environment"
+                }
+            }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+
+        video.onloadedmetadata = async () => {
+            await video.play();
+        };
+
+        video.style.display = 'block';
+        captureContainer.style.display = "block";
+
+        const qrScanner = new QrScanner(video, result => {
+            handleQrScan(result, stream, qrScanner, video, captureContainer, actions, item);
+        }, {
+            returnDetailedScanResult: true
+        });
+
+        qrScanner.start();
+
+        requestAnimationFrame(() => {
+            actions.style.height = captureContainer.scrollHeight + 'px';
+        });
+
+        scrollToElement(item);
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            console.error('La operación fue abortada: ', err);
+        } else {
+            console.error('Error al iniciar la cámara: ', err);
+        }
+    }
+}
+
+function handleQrScan(result, stream, qrScanner, video, captureContainer, actions, item) {
+    try {
+        qrScanner.stop();
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+            video.srcObject = null;
+            console.log("Detengo el stream, y paro la cámara");
+        }
+
+        video.style.display = "none";
+        captureContainer.style.display = "none";
+
+        const buttonOptions = captureContainer.closest('.action-refund').querySelector('.refund-options');
+        buttonOptions.style.display = "none";
+
+        const paymentRequest = captureContainer.closest('.action-refund').querySelector('.payment-request');
+        paymentRequest.querySelector('span').innerText = result.data;
+        paymentRequest.style.display = "flex";
+
+        const actionButtons = captureContainer.closest('.action-refund').querySelector('.refund-options');
+        buttonOptions.style.display = "none";
+
+        requestAnimationFrame(() => {
+            actions.style.height = (getElementDimensions(buttonOptions).totalHeight + getElementDimensions(paymentRequest).totalHeight) + 8 + 'px';
+        });
+
+        const buttonCancel = buttonOptions.querySelector('button.cancel-refund');
+        if (buttonCancel) {
+            buttonCancel.addEventListener('click', () => {
+                resetRefundProcess(paymentRequest, buttonOptions, actions, item);
+            });
+        }
+    } catch (err) {
+        console.error('Error al manejar la captura del QR: ', err);
+    }
+}
+
+function resetRefundProcess(paymentRequest, buttonOptions, actions, item) {
+    paymentRequest.style.display = "none";
+    paymentRequest.innerHTML = "";
+    buttonOptions.style.display = "none";
+
+    requestAnimationFrame(() => {
+        actions.style.height = '0';
+    });
+
+    actions.classList.remove('expanded');
+    item.parentElement.classList.remove("active");
+
+    setTimeout(() => {
+        const buttonRefund = item.parentElement.querySelector("button.start-refund");
+        buttonRefund.style.display = "block";
+    }, 500);
+}
+
+function clearAllBlur(items) {
+    items.forEach(i => {
+        i.parentElement.classList.remove('blurred', 'active');
+        collapseActions(i.parentElement.querySelector('.item-actions'));
+    });
 }
 
 function addEventListeners() {
     const items = document.querySelectorAll('#transactions-container .item .item-container');
-    const main = document.querySelector('main'); // Suponiendo que 'main' es el contenedor principal
-    const header = document.querySelector('header');
-    const footer = document.querySelector('footer');
 
     items.forEach(item => {
-        item.addEventListener('click', () => {
-            // Restablecer cualquier elemento que haya sido expandido previamente
-            items.forEach(i => {
-                const actions = i.parentElement.querySelector('.item-actions');
-                if (i.parentElement !== item.parentElement && actions.classList.contains('expanded')) {
-                    actions.style.transition = 'height 0.2s ease-in-out, opacity 0.1s ease-in-out'; // Transición para contraer
-                    actions.style.height = '0';
-                    actions.style.opacity = '0';
-                    actions.classList.remove('expanded');
-                    i.parentElement.classList.remove("active");
-                }
-            });
-
-            // Alternar la clase 'expanded' en el elemento clicado
-            const actions = item.parentElement.querySelector('.item-actions');
-            if (actions.classList.contains('expanded')) {
-                actions.style.transition = 'height 0.2s ease-in-out, opacity 0.1s ease-in-out'; // Transición para contraer
-                actions.style.height = '0';
-                actions.style.opacity = '0';
-                actions.classList.remove('expanded');
-                item.parentElement.classList.remove("active");
-                item.parentElement.style.transition = "box-shadow 0.3s";
-            } else {
-
-                // Calcular la altura del contenido
-                actions.style.height = 'auto'; // Temporalmente establecer a auto para obtener el tamaño
-                const height = actions.scrollHeight + 'px'; // Obtener la altura del contenido
-                actions.style.height = '0'; // Restablecer a 0 para la transición
-                actions.style.opacity = '0';
-
-                // Usar requestAnimationFrame para aplicar la transición correctamente
-                requestAnimationFrame(() => {
-                    actions.style.transition = 'height 0.2s ease-in-out, opacity 0.2s ease-in-out 0.1s'; // Transición para expandir
-                    actions.classList.add('expanded');
-                    item.parentElement.classList.add("active");
-                    actions.style.height = height; // Aplicar la altura calculada
-                    actions.style.opacity = '1';
-                    item.parentElement.style.transition = "box-shadow 0.3s";
-                });
-            }
-
-            // Obtener la posición del elemento clicado en relación con la ventana y el contenedor <main>
-            const itemRect = item.parentElement.getBoundingClientRect();
-            const mainRect = main.getBoundingClientRect();
-            const headerBottom = header.getBoundingClientRect().bottom;
-            const footerTop = footer.getBoundingClientRect().top;
-
-            // Calcular la altura adicional del contenido expandido
-            const expandedHeight = actions.scrollHeight;
-
-            if (itemRect.top < headerBottom + 8 && !item.parentElement.classList.contains('active')) {
-                // Si el elemento está por encima del límite superior calculado
-                const scrollAmount = main.scrollTop + itemRect.top - (headerBottom + 8);
-                main.scrollTo({
-                    top: scrollAmount,
-                    behavior: 'smooth'
-                });
-            } else if (itemRect.bottom > footerTop - 8 && !item.parentElement.classList.contains('active')) {
-                // Calcular la cantidad de desplazamiento
-                const scrollAmount = main.scrollTop + itemRect.bottom - footerTop + expandedHeight + 8;
-                main.scrollTo({
-                    top: scrollAmount,
-                    behavior: 'smooth'
-                });
-            } else if (itemRect.bottom > footerTop - expandedHeight && !item.parentElement.classList.contains('active')) {
-                // Calcular la cantidad de desplazamiento
-                const scrollAmount = main.scrollTop + itemRect.bottom - footerTop + expandedHeight + 8;
-                main.scrollTo({
-                    top: scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-            // Si el elemento se encuentra dentro de la zona delimitada, compenso el scroll
-            // Próxima implementación de otros casos...
-
-        });
+        item.addEventListener('click', () => toggleActions(item, items));
     });
 
-    // Eliminar el desenfoque al usar el campo de búsqueda
-    document.querySelector('.buscar').addEventListener('input', () => {
-        items.forEach(i => {
-            i.parentElement.classList.remove('blurred', 'active');
-            const actions = i.parentElement.querySelector('.item-actions');
-            actions.style.transition = 'height 0.2s ease-in-out, opacity 0.1s ease-in-out'; // Transición para contraer
-            actions.style.height = '0';
-            actions.style.opacity = '0';
-            actions.classList.remove('expanded'); // Contraer todas las acciones
-        });
-    });
-
-    document.querySelector('.buscar').addEventListener('touchstart', () => {
-        items.forEach(i => {
-            i.parentElement.classList.remove('blurred', 'active');
-            const actions = i.parentElement.querySelector('.item-actions');
-            actions.style.transition = 'height 0.2s ease-in-out, opacity 0.1s ease-in-out'; // Transición para contraer
-            actions.style.height = '0';
-            actions.style.opacity = '0';
-            actions.classList.remove('expanded'); // Contraer todas las acciones
-        });
-    });
+    document.querySelector('.buscar').addEventListener('input', () => clearAllBlur(items));
+    document.querySelector('.buscar').addEventListener('touchstart', () => clearAllBlur(items));
 }
 
-//llamada('ajax/generateRandomTransactions.php');
+addEventListeners();
 </script>

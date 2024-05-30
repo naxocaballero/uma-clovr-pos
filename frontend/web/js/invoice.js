@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const key = event.key;
         if (key === "Backspace" || key === "Delete" || key.toLowerCase() === "c") {
             display.textContent = "satoshis";
-        } else if ((key >= "0" && key <= "9") || key === "." || key === ",") {
+        } else if ((key >= "0" && key <= "9") || key === "."/* || key === ","*/) {
             handleInput(key);
         } else if (key === "Enter") {
             document.querySelector(".generate-button").click();
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         displayValue = displayValue.replace(/\./g, "").replace(/,/, ".");
 
-        let amount = parseFloat(displayValue);
+        let amount = parseInt(displayValue);
 
         if (isNaN(amount) || amount <= 0) {
             console.error("El valor ingresado no es válido");
@@ -43,15 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let invoiceData = {
-            amount: amount,
-            expiration: 300, 
-            memo: "Creación de invoice", 
+            amount: amount
         };
 
         console.log(invoiceData);
-        alert("Datos enviados para creación de invoice. A la espera de respuesta.");
+        
 
-        fetch("http://localhost:8080/invoices", {
+        fetch("https://localhost:8080/invoices", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,6 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
             4. Estado de la transacción (confirmado, pendiente, cancelado, rechazado, expirado, ...) (Aunque está recién creada, y no puede estar en estado confirmado, lo que pido es que se me envíe todo el registro de la BBDD de esta transacción, para Yo presentar en el Frontend lo que me interese).
             5. En caso de "error" en la creación de factura, quiero recibir también el mensaje de error.
             */
+
+
         })
         .catch((error) => {
             console.error("Error:", error);

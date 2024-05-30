@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 				contentSection.classList.add("active");
 
 				if (template === "transacciones") {
-					llamada("ajax/generateRandomTransactions.php");
+					getTransactionsAPI("ajax/generateRandomTransactions.php");
 				}
 
 				mainScrollable();
@@ -86,5 +86,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	disableArrowKeysExceptInTextInputs();
 
 	//observeClassChange(document.querySelector("section#transacciones"));
-	llamada("ajax/generateRandomTransactions.php");
+	getTransactionsAPI("ajax/generateRandomTransactions.php");
+
+	
 });
