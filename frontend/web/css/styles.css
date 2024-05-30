@@ -23,6 +23,8 @@ html {
   overflow: hidden; /* Ocultar la barra de desplazamiento en html y body */
   width: 100vw;
   height: 100vh;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 
 body {
@@ -41,6 +43,8 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 /* Ocultar scrollbar en WebKit (Safari) */
 ::-webkit-scrollbar {

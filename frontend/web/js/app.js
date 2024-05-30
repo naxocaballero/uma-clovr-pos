@@ -44,38 +44,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		}
 	});
 
-	const menuItems = document.querySelectorAll(".menu li");
-	const sections = document.querySelectorAll("main section");
-
-	menuItems.forEach((item) => {
-		item.addEventListener("click", function () {
-			const template = this.getAttribute("data-template");
-			const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
-			const transactions = document.querySelector("#transacciones .container");
-
-			transactions.innerHTML = "";
-
-			// Asegúrate de que todos los sections no estén activos
-			sections.forEach((i) => i.classList.remove("active"));
-
-			// Activa la sección seleccionada
-			if (contentSection) {
-				contentSection.classList.add("active");
-
-				if (template === "transacciones") {
-					llamada("ajax/generateRandomTransactions.php");
-				}
-
-				mainScrollable();
-			}
-
-			menuItems.forEach((i) => i.classList.remove("active"));
-			this.classList.add("active");
-
-			// En cada llamada compruebo si el contenido requiere scroll y actuo en consecuencia.
-		});
-	});
-
 	// Activa la sección visible al establecer un valor en el menú (próposito mientras desarrollo)
 	activarSeccionDesdeInicio();
 
@@ -86,5 +54,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	disableArrowKeysExceptInTextInputs();
 
 	//observeClassChange(document.querySelector("section#transacciones"));
-	llamada("ajax/generateRandomTransactions.php");
+	getTransactionsAPI("ajax/generateRandomTransactions.php");
+
+	setupMenuListeners();
 });

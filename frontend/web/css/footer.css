@@ -57,9 +57,9 @@ footer .footer-menu {
   min-height: inherit;
 }
 footer .footer-menu .fondo-footer-menu {
-  background-color: rgba(249, 249, 251, 0.8);
-  -webkit-backdrop-filter: blur(15px);
-          backdrop-filter: blur(15px);
+  background-color: rgba(249, 249, 251, 0.7);
+  -webkit-backdrop-filter: blur(30px);
+          backdrop-filter: blur(30px);
   min-height: inherit;
   z-index: 2;
   position: absolute;
