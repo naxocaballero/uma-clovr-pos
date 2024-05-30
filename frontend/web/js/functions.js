@@ -278,8 +278,11 @@ function generateRandomTransactions(transactions) {
                                 <div class="action-info"></div>
                                     <div class="action-refund">
 										<div class="refund-options">
-                                            <button class="paste-pr"><em></em></button>
-                                            <button class="qr-pr"><em></em></button>
+											<span>Devolución</span>
+											<div class="refund-options-buttons">
+												<button class="paste-pr"><em></em></button>
+												<button class="qr-pr"><em></em></button>
+											</div>
                                         </div>
                             
                                         <div class="payment-request">
@@ -289,6 +292,7 @@ function generateRandomTransactions(transactions) {
                                         
                                         <div class="capture-container">
                                             <video class="video"></video>
+											<button class="cancel-capture">Cancelar</button>
                                         </div>
 
 										<div class="action-buttons">
@@ -296,7 +300,7 @@ function generateRandomTransactions(transactions) {
                                             <button class="cancel-pay">Cancelar</button>
                                         </div>
 
-										<button class="cancel-refund">Cancelar</button>
+										
 
                                     </div>
                                 </div>

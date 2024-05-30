@@ -90,10 +90,10 @@ function expandActions(item, items, actions) {
 }
 
 function setupRefundButtonQR(button, actions, item) {
-    async function handleRefundButtonClick() {
+    async function handleRefundButtonQRClick() {
         console.log("Activo cámara de fotos para escanear un QR");
 
-        const buttons = button.parentElement;
+        const buttons = button.closest('.refund-options');
         const captureContainer = button.closest('.action-refund').querySelector(".capture-container");
         const captureDimension = getElementDimensions(captureContainer);
 
@@ -107,21 +107,21 @@ function setupRefundButtonQR(button, actions, item) {
         }
     }
 
-    button.removeEventListener('click', handleRefundButtonClick);
-    button.addEventListener('click', handleRefundButtonClick);
+    // Asegurarse de que el event listener solo se añade una vez
+    if (!button.hasListener) {
+        button.addEventListener('click', handleRefundButtonQRClick);
+        button.hasListener = true; // Marcamos el botón para evitar agregar múltiples listeners
+    }
 }
 
 function setupRefundButtonPaste(button, actions, item) {
-    async function handleRefundButtonClick() {
+    async function handleRefundButtonPasteClick() {
         console.log("Pego el Payment Request en el campo adecuado");
+
+        const buttons = button.closest('.refund-options');
 
         try {
             const text = await navigator.clipboard.readText();
-
-            const buttons = button.parentElement;
-            const captureContainer = button.closest('.action-refund').querySelector(".capture-container");
-            const captureDimension = getElementDimensions(captureContainer);
-
             buttons.style.display = "none";
 
             const paymentRequest = button.closest('.action-refund').querySelector('.payment-request');
@@ -139,8 +139,11 @@ function setupRefundButtonPaste(button, actions, item) {
         }
     }
 
-    button.removeEventListener('click', handleRefundButtonClick);
-    button.addEventListener('click', handleRefundButtonClick);
+    // Asegurarse de que el event listener solo se añade una vez
+    if (!button.hasListener) {
+        button.addEventListener('click', handleRefundButtonPasteClick);
+        button.hasListener = true; // Marcamos el botón para evitar agregar múltiples listeners
+    }
 }
 
 function setupCancelPayButton(button, actions, item) {
@@ -152,6 +155,8 @@ function setupCancelPayButton(button, actions, item) {
         paymentRequest.style.display = "none";
         actionButtons.style.display = "none";
 
+        console.log(refundOptions);
+
         setTimeout(() => {
             refundOptions.style.display = "flex";
         }, 500);
@@ -160,8 +165,51 @@ function setupCancelPayButton(button, actions, item) {
         item.parentElement.classList.remove("active");
     }
 
-    button.removeEventListener('click', handleCancelPayClick);
-    button.addEventListener('click', handleCancelPayClick);
+    // Asegurarse de que el event listener solo se añade una vez
+    if (!button.hasListener) {
+        button.addEventListener('click', handleCancelPayClick);
+        button.hasListener = true; // Marcamos el botón para evitar agregar múltiples listeners
+    }
+}
+
+function setupCancelCaptureButton(stream, qrScanner, video, captureContainer, actions, item) {
+    function handleCancelCaptureClick() {
+
+        const refundOptions = captureContainer.closest('.action-refund').querySelector('.refund-options');
+
+        try {
+            qrScanner.stop();
+            if (video && video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                console.log("Detengo el stream, y paro la cámara");
+            }
+
+            video.style.display = "none";
+            captureContainer.style.display = "none";
+
+            refundOptions.style.display = "none";
+
+            setTimeout(() => {
+                refundOptions.style.display = "flex";
+            }, 500);
+
+            collapseActions(actions);
+            item.parentElement.classList.remove("active");
+        } catch (err) {
+            console.error('Error al manejar la captura del QR: ', err);
+        } finally {
+            isCameraActive = false;
+        }
+    }
+
+    const button = captureContainer.querySelector("button.cancel-capture");
+
+    // Asegurarse de que el event listener solo se añade una vez
+    if (!button.hasListener) {
+        button.addEventListener('click', handleCancelCaptureClick);
+        button.hasListener = true; // Marcamos el botón para evitar agregar múltiples listeners
+    }
 }
 
 function setupConfirmPayButton(button, actions, item) {
@@ -197,14 +245,25 @@ function setupConfirmPayButton(button, actions, item) {
     }
 
     // Asegurarse de que el event listener solo se añade una vez
-    button.removeEventListener('click', handleConfirmPayClick);
-    button.addEventListener('click', handleConfirmPayClick);
+    if (!button.hasListener) {
+        button.addEventListener('click', handleConfirmPayClick);
+        button.hasListener = true; // Marcamos el botón para evitar agregar múltiples listeners
+    }
 }
 
+let isCameraActive = false;
+
 async function startCamera(video, captureContainer, actions, item) {
+    if (isCameraActive) {
+        console.log("La cámara ya está activa.");
+        return;
+    }
+
+    isCameraActive = true;
+
     if (document.hidden) return;
 
-    if (video.srcObject) {
+    if (video && video.srcObject) {
         let tracks = video.srcObject.getTracks();
         tracks.forEach(track => track.stop());
         video.srcObject = null;
@@ -230,10 +289,12 @@ async function startCamera(video, captureContainer, actions, item) {
             await video.play();
         };
 
-        video.style.display = 'block';
-        captureContainer.style.display = "block";
+        video.srcObject.getTracks().forEach(track => console.log(track));
 
-        const qrScanner = new QrScanner(video, result => {
+        video.style.display = 'block';
+        captureContainer.style.display = "flex";
+
+        let qrScanner = new QrScanner(video, result => {
             handleQrScan(result, stream, qrScanner, video, captureContainer, actions, item);
         }, {
             returnDetailedScanResult: true
@@ -241,9 +302,17 @@ async function startCamera(video, captureContainer, actions, item) {
 
         qrScanner.start();
 
+        // Expando la tarjeta según el nuevo contenido
+        const actionRefund = captureContainer.parentElement;
         requestAnimationFrame(() => {
-            actions.style.height = captureContainer.scrollHeight + 'px';
+            actions.style.height = actionRefund.scrollHeight + 'px';
         });
+
+        const cancelCapture = captureContainer.querySelector("button.cancel-capture");
+        if (cancelCapture) {
+            console.log("existe botón")
+            setupCancelCaptureButton(stream, qrScanner, video, captureContainer, actions, item);
+        }
 
         scrollToElement(item);
     } catch (err) {
@@ -274,11 +343,11 @@ function handleQrScan(result, stream, qrScanner, video, captureContainer, action
         paymentRequest.querySelector('span').innerText = result.data;
         paymentRequest.style.display = "flex";
 
-        const actionButtons = captureContainer.closest('.action-refund').querySelector('.refund-options');
-        buttonOptions.style.display = "none";
+        const actionButtons = captureContainer.closest('.action-refund').querySelector('.action-buttons');
+        actionButtons.style.display = "flex";
 
         requestAnimationFrame(() => {
-            actions.style.height = (getElementDimensions(buttonOptions).totalHeight + getElementDimensions(paymentRequest).totalHeight) + 8 + 'px';
+            actions.style.height = (getElementDimensions(paymentRequest).totalHeight + getElementDimensions(actionButtons).totalHeight) + 8 + 'px';
         });
 
         const buttonCancel = buttonOptions.querySelector('button.cancel-refund');
@@ -289,6 +358,8 @@ function handleQrScan(result, stream, qrScanner, video, captureContainer, action
         }
     } catch (err) {
         console.error('Error al manejar la captura del QR: ', err);
+    } finally {
+        isCameraActive = false;
     }
 }
 
