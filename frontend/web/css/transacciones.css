@@ -26,7 +26,6 @@
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     background-color: #e3e5e3;
-    background-color: #e3e5e3;
     color: #333333;
   }
   #transacciones .buscar::-webkit-input-placeholder {
@@ -49,56 +48,27 @@
   padding-top: 4vh;
   -webkit-transition: opacity 1s;
   transition: opacity 1s;
-  -webkit-transition: opacity 1s;
-  transition: opacity 1s;
 }
 #transacciones .container .item {
   padding: 0.5rem;
   background-color: white;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 2px solid white;
   margin-bottom: 0.5rem;
   -webkit-box-shadow: 0px 0px 5px 0px #e6e6e6;
           box-shadow: 0px 0px 5px 0px #e6e6e6;
   font-size: 1.1rem;
   position: relative;
-  font-size: 1.1rem;
-  position: relative;
 }
 #transacciones .container .item.payment {
-  color: green;
   color: green;
 }
 #transacciones .container .item.refund {
   color: #c31c1c;
-  color: #c31c1c;
 }
-#transacciones .container .item.refund .item-amount::before {
 #transacciones .container .item.refund .item-amount::before {
   content: "- ";
 }
-#transacciones .container .item.confirmed .item-status {
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='green' d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z'/%3E%3C/svg%3E");
-}
-#transacciones .container .item.pending .item-status {
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='orange' d='M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z'/%3E%3C/svg%3E");
-}
-#transacciones .container .item.expired .item-status {
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23c31c1c' d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z'/%3E%3C/svg%3E");
-}
-#transacciones .container .item .item-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  gap: 0.7rem;
-}
-#transacciones .container .item .item-container .item-status {
 #transacciones .container .item.confirmed .item-status {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='green' d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z'/%3E%3C/svg%3E");
 }
@@ -128,10 +98,7 @@
   margin: 0.4rem auto;
   background-size: contain;
   background-repeat: no-repeat;
-  background-size: contain;
-  background-repeat: no-repeat;
 }
-#transacciones .container .item .item-container .item-info {
 #transacciones .container .item .item-container .item-info {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
@@ -149,25 +116,7 @@
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
 }
-#transacciones .container .item .item-container .item-info * {
-  padding: 0.1rem 0;
-}
-#transacciones .container .item .item-container .item-info h3 span {
-  font-size: 0.8em;
 #transacciones .container .item .item-container .item-info * {
   padding: 0.1rem 0;
 }
@@ -178,14 +127,11 @@
   color: #aaaaaa;
 }
 #transacciones .container .item .item-container .item-info h3 span::before {
-#transacciones .container .item .item-container .item-info h3 span::before {
   content: "(#";
 }
 #transacciones .container .item .item-container .item-info h3 span::after {
-#transacciones .container .item .item-container .item-info h3 span::after {
   content: ")";
 }
-#transacciones .container .item .item-container .item-info .item-memo {
 #transacciones .container .item .item-container .item-info .item-memo {
   color: #777777;
 }
@@ -195,15 +141,8 @@
   color: #aaaaaa;
 }
 #transacciones .container .item .item-container .item-amount {
-#transacciones .container .item .item-container .item-info .item-date {
-  font-size: 0.8em;
-  font-style: oblique;
-  color: #aaaaaa;
-}
-#transacciones .container .item .item-container .item-amount {
   font-weight: bold;
   white-space: nowrap;
-  font-size: 1.2em;
   font-size: 1.2em;
 }
 #transacciones .container .item.active {
@@ -229,7 +168,6 @@
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  will-change: height, opacity;
 }
 #transacciones .container .item .item-actions.expanded {
   height: auto;
@@ -242,190 +180,26 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 90%;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options span {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 0.5rem 0;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 100%;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons button {
-  border-radius: 12px;
-  border: none;
-  color: white;
-  font-size: 1em;
-  font-weight: bold;
-  line-height: 1.5em;
-  margin: 1rem 0 0.5rem 0;
-  padding: 0.6em;
-  width: 7rem;
-  height: 5rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
 }
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons button em {
-  background-size: cover;
-  display: block;
-  height: 75%;
-  aspect-ratio: 1/1;
+#transacciones .container .item .item-actions .action-info.disabled,
+#transacciones .container .item .item-actions .action-refund.disabled {
+  color: #cccccc;
 }
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons button.paste-pr {
-  background-color: #e7a415;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons button.paste-pr em {
-  background: url("/img/icons/paste-regular.svg") center no-repeat;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons button.qr-pr {
+#transacciones .container .item .item-actions .action-refund button {
   background-color: #c31c1c;
-}
-#transacciones .container .item .item-actions .action-refund .refund-options .refund-options-buttons button.qr-pr em {
-  background: url("/img/icons/qrcode-solid.svg") center no-repeat;
-}
-#transacciones .container .item .item-actions .action-refund .action-buttons {
-  display: none;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 90%;
-  gap: 1rem;
-}
-#transacciones .container .item .item-actions .action-refund .action-buttons button {
-  border-radius: 12px;
+  border-radius: 10px;
   border: none;
   color: white;
-  font-size: 1em;
-  font-weight: bold;
-  line-height: 1.5em;
-  margin: 1rem 0 0.5rem 0;
-  padding: 0.6em;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  min-width: 50%;
-}
-#transacciones .container .item .item-actions .action-refund .action-buttons button.confirm-pay {
-  background-color: #0081fc;
-}
-#transacciones .container .item .item-actions .action-refund .action-buttons button.cancel-pay {
-  background-color: #c31c1c;
-}
-#transacciones .container .item .item-actions .action-refund .payment-request {
   font-size: 1.2em;
-  color: #0081fc;
-  width: 90%;
-  margin: 0.5rem 0;
-  display: none;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  font-weight: bold;
-}
-#transacciones .container .item .item-actions .action-refund .payment-request span {
-  color: #777777;
-  margin: 0.5rem 0;
-  font-size: 0.8em;
-  text-align: center;
-  width: 100%;
-  white-space: normal;
-  overflow: hidden;
-  word-wrap: break-word;
-  font-weight: normal;
-}
-#transacciones .container .item .item-actions .action-refund .capture-container {
-  display: none;
-  height: auto;
-  width: 90%;
-  margin: 0.5rem;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-#transacciones .container .item .item-actions .action-refund .capture-container button.cancel-capture {
-  background-color: #c31c1c;
-  border-radius: 12px;
-  border: none;
-  color: white;
-  font-size: 1em;
-  font-weight: bold;
   line-height: 1.5em;
   width: 90%;
   margin: 1rem 0 0.5rem 0;
   padding: 0.5em;
-}
-#transacciones .container .item .item-actions .action-refund .capture-container .video {
-  width: 30vh;
-  height: 30vh;
-  display: none;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 #transacciones .spinner {
   display: none;
