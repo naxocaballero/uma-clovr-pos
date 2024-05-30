@@ -15,9 +15,10 @@
 				<button class="key">9</button>
 				<button class="key">Del</button>
 				<button class="key">0</button>
-				<button class="key">,</button>
+				<!--<button class="key">,</button>-->
 			</div>
 			<button class="generate-button">Generar invoice</button>
 		</div>
 	</div>
+	<div id="result" style="width: 90%; font-family: monospace;"></div>
 </section> 

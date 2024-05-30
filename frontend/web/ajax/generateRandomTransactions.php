@@ -21,11 +21,11 @@ function generateRandomTransactions() {
     $baseIdTx = 2754;
 
     foreach (range(0, 19) as $i) {
-        $typeKey = array_rand($types);
+        $typeKey = 'payment'; //array_rand($types);
         $typeName = $types[$typeKey];
-        $status = $statuses[array_rand($statuses)];
+        $status = 'confirmed'; //$statuses[array_rand($statuses)];
         $title = $titles[array_rand($titles)];
-        $amount = $amounts[$i];
+        $amount = number_format($amounts[$i], 2, ",", ".");
         $idTx = $baseIdTx + $i;
         $date = $currentDate->getTimestamp() - ($i * 384); // Fecha decreciente
 
