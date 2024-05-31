@@ -48,7 +48,10 @@ require("lib/functions.php");
 
     <title>UMA Clovr PoS</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/qr-scanner@1.4.1/qr-scanner.umd.min.js"></script>
+    <script src="js/qr-scanner.umd.min.js"></script>
+    <script src="js/qr-code-styling.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/qr-scanner@1.4.1/qr-scanner.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>-->
 </head>
 
 <body>
@@ -69,13 +72,22 @@ require("lib/functions.php");
         </div>
     </header>
 
+    <main class="">
+        <?php
+        if(file_exists("pages/invoice.php"))
+        require("pages/invoice.php");
+        if(file_exists("pages/transacciones.php"))
+        require("pages/transacciones.php");
+        if(file_exists("pages/ajustes.php"))
+        require("pages/ajustes.php");
+        ?>
+    </main>
+
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 <em class="logo"></em> <b>UMA Clovr PoS</b>. Todos los derechos reservados.</p>
         </div>
         <div class="footer-menu">
-            <div class="borde-footer-menu"></div>
-            <div class="fondo-footer-menu"></div>
             <div class="borde-footer-menu"></div>
             <div class="fondo-footer-menu"></div>
             <nav class="menu" id="footer-menu">
@@ -126,23 +138,28 @@ require("lib/functions.php");
     </footer>
 
 
-    <main class="">
-        <?php
-        if(file_exists("pages/invoice.php"))
-        require("pages/invoice.php");
-        if(file_exists("pages/transacciones.php"))
-        require("pages/transacciones.php");
-        if(file_exists("pages/ajustes.php"))
-        require("pages/ajustes.php");
-        ?>
-    </main>
-    
+
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Payment Request</h2>
+            <span class="amountEUR"></span>
+            <span class="amountSATS"></span>
+            <div id="qrcode"></div>
+            <div id="qrcode-text"></div>
+            <div class="count-down">
+                Realiza el pago antes de<br><span class="time"></span> segundos
+            </div>
+            <button class="close-qr">Cerrar</button>
+        </div>
+    </div>
 
     <script src="js/functions.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
+    <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/invoice.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/serviceWorker.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/imagePWA.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
-    <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
+
 
 </body>
 

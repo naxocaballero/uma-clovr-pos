@@ -343,7 +343,6 @@ function generateRandomTransactions(transactions) {
 	return html;
 }
 
-
 function setupMenuListeners() {
 	const menuItems = document.querySelectorAll(".menu li");
 	const sections = document.querySelectorAll("main section");
@@ -376,4 +375,38 @@ function setupMenuListeners() {
 			// En cada llamada compruebo si el contenido requiere scroll y actuo en consecuencia.
 		});
 	});
+}
+
+let bitcoinRate = 64000;
+
+function convertCurrency(amount, targetCurrency, bitcoinRate) {
+    const SATOSHIS_PER_BITCOIN = 100000000; // 1 BTC = 100,000,000 satoshis
+    let result;
+
+    if (targetCurrency === "EUR") {
+        // Convertir de satoshis a euros
+        result = (amount / SATOSHIS_PER_BITCOIN) * bitcoinRate;
+        return result.toFixed(2); // Formatear a dos decimales
+    } else if (targetCurrency === "SATS") {
+        // Convertir de euros a satoshis
+        result = (amount / bitcoinRate) * SATOSHIS_PER_BITCOIN;
+        return result.toFixed(0); // Formatear a cero decimales
+    } else {
+        throw new Error("Moneda de destino no válida. Use 'EUR' o 'SATS'.");
+    }
+}
+
+function truncatePR(str, maxLength) {
+    // Verificar si el PR necesita ser truncado
+    if (str.length <= maxLength) {
+        return str;
+    }
+    
+    // Calcular la longitud de la primera y segunda parte del PR truncado
+    const halfLength = Math.floor((maxLength - 3) / 2);
+    const firstPart = str.slice(0, halfLength);
+    const secondPart = str.slice(-halfLength);
+    
+    // Retornar el PR truncado con '...'
+    return `${firstPart} ... ${secondPart}`;
 }

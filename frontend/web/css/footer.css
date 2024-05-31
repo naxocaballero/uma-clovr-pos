@@ -1,16 +1,10 @@
 @charset "UTF-8";
 footer {
   z-index: 1;
-}
-@media (max-width: 768px) {
-  footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    min-height: 8vh;
-    -ms-touch-action: none;
-        touch-action: none;
-  }
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-height: 8vh;
 }
 footer .footer-container {
   width: 100%;
@@ -29,14 +23,10 @@ footer .footer-container {
   font-size: 0.8rem;
   -ms-flex-negative: 0;
       flex-shrink: 0;
-}
-@media (max-width: 768px) {
-  footer .footer-container {
-    height: auto;
-    padding: 1rem 0;
-    margin-bottom: 0.5rem;
-    display: none;
-  }
+  height: auto;
+  padding: 1rem 0;
+  margin-bottom: 0.5rem;
+  display: none;
 }
 footer .footer-container .logo {
   display: inline-block;
