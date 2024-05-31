@@ -61,7 +61,7 @@ func main() {
 
 	router := gin.Default()
 
-	// Setup CORS
+	//Setup CORS
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))
@@ -69,6 +69,8 @@ func main() {
 	router.POST("/invoices", controller.createInvoice)
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
+	router.GET("/transaction", controller.getTransaction)
+	router.GET("/list", controller.getList)
 
 	err = router.Run("0.0.0.0:8080")
 	if err != nil {
@@ -235,6 +237,56 @@ func (c *Controller) getTransactions(ctx *gin.Context) {
 	var transactions []Transaction
 
 	if result := c.Database.Where("status = ?", Paid).Find(&transactions); result.Error != nil {
+		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
+		return
+	}
+
+	// Devuelve la lista de transacciones como una respuesta JSON
+	ctx.IndentedJSON(http.StatusOK, transactions)
+}
+
+func (c *Controller) getTransaction(ctx *gin.Context) {
+	log.Println("Solicitud para la transacción indicada")
+
+	type transactionRequest struct {
+		ID int `json:"id"`
+	}
+
+	var data transactionRequest
+	if err := ctx.BindJSON(&data); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	var transaction Transaction
+	if result := c.Database.Where("id = ?", data.ID).First(&transaction); result.Error != nil {
+		log.Println("Error al obtener la transacción de la base de datos:", result.Error)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacción"})
+		return
+	}
+
+	// Devuelve la transacción como una respuesta JSON
+	ctx.IndentedJSON(http.StatusOK, transaction)
+}
+
+func (c *Controller) getList(ctx *gin.Context) {
+	type transactionsListRequest struct {
+		ID              int `json:"id"`
+		NumeroRegistros int `json:"numero_registros"`
+	}
+
+	var data transactionsListRequest
+	if err := ctx.BindJSON(&data); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	// Lista de transacciones a devolver que cumplan los requisitos
+	var transactions []Transaction
+	if result := c.Database.Where("id >= ?", data.ID).Order("id ASC").Limit(data.NumeroRegistros).Find(&transactions); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return

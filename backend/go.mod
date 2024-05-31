@@ -1,3 +1,4 @@
+
 module github.com/uma-clovr-pos
 
 go 1.22.2
@@ -201,4 +202,17 @@ require (
 	modernc.org/token v1.1.0 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
+
+require (
+	github.com/gin-contrib/cors v1.7.2
+	github.com/golang/protobuf v1.5.4 // indirect
+	golang.org/x/net v0.25.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240521202816-d264139d666e // indirect
+	google.golang.org/grpc v1.64.0
+	google.golang.org/protobuf v1.34.1 // indirect
+	gorm.io/driver/postgres v1.5.7
+)
+
 replace google.golang.org/protobuf => github.com/lightninglabs/protobuf-go-hex-display v1.30.0-hex-display
