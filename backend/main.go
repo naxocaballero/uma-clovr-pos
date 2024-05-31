@@ -61,7 +61,7 @@ func main() {
 
 	router := gin.Default()
 
-	//Setup CORS
+	// Setup CORS
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))
