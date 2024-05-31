@@ -1,17 +1,19 @@
 package main
 
 import (
+	"context"
 	"encoding/hex"
-	"log"
-	"net/http"
-	"time"
-
+	"errors"
+	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/lightningnetwork/lnd/lnrpc"
 	"google.golang.org/grpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
+	"net/http"
+	"time"
 )
 
 type Controller struct {
@@ -21,9 +23,10 @@ type Controller struct {
 type TransactionStatus string
 
 const (
-	Pending TransactionStatus = "PENDIENTE"
-	Paid    TransactionStatus = "PAGADO"
-	Expired TransactionStatus = "EXPIRADO"
+	Pending   TransactionStatus = "PENDIENTE"
+	Paid      TransactionStatus = "PAGADO"
+	Expired   TransactionStatus = "EXPIRADO"
+	Refounded TransactionStatus = "DEVUELTA"
 )
 
 type Transaction struct {
@@ -34,6 +37,8 @@ type Transaction struct {
 	CreationDate   time.Time         `json:"creation_date"`
 	Status         TransactionStatus `json:"status"`
 	Expiration     uint64            `json:"expiration"`
+	RefoundID      uint              `json:"refound_id"`
+	Description    string            `json:"memo"`
 }
 
 var (
@@ -90,8 +95,9 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 
 	// Definimos una estructura para recibir los parámetros JSON
 	type CreateInvoiceRequest struct {
-		Amount     uint64 `json:"amount"`
-		Expiration uint64 `json:"expiration,omitempty"`
+		Amount      uint64 `json:"amount"`
+		Expiration  uint64 `json:"expiration,omitempty"`
+		Description string `json:"memo"`
 	}
 
 	var req CreateInvoiceRequest
@@ -115,6 +121,7 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 	}
 
 	newTransaction.Amount = req.Amount
+	newTransaction.Description = req.Description
 
 	// Asignamos el tiempo de creación actual y estado pendiente de la transacción
 	newTransaction.Status = Pending
@@ -143,7 +150,83 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 
 func (c *Controller) payInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para pagar un invoice")
-	// Pagar invoice
+
+	// Obtengo los parametros de la llamada
+	type PayInvoiceRequest struct {
+		ID             uint64 `json:"id"`
+		PaymentRequest string `json:"payment_request"`
+	}
+
+	var req PayInvoiceRequest
+	if err := ctx.BindJSON(&req); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	// Consulto la transaccion que se quiere devolver
+
+	var transaction Transaction
+
+	if err := c.Database.First(&transaction, req.ID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Println("La transaccion no existe:", err)
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "La transaccion no existe"}) //Devuelve un 404
+		} else {
+			log.Println("Error al buscar la transaccion:", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al buscar la transaccion"})
+		}
+		return
+	}
+
+	if transaction.Status != Paid { //Compruebo que la transaccion fue pagada
+		log.Println("No se puede devolver una transaccion que no ha sido pagada")
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "La transacción no ha sido pagada"})
+		return
+	}
+
+	// Decodificar el paymentRequest
+	decodeRequest := &lnrpc.PayReqString{PayReq: req.PaymentRequest}
+	decodeResponse, err := nodoVenta.DecodePayReq(context.Background(), decodeRequest)
+	if err != nil {
+		log.Println("Error leyendo el paymentRequest: ", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error leyendo el paymentRequest"})
+		return
+	}
+
+	// Verificar que el amount en el paymentRequest es igual al original
+	if uint64(decodeResponse.NumSatoshis) != transaction.Amount {
+		log.Println(fmt.Sprintf("La cantidad de satoshis no coincide con la transaccion original"))
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "La cantidad de satoshis no coincide con la transaccion original"})
+		return
+	}
+
+	// Realizar el pago
+	err = PagarInvoice(req.PaymentRequest)
+	if err != nil {
+		log.Println("Error al pagar el invoice:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al pagar el invoice"})
+		return
+	}
+
+	//Actualizo el estado de la transaccion
+
+	transaction.Status = Refounded
+	c.Database.Save(&transaction)
+
+	//Guardo la nueva transacción en la BD
+
+	var nuevaTransaccion Transaction
+	nuevaTransaccion.Status = Paid
+	nuevaTransaccion.RefoundID = transaction.ID
+	nuevaTransaccion.PaymentRequest = req.PaymentRequest
+	nuevaTransaccion.Description = "Devolución: " + transaction.Description
+	nuevaTransaccion.CreationDate = time.Now()
+	nuevaTransaccion.Amount = transaction.Amount
+
+	c.Database.Save(&nuevaTransaccion)
+
+	ctx.JSON(http.StatusOK, nuevaTransaccion)
 }
 
 func (c *Controller) getTransactions(ctx *gin.Context) {
