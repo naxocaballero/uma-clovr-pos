@@ -1,13 +1,18 @@
 package main
 
 import (
+	"context"
+	"encoding/hex"
+	"errors"
+	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/lightningnetwork/lnd/lnrpc"
+	"google.golang.org/grpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -26,14 +31,14 @@ const (
 
 type Transaction struct {
 	gorm.Model
-	Amount       uint              `json:"amount"`
-	RHash        string            `json:"r_hash"`
-	PaymentRequest string          `json:"payment_request"`
-	CreationDate time.Time         `json:"creation_date"`
-	Status       TransactionStatus `json:"status"`
-	Expiration   uint64            `json:"expiration"`
-	RefoundID    uint              `json:"refound_id"`
-	Description  string            `json:"memo"`
+	Amount         uint64            `json:"amount"`
+	RHash          string            `json:"r_hash"`
+	PaymentRequest string            `json:"payment_request"`
+	CreationDate   time.Time         `json:"creation_date"`
+	Status         TransactionStatus `json:"status"`
+	Expiration     uint64            `json:"expiration"`
+	RefoundID      uint              `json:"refound_id"`
+	Description    string            `json:"memo"`
 }
 
 var (
@@ -53,7 +58,7 @@ func main() {
 		log.Fatalf("Error %v creando el cliente del punto de venta", err)
 	}
 	defer conn.Close()
-	
+
 	router := gin.Default()
 
 	//Setup CORS
@@ -65,7 +70,7 @@ func main() {
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
 
-	err := router.Run("0.0.0.0:8080")
+	err = router.Run("0.0.0.0:8080")
 	if err != nil {
 		return
 	}
@@ -90,8 +95,9 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 
 	// Definimos una estructura para recibir los parámetros JSON
 	type CreateInvoiceRequest struct {
-		Amount     uint64 `json:"amount"`
-		Expiration uint64 `json:"expiration,omitempty"`
+		Amount      uint64 `json:"amount"`
+		Expiration  uint64 `json:"expiration,omitempty"`
+		Description string `json:"memo"`
 	}
 
 	var req CreateInvoiceRequest
@@ -115,6 +121,7 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 	}
 
 	newTransaction.Amount = req.Amount
+	newTransaction.Description = req.Description
 
 	// Asignamos el tiempo de creación actual y estado pendiente de la transacción
 	newTransaction.Status = Pending
@@ -144,29 +151,25 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 func (c *Controller) payInvoice(ctx *gin.Context) {
 	log.Println("Solicitud para pagar un invoice")
 
-	//Obtengo los parametros de la llamada
+	// Obtengo los parametros de la llamada
+	type PayInvoiceRequest struct {
+		ID             uint64 `json:"id"`
+		PaymentRequest string `json:"payment_request"`
+	}
 
-	paymentRequest := ctx.Param("paymentRequest")
-	/* El amount lo saco de paymentRequest
-	amount, err := strconv.ParseUint(ctx.Param("amount"), 10, 64)
-	if err != nil {
-		log.Println("Error al leer la cantidad del pago:", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al leer la cantidad del pago"})
-		return
-	}*/
-	transactionId, err := strconv.ParseUint(ctx.Param("transactionId"), 10, 32)
-	if err != nil {
-		log.Println("Error al leer el ID:", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID de transacción no válido"})
+	var req PayInvoiceRequest
+	if err := ctx.BindJSON(&req); err != nil {
+		log.Println("Error al parsear el JSON:", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
-	//Consulto la transaccion que se quiere devolver
+	// Consulto la transaccion que se quiere devolver
 
 	var transaction Transaction
 
-	if err := c.Database.First(&transaction, transactionId).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
+	if err := c.Database.First(&transaction, req.ID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			log.Println("La transaccion no existe:", err)
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "La transaccion no existe"}) //Devuelve un 404
 		} else {
@@ -178,13 +181,28 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 
 	if transaction.Status != Paid { //Compruebo que la transaccion fue pagada
 		log.Println("No se puede devolver una transaccion que no ha sido pagada")
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "La transaccion no existe"})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "La transacción no ha sido pagada"})
 		return
 	}
 
-	//Realizar el pago (se comprueba que paymentRequest pida el mismo amount
+	// Decodificar el paymentRequest
+	decodeRequest := &lnrpc.PayReqString{PayReq: req.PaymentRequest}
+	decodeResponse, err := nodoVenta.DecodePayReq(context.Background(), decodeRequest)
+	if err != nil {
+		log.Println("Error leyendo el paymentRequest: ", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error leyendo el paymentRequest"})
+		return
+	}
 
-	err = PagarInvoice(uriVenta, paymentRequest, transaction.Amount)
+	// Verificar que el amount en el paymentRequest es igual al original
+	if uint64(decodeResponse.NumSatoshis) != transaction.Amount {
+		log.Println(fmt.Sprintf("La cantidad de satoshis no coincide con la transaccion original"))
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "La cantidad de satoshis no coincide con la transaccion original"})
+		return
+	}
+
+	// Realizar el pago
+	err = PagarInvoice(req.PaymentRequest)
 	if err != nil {
 		log.Println("Error al pagar el invoice:", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al pagar el invoice"})
@@ -201,13 +219,14 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 	var nuevaTransaccion Transaction
 	nuevaTransaccion.Status = Paid
 	nuevaTransaccion.RefoundID = transaction.ID
+	nuevaTransaccion.PaymentRequest = req.PaymentRequest
 	nuevaTransaccion.Description = "Devolución: " + transaction.Description
 	nuevaTransaccion.CreationDate = time.Now()
 	nuevaTransaccion.Amount = transaction.Amount
 
 	c.Database.Save(&nuevaTransaccion)
 
-	ctx.JSON(http.StatusOK, transaction)
+	ctx.JSON(http.StatusOK, nuevaTransaccion)
 }
 
 func (c *Controller) getTransactions(ctx *gin.Context) {
