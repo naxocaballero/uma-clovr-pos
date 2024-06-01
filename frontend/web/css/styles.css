@@ -189,7 +189,7 @@ body {
   margin-bottom: 0.5rem;
 }
 .modal-content .amountEUR {
-  font-size: clamp(1em, 10vw, 3em);
+  font-size: clamp(1em, 7vw, 3em);
   font-weight: 600;
   color: #3479fd;
 }
@@ -199,7 +199,7 @@ body {
   opacity: 0.7;
 }
 .modal-content .amountSATS {
-  font-size: clamp(1em, 7vw, 2em);
+  font-size: clamp(1em, 10vw, 2em);
   font-weight: 600;
   color: #7f47dd;
   margin: 0.3rem 0;
@@ -245,7 +245,7 @@ body {
       -ms-flex-align: center;
           align-items: center;
   font-size: 0.8em;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem auto;
   border: 1px solid #777777;
   opacity: 0.7;
   padding: 0.2rem;
@@ -260,4 +260,13 @@ body {
   font-weight: 600;
   width: 90%;
   margin: 1rem 0 0.5rem 0;
+}
+.modal-content #qrcode-result {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2ca118;
+  width: 100%;
+  text-align: center;
+  display: none;
+  padding: 2rem 0;
 }

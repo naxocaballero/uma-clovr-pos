@@ -239,10 +239,20 @@ function getTransactionsAPI(url) {
 	spinner.style.display = "block";
 
 	// Llamada AJAX para obtener los datos desde PHP
-	fetch(url)
-		.then((response) => response.json())
+	fetch(url, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("Error en la respuesta de la red");
+			}
+			return response.json(); // Convertir la respuesta a JSON
+		})
 		.then((data) => {
-			const newContent = generateRandomTransactions(data);
+			const newContent = generateTransactionsList(data);
 
 			// Próposito exclusivo para la demo, que pueda verse el loader en movimiento. Modificar el valor del timeout
 			setTimeout(() => {
@@ -260,15 +270,63 @@ function getTransactionsAPI(url) {
 
 				// Compruebo el tamaño del nuevo main actualizado y decido si activar scroll o no
 				mainScrollable();
+
+				// Obtener el campo de texto y los elementos de transacciones
+				const buscarInput = document.getElementById("buscar");
+				const transacciones = document.querySelectorAll("div.item");
+
+				// Función para buscar y filtrar las transacciones
+				function buscarTransacciones() {
+					const textoBusqueda = buscarInput.value.toLowerCase();
+
+					transacciones.forEach((transaccion) => {
+						const rhash = transaccion.getAttribute("data-rhash").toLowerCase();
+
+						if (rhash.startsWith(textoBusqueda)) {
+							transaccion.style.display = ""; // Mostrar el elemento
+						} else {
+							transaccion.style.display = "none"; // Ocultar el elemento
+						}
+					});
+				}
+
+				// Añadir un event listener al campo de texto para detectar cada keydown
+				buscarInput.addEventListener("keyup", buscarTransacciones);
 			}, 0);
 		})
 		.catch((error) => console.error("Error al cargar los datos:", error));
 }
 
-function generateRandomTransactions(transactions) {
+function generateTransactionsList(transactions) {
 	let html = "";
 	transactions.forEach((transaction) => {
-		const { typeKey, status, typeName, idTx, title, date, amount } = transaction;
+		let { refund_id, status, ID, memo, creation_date, amount, r_hash } = transaction;
+		let typeName = "";
+
+		if (refund_id === 0) {
+			typeKey = "payment";
+			typeName = "Venta";
+		} else if (refund_id > 0) {
+			typeKey = "refund";
+			typeName = "Devolución";
+		} else {
+			typeKey = "";
+			typeName = "Sin estado";
+		}
+
+		switch (status) {
+			case "PAGADO":
+				status = "confirmed";
+				break;
+			case "PENDIENTE":
+				status = "pending";
+				break;
+			case "DEVUELTA":
+				status = "refunded";
+				break;
+			default:
+				break;
+		}
 
 		let actions = "";
 		switch (status) {
@@ -316,7 +374,7 @@ function generateRandomTransactions(transactions) {
 					actions += '<div class="action-info"></div>';
 				}
 				break;
-			case "expired":
+			case "refunded":
 				actions += '<div class="action-info"></div>';
 				break;
 			default:
@@ -324,15 +382,15 @@ function generateRandomTransactions(transactions) {
 		}
 
 		html += `
-				<div class="item ${typeKey} ${status}">
+				<div class="item ${typeKey} ${status}" data-id="${ID}" data-rhash="${r_hash}">
 					<div class="item-container">
 						<div class="item-status"></div>
 						<div class="item-info">
-							<h3>${typeName} <span>${idTx}</span></h3>
-							<span class="item-memo">${title}</span>
-							<span class="item-date">${new Date(date * 1000).toLocaleDateString()}</span>
+							<h3>${typeName} <span>${ID}</span></h3>
+							<span class="item-memo">${memo}</span>
+							<span class="item-date">${convertirFecha(creation_date)}</span>
 						</div>
-						<div class="item-amount">${amount} €</div>
+						<div class="item-amount">${convertCurrency(amount, "EUR", bitcoinRate)} €<br><span>${showAmountSATS(amount)} s</span></div>
 					</div>
 					<div class="item-actions">
 						${actions}
@@ -348,65 +406,160 @@ function setupMenuListeners() {
 	const sections = document.querySelectorAll("main section");
 
 	menuItems.forEach((item) => {
-		item.addEventListener("click", function () {
-			const template = this.getAttribute("data-template");
-			const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
-			const transactions = document.querySelector("#transacciones .container");
+		// Asegurarse de que el event listener solo se añade una vez
+		if (!item.hasListener) {
+			item.addEventListener("click", function () {
+				const template = this.getAttribute("data-template");
+				const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
+				const transactions = document.querySelector("#transacciones .container");
+				const buscarInput = document.getElementById('buscar');
 
-			transactions.innerHTML = "";
+				transactions.innerHTML = "";
 
-			// Asegúrate de que todos los sections no estén activos
-			sections.forEach((i) => i.classList.remove("active"));
+				// Asegúrate de que todos los sections no estén activos
+				sections.forEach((i) => i.classList.remove("active"));
+				buscarInput.value = "";
 
-			// Activa la sección seleccionada
-			if (contentSection) {
-				contentSection.classList.add("active");
+				// Activa la sección seleccionada
+				if (contentSection) {
+					contentSection.classList.add("active");
 
-				if (template === "transacciones") {
-					getTransactionsAPI("ajax/generateRandomTransactions.php");
+					if (template === "transacciones") {
+						//getTransactionsAPI("ajax/generateRandomTransactions.php");
+						getTransactionsAPI("https://192.168.88.135:8080/transactions");
+					}
+
+					mainScrollable();
 				}
 
-				mainScrollable();
-			}
+				menuItems.forEach((i) => i.classList.remove("active"));
+				this.classList.add("active");
 
-			menuItems.forEach((i) => i.classList.remove("active"));
-			this.classList.add("active");
-
-			// En cada llamada compruebo si el contenido requiere scroll y actuo en consecuencia.
-		});
+				// En cada llamada compruebo si el contenido requiere scroll y actuo en consecuencia.
+			});
+			item.hasListener = true; // Marcamos el ítem para evitar agregar múltiples listeners
+		}
 	});
 }
 
 let bitcoinRate = 64000;
 
 function convertCurrency(amount, targetCurrency, bitcoinRate) {
-    const SATOSHIS_PER_BITCOIN = 100000000; // 1 BTC = 100,000,000 satoshis
-    let result;
+	const SATOSHIS_PER_BITCOIN = 100000000; // 1 BTC = 100,000,000 satoshis
+	let result;
 
-    if (targetCurrency === "EUR") {
-        // Convertir de satoshis a euros
-        result = (amount / SATOSHIS_PER_BITCOIN) * bitcoinRate;
-        return result.toFixed(2); // Formatear a dos decimales
-    } else if (targetCurrency === "SATS") {
-        // Convertir de euros a satoshis
-        result = (amount / bitcoinRate) * SATOSHIS_PER_BITCOIN;
-        return result.toFixed(0); // Formatear a cero decimales
-    } else {
-        throw new Error("Moneda de destino no válida. Use 'EUR' o 'SATS'.");
-    }
+	if (targetCurrency === "EUR") {
+		// Convertir de satoshis a euros
+		result = (amount / SATOSHIS_PER_BITCOIN) * bitcoinRate;
+		return result.toFixed(2); // Formatear a dos decimales
+	} else if (targetCurrency === "SATS") {
+		// Convertir de euros a satoshis
+		result = (amount / bitcoinRate) * SATOSHIS_PER_BITCOIN;
+		return result.toFixed(0); // Formatear a cero decimales
+	} else {
+		throw new Error("Moneda de destino no válida. Use 'EUR' o 'SATS'.");
+	}
 }
 
 function truncatePR(str, maxLength) {
-    // Verificar si el PR necesita ser truncado
-    if (str.length <= maxLength) {
-        return str;
+	// Verificar si el PR necesita ser truncado
+	if (str.length <= maxLength) {
+		return str;
+	}
+
+	// Calcular la longitud de la primera y segunda parte del PR truncado
+	const halfLength = Math.floor((maxLength - 3) / 2);
+	const firstPart = str.slice(0, halfLength);
+	const secondPart = str.slice(-halfLength);
+
+	// Retornar el PR truncado con '...'
+	return `${firstPart} ... ${secondPart}`;
+}
+
+function convertirFecha(fechaISO) {
+	// Crear un objeto Date a partir de la cadena ISO
+	let fecha = new Date(fechaISO);
+
+	// Obtener las partes de la fecha
+	let dia = String(fecha.getDate()).padStart(2, "0");
+	let mes = String(fecha.getMonth() + 1).padStart(2, "0"); // Los meses comienzan en 0
+	let anio = fecha.getFullYear();
+	let horas = String(fecha.getHours()).padStart(2, "0");
+	let minutos = String(fecha.getMinutes()).padStart(2, "0");
+	let segundos = String(fecha.getSeconds()).padStart(2, "0");
+
+	// Formatear la fecha en el formato deseado
+	return `${dia}-${mes}-${anio} ${horas}:${minutos}:${segundos}`;
+}
+
+async function checkInvoiceStatus(id) {
+	try {
+		let invoiceData = { id: id };
+
+		const response = await fetch("https://192.168.88.135:8080/transaction", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(invoiceData),
+		});
+
+		if (!response.ok) {
+			throw new Error("Error en la respuesta de la red");
+		}
+
+		const data = await response.json();
+		return data.status; // Asegúrate de que 'status' sea la propiedad correcta
+	} catch (error) {
+		console.error("Error al verificar el estado de la factura:", error);
+		return null;
+	}
+}
+
+function isValidInput(input) {
+	const regex = /^(?!0\d)(\d{0,5})(,\d{0,2})?$/;
+	return regex.test(input);
+}
+
+function formatNumber(input) {
+	const parts = input.split(",");
+	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	return parts.join(",");
+}
+
+function showAmountEUR(input) {
+	// Asegura que el input sea tratado como un número y conviértelo a una cadena con dos decimales
+	let number = parseFloat(input).toFixed(2);
+
+	// Divide la cadena en la parte entera y la parte decimal
+	let parts = number.split(".");
+
+	// Formatea la parte entera con puntos como separadores de miles
+	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+	// Une la parte entera y la parte decimal con una coma
+	return parts.join(",");
+}
+
+function showAmountSATS(input) {
+	// Asegura que el input sea tratado como un número y conviértelo a una cadena
+	let number = parseFloat(input).toFixed(0).toString();
+
+	// Formatea la parte entera con puntos como separadores de miles
+	number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+	return number;
+}
+
+function extractLightningData(data) {
+    data = data.toLowerCase();
+
+    const regex = /(lnbcrt[a-z0-9]+)/;
+    const match = data.match(regex);
+
+    if (match && match[1]) {
+        return match[1];
     }
-    
-    // Calcular la longitud de la primera y segunda parte del PR truncado
-    const halfLength = Math.floor((maxLength - 3) / 2);
-    const firstPart = str.slice(0, halfLength);
-    const secondPart = str.slice(-halfLength);
-    
-    // Retornar el PR truncado con '...'
-    return `${firstPart} ... ${secondPart}`;
+
+    return '';
 }

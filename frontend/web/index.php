@@ -150,6 +150,7 @@ require("lib/functions.php");
             <div class="count-down">
                 Realiza el pago antes de<br><span class="time"></span> segundos
             </div>
+            <div id="qrcode-result">PAGADO</div>
             <button class="close-qr">Cerrar</button>
         </div>
     </div>
@@ -157,7 +158,7 @@ require("lib/functions.php");
     <script src="js/functions.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/app.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
     <script src="js/invoice.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
-    <script src="js/serviceWorker.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
+    <!--<script src="js/serviceWorker.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>-->
     <script src="js/imagePWA.js?<?php echo rand(0,999);?>" type="text/javascript" defer=""></script>
 
 

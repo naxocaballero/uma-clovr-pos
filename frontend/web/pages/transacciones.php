@@ -1,6 +1,6 @@
 <section id="transacciones" class="">
     <h2>Buscar</h2>
-    <input type="text" name="buscar" class="buscar" placeholder="Buscar transacción ..." />
+    <input type="text" id="buscar" name="buscar" class="buscar" placeholder="Buscar transacción ..." />
 
     <div class="container" id="transactions-container">
 
@@ -23,6 +23,7 @@
         </svg>
     </div>
     <canvas id="canvas" style="display: none;"></canvas>
+
 </section>
 
 <script>
@@ -219,7 +220,7 @@ function setupConfirmPayButton(button, actions, item) {
 
         const invoiceData = {
             payment_request: paymentRequest,
-            id: itemId
+            id: parseInt(itemId)
         };
 
         console.log("Parámetros enviados:", invoiceData)
@@ -239,6 +240,53 @@ function setupConfirmPayButton(button, actions, item) {
 
             const data = await response.json();
             console.log('Respuesta de la API:', data);
+
+            // Seleccionamos los elementos
+            const modal = document.getElementById("modal");
+            modal.style.display = "flex";
+
+            const h2 = modal.querySelector("h2");
+            h2.innerText = 'Devolución';
+
+            const eurContainer = modal.querySelector(".amountEUR");
+            eurContainer.innerText = showAmountEUR(convertCurrency(data.amount, "EUR", bitcoinRate));
+
+            const satsContainer = modal.querySelector(".amountSATS");
+            satsContainer.innerText = showAmountSATS(data.amount);
+
+            const countDown = modal.querySelector(".count-down .time");
+            countDown.parentElement.style.display = "none";
+
+            const container = modal.querySelector("#qrcode");
+            container.style.display = "none";
+
+            const qrCodeText = modal.querySelector("#qrcode-text");
+            qrCodeText.style.display = "none";
+
+            const qrResult = modal.querySelector("#qrcode-result");
+            qrResult.style.display = "block";
+
+            const closeQR = modal.querySelector(".close-qr");
+            closeQR.addEventListener("click", () => {
+                modal.style.display = "none";
+                qrResult.style.display = "none";
+
+                h2.style.display = "block";
+                eurContainer.style.display = "block";
+                satsContainer.style.display = "block";
+                countDown.style.display = "block";
+                countDown.parentElement.style.display = "block";
+
+                qrCodeText.style.display = "block";
+                container.style.display = "block";
+                closeQR.style.display = "block";
+
+                const menuItem = document.querySelector(`.menu li[data-template="transacciones"]`);
+                if (menuItem) {
+                    menuItem.click();
+                }
+            });
+
         } catch (err) {
             console.error('Error al confirmar el pago:', err);
         }
@@ -324,6 +372,7 @@ async function startCamera(video, captureContainer, actions, item) {
     }
 }
 
+
 function handleQrScan(result, stream, qrScanner, video, captureContainer, actions, item) {
     try {
         qrScanner.stop();
@@ -340,7 +389,9 @@ function handleQrScan(result, stream, qrScanner, video, captureContainer, action
         buttonOptions.style.display = "none";
 
         const paymentRequest = captureContainer.closest('.action-refund').querySelector('.payment-request');
-        paymentRequest.querySelector('span').innerText = result.data;
+
+        const lightningData = extractLightningData(result.data);
+        paymentRequest.querySelector('span').innerText = lightningData;
         paymentRequest.style.display = "flex";
 
         const actionButtons = captureContainer.closest('.action-refund').querySelector('.action-buttons');

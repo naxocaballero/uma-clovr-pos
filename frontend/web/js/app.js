@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	disableArrowKeysExceptInTextInputs();
 
 	//observeClassChange(document.querySelector("section#transacciones"));
-	getTransactionsAPI("ajax/generateRandomTransactions.php");
+	//getTransactionsAPI("ajax/generateRandomTransactions.php");
 
 	setupMenuListeners();
 });

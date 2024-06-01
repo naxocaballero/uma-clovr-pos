@@ -2,31 +2,40 @@ document.addEventListener("DOMContentLoaded", () => {
 	const display = document.getElementById("display");
 	const keypad = document.querySelector(".keypad");
 
+	function isInvoiceSectionActive() {
+		const invoiceSection = document.querySelector("section#invoice");
+		return invoiceSection && invoiceSection.classList.contains("active");
+	}
+
 	keypad.addEventListener("click", (event) => {
-		const key = event.target;
-		if (key.classList.contains("key")) {
-			const value = key.textContent;
-			if (value === "Del") {
-				display.textContent = "euros";
-			} else {
-				handleInput(value);
+		if (isInvoiceSectionActive()) {
+			const key = event.target;
+			if (key.classList.contains("key")) {
+				const value = key.textContent;
+				if (value === "Del") {
+					display.textContent = "euros";
+				} else {
+					handleInput(value);
+				}
+				key.classList.add("active");
+				requestAnimationFrame(() => key.classList.remove("active"));
+				updatePlaceholder(display);
 			}
-			key.classList.add("active");
-			requestAnimationFrame(() => key.classList.remove("active"));
-			updatePlaceholder(display);
 		}
 	});
 
 	document.addEventListener("keydown", (event) => {
-		const key = event.key;
-		if (key === "Backspace" || key === "Delete" || key.toLowerCase() === "c") {
-			display.textContent = "euros";
-		} else if ((key >= "0" && key <= "9") || key === "." || key === ",") {
-			handleInput(key);
-		} else if (key === "Enter") {
-			document.querySelector(".generate-button").click();
+		if (isInvoiceSectionActive()) {
+			const key = event.key;
+			if (key === "Backspace" || key === "Delete" || key.toLowerCase() === "c") {
+				display.textContent = "euros";
+			} else if ((key >= "0" && key <= "9") || key === "." || key === ",") {
+				handleInput(key);
+			} else if (key === "Enter") {
+				document.querySelector(".generate-button").click();
+			}
+			updatePlaceholder(display);
 		}
-		updatePlaceholder(display);
 	});
 
 	document.querySelector(".generate-button").addEventListener("click", () => {
@@ -36,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		displayValue = displayValue.replace(/\./g, "").replace(/,/, ".");
 
 		let amountEUR = parseFloat(displayValue);
-        amountSATS = convertCurrency(amountEUR, "SATS", bitcoinRate);
+		amountSATS = convertCurrency(amountEUR, "SATS", bitcoinRate);
 
 		if (isNaN(amountEUR) || amountEUR <= 0) {
 			console.error("El valor ingresado no es válido");
@@ -44,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		let invoiceData = {
-			amount: amountSATS,
+			amount: parseInt(amountSATS),
 			expiration: 60,
+			memo: "Compra en tienda",
 		};
 
 		console.log(invoiceData);
@@ -65,10 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
 				const modal = document.getElementById("modal");
 				modal.style.display = "flex";
 
+				const h2 = modal.querySelector("h2");
+				h2.innerText = 'Payment Request';
+
 				const eurContainer = modal.querySelector(".amountEUR");
 				eurContainer.innerText = showAmountEUR(amountEUR);
 
-                const satsContainer = modal.querySelector(".amountSATS");
+				const satsContainer = modal.querySelector(".amountSATS");
 				satsContainer.innerText = showAmountSATS(amountSATS);
 
 				const countDown = modal.querySelector(".count-down .time");
@@ -76,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				countDown.innerText = countdownValue;
 
 				const container = modal.querySelector("#qrcode");
-				container.innerHTML = ""; // Limpiar el contenedor antes de generar un nuevo QR
+				container.innerHTML = "";
 
 				const qrCode = new QRCodeStyling({
 					width: container.offsetWidth,
@@ -114,11 +127,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
 				const closeQR = modal.querySelector(".close-qr");
 				closeQR.addEventListener("click", () => {
-					modal.style.display = "none";
+					clearInterval(statusInterval);
 					resetQR();
+					modal.style.display = "none";
+					qrResult.style.display = "none";
+
+					h2.style.display = "block";
+					eurContainer.style.display = "block";
+					satsContainer.style.display = "block";
+					countDown.style.display = "block";
+					countDown.parentElement.style.display = "block";
+
+					qrCodeText.style.display = "block";
+					container.style.display = "block";
+					closeQR.style.display = "block";
 				});
 
+				const qrResult = modal.querySelector("#qrcode-result");
+
+				const invoicePayed = () => {
+					clearInterval(statusInterval);
+					resetQR();
+					h2.style.display = "none";
+					eurContainer.style.display = "none";
+					satsContainer.style.display = "none";
+					countDown.style.display = "none";
+					countDown.parentElement.style.display = "none";
+
+					qrCodeText.style.display = "none";
+					container.style.display = "none";
+
+					qrResult.style.display = "block";
+				};
+
+				let counter = 0;
 				// Punto donde tengo que hacer polling cada 3 segundos revisando si la factura está pagada.
+				const statusInterval = setInterval(async () => {
+					let status = await checkInvoiceStatus(data.id);
+					counter = counter + 1;
+					if (status === "PAGADO") {
+						invoicePayed();
+					}
+				}, 500);
 			})
 			.catch((error) => {
 				console.error("Error:", error);
@@ -161,40 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	function isValidInput(input) {
-		const regex = /^(?!0\d)(\d{0,5})(,\d{0,2})?$/;
-		return regex.test(input);
-	}
-
-	function formatNumber(input) {
-		const parts = input.split(",");
-		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-		return parts.join(",");
-	}
-
-	function showAmountEUR(input) {
-		// Asegura que el input sea tratado como un número y conviértelo a una cadena con dos decimales
-		let number = parseFloat(input).toFixed(2);
-
-		// Divide la cadena en la parte entera y la parte decimal
-		let parts = number.split(".");
-
-		// Formatea la parte entera con puntos como separadores de miles
-		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-		// Une la parte entera y la parte decimal con una coma
-		return parts.join(",");
-	}
-
-    function showAmountSATS(input) {
-		// Asegura que el input sea tratado como un número y conviértelo a una cadena
-        let number = parseFloat(input).toFixed(0).toString();
-
-        // Formatea la parte entera con puntos como separadores de miles
-        number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    
-        return number;
-	}
+	
 
 	updatePlaceholder(display);
 });
