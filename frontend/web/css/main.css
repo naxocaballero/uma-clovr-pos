@@ -29,7 +29,6 @@
     padding-left: 0;
     padding-top: 1rem;
     padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
-    background-color: #f2f2f7;
     -ms-touch-action: pan-y !important;
         touch-action: pan-y !important;
   }
