@@ -3,11 +3,13 @@ package main
 
 import (
 	"context"
+	"encoding/hex"
 	"fmt"
+
 	"github.com/lightningnetwork/lnd/lnrpc"
 )
 
-func PagarInvoice(paymentRequest string) error {
+func PagarInvoice(paymentRequest string) (string, error) {
 
 	// Pagar invoice
 	payment := &lnrpc.SendRequest{
@@ -16,14 +18,16 @@ func PagarInvoice(paymentRequest string) error {
 
 	response, err := nodoVenta.SendPaymentSync(context.Background(), payment)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if response.PaymentError != "" {
-		return fmt.Errorf("error en el pago: %s", response.PaymentError)
+		return "", fmt.Errorf("error en el pago: %s", response.PaymentError)
 	}
 
 	fmt.Println("Successful payment")
 
-	return nil
+	paymentHash := hex.EncodeToString(response.PaymentHash)
+
+	return paymentHash, nil
 }
