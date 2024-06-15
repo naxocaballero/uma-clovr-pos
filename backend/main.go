@@ -5,15 +5,16 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/lightningnetwork/lnd/lnrpc"
 	"google.golang.org/grpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
-	"net/http"
-	"time"
 )
 
 type Controller struct {
@@ -26,7 +27,7 @@ const (
 	Pending   TransactionStatus = "PENDIENTE"
 	Paid      TransactionStatus = "PAGADO"
 	Expired   TransactionStatus = "EXPIRADO"
-	Refounded TransactionStatus = "DEVUELTA"
+	Refunded TransactionStatus = "DEVUELTA"	
 )
 
 type Transaction struct {
@@ -37,7 +38,7 @@ type Transaction struct {
 	CreationDate   time.Time         `json:"creation_date"`
 	Status         TransactionStatus `json:"status"`
 	Expiration     uint64            `json:"expiration"`
-	RefoundID      uint              `json:"refound_id"`
+	RefundID      uint              `json:"refund_id"`
 	Description    string            `json:"memo"`
 }
 
@@ -66,13 +67,19 @@ func main() {
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))
 
+	err = router.SetTrustedProxies([]string{"192.168.88.135"}) 
+	if err != nil {
+		log.Fatalf("Error configurando los proxies de confianza: %v", err)
+	}
+
 	router.POST("/invoices", controller.createInvoice)
 	router.POST("/pay", controller.payInvoice)
 	router.GET("/transactions", controller.getTransactions)
-	router.GET("/transaction", controller.getTransaction)
-	router.GET("/list", controller.getList)
 
-	err = router.Run("0.0.0.0:8080")
+	router.POST("/transaction", controller.getTransaction)
+	router.POST("/list", controller.getList)
+
+	err = router.RunTLS("0.0.0.0:8080", "cert.pem", "key.pem")
 	if err != nil {
 		return
 	}
@@ -132,6 +139,8 @@ func (c *Controller) createInvoice(ctx *gin.Context) {
 	// Creamos la invoice utilizando el cliente
 	invoice := &lnrpc.Invoice{
 		Value: int64(req.Amount),
+		Expiry: int64(req.Expiration),   
+    	Memo: req.Description,  
 	}
 
 	log.Println(newTransaction)
@@ -204,27 +213,29 @@ func (c *Controller) payInvoice(ctx *gin.Context) {
 	}
 
 	// Realizar el pago
-	err = PagarInvoice(req.PaymentRequest)
+	paymentHash, err := PagarInvoice(req.PaymentRequest)
 	if err != nil {
 		log.Println("Error al pagar el invoice:", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al pagar el invoice"})
 		return
 	}
 
-	//Actualizo el estado de la transaccion
+	log.Println("Payment successful, r_hash:", paymentHash)
 
-	transaction.Status = Refounded
+	//Actualizo el estado de la transaccion
+	transaction.Status = Refunded
 	c.Database.Save(&transaction)
 
 	//Guardo la nueva transacción en la BD
 
 	var nuevaTransaccion Transaction
 	nuevaTransaccion.Status = Paid
-	nuevaTransaccion.RefoundID = transaction.ID
+	nuevaTransaccion.RefundID = transaction.ID
 	nuevaTransaccion.PaymentRequest = req.PaymentRequest
 	nuevaTransaccion.Description = "Devolución: " + transaction.Description
 	nuevaTransaccion.CreationDate = time.Now()
 	nuevaTransaccion.Amount = transaction.Amount
+	nuevaTransaccion.RHash = paymentHash
 
 	c.Database.Save(&nuevaTransaccion)
 
@@ -236,7 +247,8 @@ func (c *Controller) getTransactions(ctx *gin.Context) {
 
 	var transactions []Transaction
 
-	if result := c.Database.Where("status = ?", Paid).Find(&transactions); result.Error != nil {
+	states := []TransactionStatus{Paid, Refunded} 
+	if result := c.Database.Where("status IN ?", states).Order("id DESC").Find(&transactions); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return
@@ -260,12 +272,16 @@ func (c *Controller) getTransaction(ctx *gin.Context) {
 		return
 	}
 
+	log.Println(data)
+
 	var transaction Transaction
 	if result := c.Database.Where("id = ?", data.ID).First(&transaction); result.Error != nil {
 		log.Println("Error al obtener la transacción de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacción"})
 		return
 	}
+
+	c.consultarEstadoFactura(&transaction)
 
 	// Devuelve la transacción como una respuesta JSON
 	ctx.IndentedJSON(http.StatusOK, transaction)
@@ -286,7 +302,8 @@ func (c *Controller) getList(ctx *gin.Context) {
 
 	// Lista de transacciones a devolver que cumplan los requisitos
 	var transactions []Transaction
-	if result := c.Database.Where("id >= ?", data.ID).Order("id ASC").Limit(data.NumeroRegistros).Find(&transactions); result.Error != nil {
+
+	if result := c.Database.Where("id >= ?", data.ID).Order("id DESC").Limit(data.NumeroRegistros).Find(&transactions); result.Error != nil {
 		log.Println("Error al obtener transacciones de la base de datos:", result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener transacciones"})
 		return
@@ -294,4 +311,69 @@ func (c *Controller) getList(ctx *gin.Context) {
 
 	// Devuelve la lista de transacciones como una respuesta JSON
 	ctx.IndentedJSON(http.StatusOK, transactions)
+}
+
+func (c *Controller) consultarEstadoFactura(transaction *Transaction) (*lnrpc.Invoice, error) {
+	// Decodificar el paymentRequest para obtener el r_hash
+	decodeReq := &lnrpc.PayReqString{
+		PayReq: transaction.PaymentRequest,
+	}
+	decodeResp, err := nodoVenta.DecodePayReq(context.Background(), decodeReq)
+	if err != nil {
+		return nil, fmt.Errorf("error decodificando el payment request: %v", err)
+	}
+
+	// Usar el r_hash para buscar el estado de la factura
+	invoiceReq := &lnrpc.PaymentHash{
+		RHashStr: decodeResp.PaymentHash,
+	}
+	invoice, err := nodoVenta.LookupInvoice(context.Background(), invoiceReq)
+	if err != nil {
+		return nil, fmt.Errorf("error consultando el estado de la factura: %v", err)
+	}
+
+	// Verificar el estado actual en la base de datos
+    if result := c.Database.Where("payment_request = ?", transaction.PaymentRequest).First(&transaction); result.Error != nil {
+        return nil, fmt.Errorf("error encontrando la transacción en la base de datos: %v", result.Error)
+    }
+
+	// No actualizar si el estado es Refunded. Haría el código actual inconsistente con la estructura de constantes definidas desde el principio.
+	if transaction.Status == Refunded { 
+        log.Println("El estado es Refunded, no se actualizará.")
+        return invoice, nil
+    }
+
+	// Si la factura está pagada, actualiza el estado en la base de datos
+	if invoice.State == lnrpc.Invoice_SETTLED {
+		err = c.actualizarEstadoEnBaseDeDatos(transaction.PaymentRequest, Paid)
+		if err != nil {
+			return nil, fmt.Errorf("error actualizando el estado en la base de datos: %v", err)
+		}
+	}
+
+	// Si la factura está pagada, actualiza el estado en la base de datos
+	if invoice.State == lnrpc.Invoice_CANCELED {
+		err = c.actualizarEstadoEnBaseDeDatos(transaction.PaymentRequest, Expired)
+		if err != nil {
+			return nil, fmt.Errorf("error actualizando el estado en la base de datos: %v", err)
+		}
+	}
+
+	return invoice, nil
+}
+
+func (c *Controller) actualizarEstadoEnBaseDeDatos(paymentRequest string, newStatus TransactionStatus) error {
+	// Encuentra la transacción en la base de datos usando el paymentRequest
+	var transaction Transaction
+	if result := c.Database.Where("payment_request = ?", paymentRequest).First(&transaction); result.Error != nil {
+		return fmt.Errorf("error encontrando la transacción en la base de datos: %v", result.Error)
+	}
+
+	// Actualiza el estado de la transacción
+	transaction.Status = newStatus
+	if result := c.Database.Save(&transaction); result.Error != nil {
+		return fmt.Errorf("error actualizando el estado de la transacción en la base de datos: %v", result.Error)
+	}
+
+	return nil
 }

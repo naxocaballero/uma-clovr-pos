@@ -39,15 +39,6 @@ func Conectar(uri string) (lnrpc.LightningClient, *grpc.ClientConn, error) {
 		return nil, nil, err
 	}
 
-	/* No cerramos aquí la conexión ya que se necesita fuera del método
-	defer func() {
-		err := conn.Close()
-		if err != nil {
-			log.Println("Error closing the connection:", err)
-		}
-	}()
-	*/
-
 	fmt.Println("Connected Successfully")
 
 	return nodeClient, nodeConn, nil
