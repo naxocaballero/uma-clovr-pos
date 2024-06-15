@@ -13,9 +13,9 @@ header {
   -ms-touch-action: none;
       touch-action: none;
   padding-top: env(safe-area-inset-top);
-  background-color: rgba(249, 249, 251, 0.7);
-  -webkit-backdrop-filter: blur(30px);
-          backdrop-filter: blur(30px);
+  background-color: rgba(249, 249, 251, 0.6);
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
   color: #707070;
   opacity: 0; /* Estado inicial */
   border-bottom: 0.9px solid rgba(0, 0, 0, 0.2);
@@ -38,7 +38,7 @@ header .header-container {
 @media (max-width: 768px) {
   header .header-container {
     padding: 0.3rem;
-    height: 3rem;
+    height: 4.2vh;
   }
 }
 header .header-container .header-left {

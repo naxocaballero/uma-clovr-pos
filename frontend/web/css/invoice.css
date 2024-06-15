@@ -1,6 +1,5 @@
 @charset "UTF-8";
 #invoice {
-  height: 100%;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -8,24 +7,20 @@
       -ms-flex-align: center;
           align-items: center;
   display: none;
+  width: 100vw;
+  height: auto;
   /* Estilos para div display */
 }
-@media (max-width: 768px) {
-  #invoice {
-    width: 100vw;
-    height: auto;
-  }
-  #invoice.active {
-    display: block;
-  }
-  #invoice h2 {
-    font-size: 8.5vw;
-    color: #171717;
-    width: 90vw;
-    margin: 0 auto;
-    padding-top: 2.7vh;
-    margin-bottom: 2vh;
-  }
+#invoice.active {
+  display: block;
+}
+#invoice h2 {
+  font-size: 8.5vw;
+  color: #171717;
+  width: 90vw;
+  margin: 0 auto;
+  padding-top: 2.7vh;
+  margin-bottom: 2vh;
 }
 #invoice .container {
   display: -webkit-box;

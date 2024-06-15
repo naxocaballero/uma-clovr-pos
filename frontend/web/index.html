@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Enlace a los archivos CSS -->
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/invoice.css" />
+    <link rel="stylesheet" type="text/css" href="css/transacciones.css" />
+    <link rel="stylesheet" type="text/css" href="css/ajustes.css" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png" />
+    <link rel="mask-icon" href="/apple-touch-icon.png" color="#ffffff" />
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico" />
+
+    <meta name="description" content="Punto de venta Bitcoin Lightning Network de Clovr Labs." />
+
+    <!-- Viewport and Apple stuff -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="UMA Clovr PoS">
+
+    <!-- Archivo de manifiesto para PWA -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Metaetiquetas específicas para iOS -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/favicon/ios/120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon/ios/144.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="img/favicon/ios/167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/ios/180.png">
+    <link rel="apple-touch-icon" sizes="196x196" href="img/favicon/ios/196.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="img/favicon/ios/256.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="img/favicon/ios/512.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8cc63f">
+
+
+
+    <title>UMA Clovr PoS</title>
+
+
+    <script src="js/init.js" defer=""></script>
+
+    <script src="js/qr-scanner.umd.min.js" defer=""></script>
+    <script src="js/qr-code-styling.js" defer=""></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <img src="img/icons/logo.svg" alt="Clovr UMA Logo">
+                <span>UMA Clovr PoS</span>
+            </div>
+            <nav class="header-right">
+                <ul>
+                    <li><a href="#operar"><em class="operar"></em>Operar</a></li>
+                    <li><a href="#transacciones"><em class="transacciones"></em>Transacciones</a></li>
+                    <li><a href="#ajustes"><em class="ajustes"></em>Ajustes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="">
+
+
+        <section id="invoice" class="">
+            <h2>Crear Invoice</h2>
+            <div class="container">
+                <div id="display" class="display empty">euros</div>
+                <div class="pad">
+                    <div class="keypad">
+                        <button class="key">1</button>
+                        <button class="key">2</button>
+                        <button class="key">3</button>
+                        <button class="key">4</button>
+                        <button class="key">5</button>
+                        <button class="key">6</button>
+                        <button class="key">7</button>
+                        <button class="key">8</button>
+                        <button class="key">9</button>
+                        <button class="key">Del</button>
+                        <button class="key">0</button>
+                        <button class="key">,</button>
+                    </div>
+                    <button class="generate-button">Crear invoice</button>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section id="transacciones" class="">
+            <h2>Buscar</h2>
+            <input type="text" id="buscar" name="buscar" class="buscar" placeholder="Buscar transacción ..." />
+
+            <div class="container" id="transactions-container">
+
+            </div>
+            <div id="spinner" class="spinner">
+                <svg id="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                    <title>spinner</title>
+                    <g id="Logo-2" data-name="Logo">
+                        <path id="petalo1"
+                            d="M819.06,394.94c28.45-77.81-22.8-168-114.46-201.56s-189,2.41-217.47,80.22c-10.84,29.65-10.1,61.09,0,90.52.37,1.29,9,31.29,15,47.51a554.13,554.13,0,0,0,36.59,79.46l35.64,58.63.33.37,65.05-21.82A555.44,555.44,0,0,0,719,491.15l41.69-27C787.37,448.16,808.22,424.6,819.06,394.94Z"
+                            fill="#052238" />
+                        <path id="petalo2"
+                            d="M310.46,423c-81.61,14.27-134.14,103.77-117.33,199.91s96.6,162.5,178.21,148.22c31.09-5.43,58-21.8,78.38-45.28.93-1,22.6-23.44,33.66-36.71a555,555,0,0,0,50.52-71.42l33-60.19L567,557l-51.42-45.43a555.74,555.74,0,0,0-71.76-50L399.58,439C372.39,423.79,341.56,417.51,310.46,423Z"
+                            fill="#052238" />
+                        <path id="petalo3"
+                            d="M588.23,851c53.16,63.54,156.94,64.28,231.78,1.65s92.43-164.9,39.27-228.44C839,600,811.42,584.94,780.87,579c-1.3-.33-31.6-7.86-48.62-10.81a554.86,554.86,0,0,0-87.11-8l-68.6,1.55-.48.09q-6.82,33.63-13.63,67.25A554.65,554.65,0,0,0,555,716.22l2.56,49.62C558,797,568,826.81,588.23,851Z"
+                            fill="#052238" />
+                        <path id="Rayo" d="M344,553.17,643.58,295c13.06-8.36,25.5,0,17.53,14.34l-95.61,188H736s27.09,0,0,22.31L441.2,779.46c-20.72,17.53-35.06,8-20.72-19.13l92.43-183.26H344S316.9,577.07,344,553.17Z" fill="#7f47dd" stroke="#fff" stroke-miterlimit="10" stroke-width="30" />
+                    </g>
+                </svg>
+            </div>
+            <canvas id="canvas" style="display: none;"></canvas>
+
+        </section>
+
+        <section id="ajustes" class="">
+            <h2>Acerca de</h2>
+            <div class="container">
+
+                <div class="token-uma-clovr"></div>
+                                
+                <div class="title">
+                    <b>PoS</b><br> <span>Point of Sale</span> using Bitcoin Lightning Network.
+                </div>
+                <div class="copyright">
+                    <p><b>&copy; 2024 UMA Clovr</b>.<br> Todos los derechos reservados.</p>
+                </div>
+                <div class="team">
+
+                    <b>Desarrolladores</b>
+                    <span>Ana Gil Orozco</span>
+                    <span>Hector Guzmán Arroyo</span>
+                    <span>Ignacio Caballero Peñalver</span>
+
+                    <b>Jefe de Proyecto</b>
+                    <span>@Aleks <img src="img/images/clovr.png"></span>
+
+                    <b>Director Técnico</b>
+                    <span>@Marcos <img src="img/images/clovr.png"></span>
+
+                </div>
+                
+                <div class="acknowledgements">
+                    <b>Agradecimientos especiales</b>
+                    <br>
+                    <p>Los miembros de este equipo expresamos nuestro más sincero agradecimiento a todos los desarrolladores y empresas cuyas herramientas y recursos han sido fundamentales para el desarrollo de esta aplicación. En particular, nos gustaría reconocer y agradecer a:</p>
+                    <ul>
+                        <li><b>Cordova:</b> por proporcionar la estructura y las herramientas necesarias para compilar y ejecutar nuestra aplicación en múltiples plataformas. Su recurso ha sido esencial para la portabilidad y funcionalidad de nuestro proyecto.</li>
+                        <li><b>QR Scanner:</b> por su biblioteca de escaneo de códigos QR, que ha permitido implementar funcionalidades avanzadas de escaneo de códigos QR de manera eficiente y efectiva.</li>
+                        <li><b>QR Code Styling:</b> por su innovadora herramienta de estilización de códigos QR, que nos ha permitido personalizar los códigos QR de nuestra aplicación para mejorar la experiencia del usuario y la identidad visual del proyecto.</li>
+                    </ul>
+                    <p>También queremos extender nuestro más profundo agradecimiento a la Universidad de Málaga por promover esta iniciativa y proyecto, y a Isaac Agudo Ruiz, el director del Curso de Extensión Universitaria en Tecnologías Blockchain, por su apoyo y guía.</p>
+                    <br>
+                    <p>Agradecemos profundamente la dedicación y el esfuerzo de los desarrolladores detrás de estas herramientas, ya que su trabajo ha sido fundamental para el éxito de nuestro proyecto. Su contribución ha permitido que nuestra visión se haga realidad, y estamos muy agradecidos por su compromiso con la comunidad de desarrollo.</p>
+                    <br>
+                    <p>UMA Clovr Team.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-menu">
+            <div class="borde-footer-menu"></div>
+            <div class="fondo-footer-menu"></div>
+            <nav class="menu" id="footer-menu">
+                <ul>
+                    <li class="active" data-template="invoice" data-title="Invoice">
+                        <em class="operar">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M64 0C46.3 0 32 14.3 32 32V96c0 17.7 14.3 32 32 32h80v32H87c-31.6 0-58.5 23.1-63.3 54.4L1.1 364.1C.4 368.8 0 373.6 0 378.4V448c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V378.4c0-4.8-.4-9.6-1.1-14.4L488.2 214.4C483.5 183.1 456.6 160 425 160H208V128h80c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H64zM96 48H256c8.8 0 16 7.2 16 16s-7.2 16-16 16H96c-8.8 0-16-7.2-16-16s7.2-16 16-16zM64 432c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zm48-168a24 24 0 1 1 0-48 24 24 0 1 1 0 48zm120-24a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM160 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM328 240a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM256 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM424 240a24 24 0 1 1 -48 0 24 24 0 1 1 48 0zM352 344a24 24 0 1 1 0-48 24 24 0 1 1 0 48z" />
+                            </svg>
+                        </em>
+                        <span>Crear Invoice</span></a>
+                    </li>
+                    <li class="" data-template="transacciones" data-title="Transacciones">
+                        <em class="transacciones">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                            </svg>
+                        </em><span>Transacciones</span></a>
+                    </li>
+                    <li class="" data-template="ajustes" data-title="Acerca de">
+                        <em class="ajustes">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z" />
+                            </svg>
+                        </em><span>Acerca de</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </footer>
+
+    <div id="cameraPreview"></div>
+    <img id="capturedImage" />
+
+
+    <div id="modalPreview" class="modalPreview">
+        <div class="modalPreview-content">
+            <h2>Payment Request</h2>
+            <div class="refund-amount"></div>
+            <div id="qrcodePreview"></div>
+            <video></video>
+            <button class="close-qr">Cerrar</button>
+        </div>
+    </div>
+
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Payment Request</h2>
+            <span class="amountEUR"></span>
+            <span class="amountSATS"></span>
+            <div id="qrcode"></div>
+            <div id="qrcode-text"></div>
+            <div class="count-down">
+                Realiza el pago antes de<br><span class="time"></span> segundos
+            </div>
+            <div id="qrcode-result">PAGADO</div>
+            <button class="close-qr">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="js/functions.js" type="text/javascript" defer=""></script>
+    <script src="js/app.js" type="text/javascript" defer=""></script>
+    <script src="js/invoice.js" type="text/javascript" defer=""></script>
+
+</body>
+
+</html>

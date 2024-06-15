@@ -1,17 +1,28 @@
-document.addEventListener("DOMContentLoaded", (event) => {
+window.addEventListener("load", function () {
+	if(isCordova()){
+		stopCameraPreview();
+	}
+});
 
+document.addEventListener("DOMContentLoaded", (event) => {
 	let header = document.querySelector("header");
 	let main = document.querySelector("main");
 	let footer = document.querySelector("footer .fondo-footer-menu");
 
-	if (isWebClip()) {
+	if (isPWA() || isCordova()) {
+		main.classList.add("standalone");
+		console.log('main.classList.add("standalone"); //');
+	} else if (isSafariIOS()) {
+		console.log("isSafari()");
 		let footerMenu = document.querySelector("footer");
 		if (footerMenu) {
-			footerMenu.style.minHeight = "10vh";
+			footerMenu.style.minHeight = "8vh";
 		} else {
 			console.log("El elemento footer .footer-menu no se encontró.");
 		}
+	} else {
 		main.classList.add("standalone");
+		console.log('main.classList.add("standalone");');
 	}
 
 	main.addEventListener("scroll", function () {
@@ -56,6 +67,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 	//observeClassChange(document.querySelector("section#transacciones"));
 	//getTransactionsAPI("ajax/generateRandomTransactions.php");
+	//getTransactionsAPI("https://192.168.88.135:8080/transactions");
 
 	setupMenuListeners();
 });

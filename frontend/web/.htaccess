@@ -1,7 +1,8 @@
 AddType image/webp .webp
+AddType application/json .json
 
 <IfModule mod_headers.c>
-    <FilesMatch "\.(jpg|jpeg|png|gif|swf|svg|webp)$">
+    <FilesMatch "\.(jpg|jpeg|png|gif|swf|svg|webp|json)$">
         Header set Cache-Control "max-age=0, public" 
     </FilesMatch>
 

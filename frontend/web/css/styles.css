@@ -6,8 +6,8 @@
           box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none; /* Desactiva el menú de llamada táctil en Safari */
-  -ms-touch-action: pan-y;
-      touch-action: pan-y;
+  -ms-touch-action: pan-y pan-x;
+      touch-action: pan-y pan-x;
   -webkit-user-select: none; /* Desactiva la selección de texto en Safari */
   -moz-user-select: none;
   -ms-user-select: none;
@@ -23,6 +23,7 @@ html {
   overflow: hidden; /* Ocultar la barra de desplazamiento en html y body */
   width: 100vw;
   height: 100vh;
+  background-color: #f2f2f7;
   -ms-touch-action: none;
       touch-action: none;
 }
@@ -249,6 +250,7 @@ body {
   border: 1px solid #777777;
   opacity: 0.7;
   padding: 0.2rem;
+  text-align: center;
 }
 .modal-content button.close-qr {
   background-color: #c31c1c;
@@ -269,4 +271,105 @@ body {
   text-align: center;
   display: none;
   padding: 2rem 0;
+}
+
+/* El fondo del modal */
+.modalPreview {
+  display: none; /* Oculto por defecto */
+  position: fixed; /* Posición fija */
+  z-index: 1000; /* Asegura que esté por delante de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Alto completo */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; /* Centrado horizontal */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Centrado vertical */
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+
+.modalPreview-content {
+  background-color: white;
+  width: 90%;
+  padding: 20px;
+  border-radius: 12px;
+  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 12vh auto;
+}
+.modalPreview-content .refund-amount {
+  font-size: 1.4em;
+  margin-top: 0.5rem;
+  color: #7f47dd;
+  font-weight: bold;
+  text-align: center;
+}
+.modalPreview-content #qrcodePreview {
+  margin: 3vh 0 1vh 0;
+  aspect-ratio: 1/1;
+  width: 90%;
+  background-color: black;
+}
+.modalPreview-content video {
+  margin: 3vh 0 1vh 0;
+  aspect-ratio: 1/1;
+  width: 90%;
+  background-color: black;
+  display: none;
+}
+.modalPreview-content button.close-qr {
+  background-color: #c31c1c;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  font-size: clamp(1em, 2.1vh, 2em);
+  padding: clamp(0.5em, 1.8vh, 2em);
+  font-weight: 600;
+  width: 90%;
+  margin: 1rem 0 0.5rem 0;
+}
+
+#cameraPreview {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  display: none;
+  opacity: 0;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
+}
+
+#overlay {
+  position: absolute;
+  top: 10rem;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 2;
+  display: none;
+}
+
+#capturedImage {
+  display: none;
 }

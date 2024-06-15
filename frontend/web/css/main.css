@@ -1,49 +1,58 @@
-@media (max-width: 768px) {
-  main {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    overflow: hidden;
-    overflow-y: auto; /* Permitir desplazamiento en el main */
-    -webkit-overflow-scrolling: touch; /* Desplazamiento suave en iOS */
-    -ms-scroll-chaining: none;
-        overscroll-behavior: contain;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    padding-right: 0;
-    padding-left: 0;
-    padding-top: 1rem;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
-    -ms-touch-action: pan-y !important;
-        touch-action: pan-y !important;
-  }
-  main.standalone {
-    height: 100vh;
-    padding-top: calc(env(safe-area-inset-top) + 1.2rem);
-    padding-bottom: calc(env(safe-area-inset-bottom) + 8vh);
-  }
-  main.no-scroll {
-    overflow: hidden;
-    -ms-touch-action: none;
-        touch-action: none;
-    height: 100dvh;
-    -webkit-box-flex: unset;
-        -ms-flex: unset;
-            flex: unset;
-  }
+main {
+  position: fixed;
+  width: 100%;
+  height: 100dvh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  overflow: hidden;
+  overflow-y: auto; /* Permitir desplazamiento en el main */
+  -webkit-overflow-scrolling: touch; /* Desplazamiento suave en iOS */
+  -ms-scroll-chaining: none;
+      overscroll-behavior: contain;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding-right: 0;
+  padding-left: 0;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: 0;
+  -ms-touch-action: pan-y !important;
+      touch-action: pan-y !important;
+}
+main #transacciones .container {
+  padding-bottom: 20dvh;
+}
+main #ajustes .container {
+  padding-bottom: 20dvh;
+}
+main.standalone {
+  height: 100vh;
+  padding-top: calc(env(safe-area-inset-top) + 2vh);
+}
+main.standalone #transacciones .container {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 15vh);
+}
+main.standalone #ajustes .container {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 15vh);
+}
+main.no-scroll {
+  overflow: hidden;
+  -ms-touch-action: none;
+      touch-action: none;
+  height: 100dvh;
+  -webkit-box-flex: unset;
+      -ms-flex: unset;
+          flex: unset;
 }

@@ -30,6 +30,13 @@ function iosImagePWA(t, e = "white") {
 		});
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-	iosImagePWA("img/icons/logo-splash.png", "#8cc63f");
-});
+function initializeSplashScreen() {
+	iosImagePWA("img/icons/logo-splash.png", "#7f47dd");
+	console.log("Genero splash screen para PWA.");
+}
+
+if (document.readyState === "loading") {
+	document.addEventListener("DOMContentLoaded", initializeSplashScreen);
+} else {
+	initializeSplashScreen();
+}

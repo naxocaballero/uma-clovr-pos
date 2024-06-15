@@ -73,6 +73,10 @@ function activarSeccionDesdeInicio() {
 		if (item.classList.contains("active")) {
 			// Obtener el valor del atributo data-template
 			const template = item.getAttribute("data-template");
+			const title = item.getAttribute("data-title");
+
+			const caption = document.querySelector(".header-left span");
+			caption.innerText = title;
 
 			// Buscar la sección cuyo id coincida con el valor de data-template
 			const section = document.getElementById(template);
@@ -299,7 +303,10 @@ function getTransactionsAPI(url) {
 
 function generateTransactionsList(transactions) {
 	let html = "";
+	let counter = 0;
 	transactions.forEach((transaction) => {
+		counter = counter + 1;
+
 		let { refund_id, status, ID, memo, creation_date, amount, r_hash } = transaction;
 		let typeName = "";
 
@@ -349,7 +356,8 @@ function generateTransactionsList(transactions) {
 										</div>
                                         
                                         <div class="capture-container">
-                                            <video class="video"></video>
+											<!--<video class="video"></video>-->
+											<div class="video"></div>
 											<button class="cancel-capture">Cancelar</button>
                                         </div>
 
@@ -390,7 +398,7 @@ function generateTransactionsList(transactions) {
 							<span class="item-memo">${memo}</span>
 							<span class="item-date">${convertirFecha(creation_date)}</span>
 						</div>
-						<div class="item-amount">${convertCurrency(amount, "EUR", bitcoinRate)} €<br><span>${showAmountSATS(amount)} s</span></div>
+						<div class="item-amount">${convertCurrency(amount, "EUR", bitcoinRate)} €<br><span>${showAmountSATS(amount)} sats</span></div>
 					</div>
 					<div class="item-actions">
 						${actions}
@@ -398,6 +406,11 @@ function generateTransactionsList(transactions) {
 				</div>
 			`;
 	});
+
+	html += `
+		<div class="total-transactions">${counter} transacciones</div>
+	`;
+
 	return html;
 }
 
@@ -410,9 +423,10 @@ function setupMenuListeners() {
 		if (!item.hasListener) {
 			item.addEventListener("click", function () {
 				const template = this.getAttribute("data-template");
+				const title = this.getAttribute("data-title");
 				const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
 				const transactions = document.querySelector("#transacciones .container");
-				const buscarInput = document.getElementById('buscar');
+				const buscarInput = document.getElementById("buscar");
 
 				transactions.innerHTML = "";
 
@@ -420,17 +434,23 @@ function setupMenuListeners() {
 				sections.forEach((i) => i.classList.remove("active"));
 				buscarInput.value = "";
 
+				const caption = document.querySelector(".header-left span");
+				caption.innerText = title;
+
 				// Activa la sección seleccionada
 				if (contentSection) {
+					let main = document.querySelector("main");
+					main.scrollTop = 0;
 					contentSection.classList.add("active");
 
 					if (template === "transacciones") {
-						//getTransactionsAPI("ajax/generateRandomTransactions.php");
+						//getTransactionsAPI("https://192.168.88.135/ajax/generateRandomTransactions.php");
 						getTransactionsAPI("https://192.168.88.135:8080/transactions");
 					}
 
 					mainScrollable();
 				}
+
 
 				menuItems.forEach((i) => i.classList.remove("active"));
 				this.classList.add("active");
@@ -552,14 +572,14 @@ function showAmountSATS(input) {
 }
 
 function extractLightningData(data) {
-    data = data.toLowerCase();
+	data = data.toLowerCase();
 
-    const regex = /(lnbcrt[a-z0-9]+)/;
-    const match = data.match(regex);
+	const regex = /(lnbcrt[a-z0-9]+)/;
+	const match = data.match(regex);
 
-    if (match && match[1]) {
-        return match[1];
-    }
+	if (match && match[1]) {
+		return match[1];
+	}
 
-    return '';
+	return "";
 }

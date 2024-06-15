@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		let invoiceData = {
 			amount: parseInt(amountSATS),
-			expiration: 60,
+			expiration: 100,
 			memo: "Compra en tienda",
 		};
 
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				modal.style.display = "flex";
 
 				const h2 = modal.querySelector("h2");
-				h2.innerText = 'Payment Request';
+				h2.innerText = "Payment Request";
 
 				const eurContainer = modal.querySelector(".amountEUR");
 				eurContainer.innerText = showAmountEUR(amountEUR);
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const countdownInterval = setInterval(updateCountdown, 1000);
 
 				const closeQR = modal.querySelector(".close-qr");
-				closeQR.addEventListener("click", () => {
+				function handleCloseQR() {
 					clearInterval(statusInterval);
 					resetQR();
 					modal.style.display = "none";
@@ -141,7 +141,30 @@ document.addEventListener("DOMContentLoaded", () => {
 					qrCodeText.style.display = "block";
 					container.style.display = "block";
 					closeQR.style.display = "block";
-				});
+
+					// Cierro QR en cliente también
+					let jsonData = {
+						targetClientId: "cliente",
+						action: "cancel"
+					};
+
+					fetch("https://192.168.88.135:3000/action", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(jsonData),
+					})
+						.then((response) => response.json())
+						.then((data) => console.log("Response from server:", data))
+						.catch((error) => console.error("Error:", error));
+
+					// Eliminar el event listener después de usarlo
+					closeQR.removeEventListener("click", handleCloseQR);
+				}
+
+				// Añade el event listener
+				closeQR.addEventListener("click", handleCloseQR);
 
 				const qrResult = modal.querySelector("#qrcode-result");
 
@@ -158,6 +181,23 @@ document.addEventListener("DOMContentLoaded", () => {
 					container.style.display = "none";
 
 					qrResult.style.display = "block";
+
+					// Cierro QR en cliente también
+					let jsonData = {
+						targetClientId: "cliente",
+						action: "paid"
+					};
+
+					fetch("https://192.168.88.135:3000/action", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(jsonData),
+					})
+						.then((response) => response.json())
+						.then((data) => console.log("Response from server:", data))
+						.catch((error) => console.error("Error:", error));
 				};
 
 				let counter = 0;
@@ -169,13 +209,34 @@ document.addEventListener("DOMContentLoaded", () => {
 						invoicePayed();
 					}
 				}, 500);
+
+				display.textContent = "euros";
+				updatePlaceholder(display);
+
+				//Envío los datos al puesto de cliente
+				let jsonData = {
+					targetClientId: "cliente",
+					invoiceData: invoiceData,
+					data: data,
+					sats: showAmountSATS(amountSATS),
+					euro: showAmountEUR(amountEUR),
+					action: "payment"
+				};
+
+				fetch("https://192.168.88.135:3000/payment", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(jsonData),
+				})
+					.then((response) => response.json())
+					.then((data) => console.log("Response from server:", data))
+					.catch((error) => console.error("Error:", error));
 			})
 			.catch((error) => {
 				console.error("Error:", error);
 			});
-
-		display.textContent = "euros";
-		updatePlaceholder(display);
 	});
 
 	function updatePlaceholder(display) {
@@ -210,8 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		}
 	}
-
-	
 
 	updatePlaceholder(display);
 });
