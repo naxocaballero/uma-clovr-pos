@@ -1,16 +1,28 @@
+window.addEventListener("load", function () {
+	if(isCordova()){
+		stopCameraPreview();
+	}
+});
+
 document.addEventListener("DOMContentLoaded", (event) => {
 	let header = document.querySelector("header");
 	let main = document.querySelector("main");
 	let footer = document.querySelector("footer .fondo-footer-menu");
 
-	if (isWebClip()) {
+	if (isPWA() || isCordova()) {
+		main.classList.add("standalone");
+		console.log('main.classList.add("standalone"); //');
+	} else if (isSafariIOS()) {
+		console.log("isSafari()");
 		let footerMenu = document.querySelector("footer");
 		if (footerMenu) {
-			footerMenu.style.minHeight = "10vh";
+			footerMenu.style.minHeight = "8vh";
 		} else {
 			console.log("El elemento footer .footer-menu no se encontró.");
 		}
+	} else {
 		main.classList.add("standalone");
+		console.log('main.classList.add("standalone");');
 	}
 
 	main.addEventListener("scroll", function () {
@@ -44,38 +56,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		}
 	});
 
-	const menuItems = document.querySelectorAll(".menu li");
-	const sections = document.querySelectorAll("main section");
-
-	menuItems.forEach((item) => {
-		item.addEventListener("click", function () {
-			const template = this.getAttribute("data-template");
-			const contentSection = document.querySelector("main section#" + template); // Seleccionar el section correcto
-			const transactions = document.querySelector("#transacciones .container");
-
-			transactions.innerHTML = "";
-
-			// Asegúrate de que todos los sections no estén activos
-			sections.forEach((i) => i.classList.remove("active"));
-
-			// Activa la sección seleccionada
-			if (contentSection) {
-				contentSection.classList.add("active");
-
-				if (template === "transacciones") {
-					llamada("ajax/generateRandomTransactions.php");
-				}
-
-				mainScrollable();
-			}
-
-			menuItems.forEach((i) => i.classList.remove("active"));
-			this.classList.add("active");
-
-			// En cada llamada compruebo si el contenido requiere scroll y actuo en consecuencia.
-		});
-	});
-
 	// Activa la sección visible al establecer un valor en el menú (próposito mientras desarrollo)
 	activarSeccionDesdeInicio();
 
@@ -86,5 +66,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	disableArrowKeysExceptInTextInputs();
 
 	//observeClassChange(document.querySelector("section#transacciones"));
-	llamada("ajax/generateRandomTransactions.php");
+	//getTransactionsAPI("ajax/generateRandomTransactions.php");
+	//getTransactionsAPI("https://192.168.88.135:8080/transactions");
+
+	setupMenuListeners();
 });

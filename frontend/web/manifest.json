@@ -2,20 +2,16 @@
     "name": "UMA Clovr PoS",
     "lang": "es-ES",
     "short_name": "UMA Clovr PoS",
-    "description": "Punto de venta Bitcoin Lightning Network de UMA Clovr.",
-    "start_url": "index.php",
+    "description": "PWA Punto de venta Bitcoin Lightning Network de UMA Clovr.",
+    "start_url": "/",
     "scope": "/",
-    "display_override": [
-        "fullscreen",
-        "minimal-ui"
-    ],
     "display": "standalone",
     "orientation": "portrait",
     "theme_color": "#8cc63f",
     "background_color": "#8cc63f",
     "icons": [
         {
-            "src": "img/favicon/android-chrome-512x512.png",
+            "src": "img/favicon/ios/512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
@@ -31,8 +27,8 @@
             "type": "image/png"
         },
         {
-            "src": "img/favicon/ios/192.png",
-            "sizes": "192x192",
+            "src": "img/favicon/ios/196.png",
+            "sizes": "196x196",
             "type": "image/png"
         },
         {

@@ -6,8 +6,8 @@
           box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none; /* Desactiva el menú de llamada táctil en Safari */
-  -ms-touch-action: pan-y;
-      touch-action: pan-y;
+  -ms-touch-action: pan-y pan-x;
+      touch-action: pan-y pan-x;
   -webkit-user-select: none; /* Desactiva la selección de texto en Safari */
   -moz-user-select: none;
   -ms-user-select: none;
@@ -18,11 +18,14 @@
 }
 
 html {
-  font-family: Arial, sans-serif;
+  font-family: system-ui, Arial, sans-serif;
   color: #606060;
   overflow: hidden; /* Ocultar la barra de desplazamiento en html y body */
   width: 100vw;
   height: 100vh;
+  background-color: #f2f2f7;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 
 body {
@@ -41,7 +44,13 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  -ms-touch-action: none;
+      touch-action: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: auto;
 }
+
 /* Ocultar scrollbar en WebKit (Safari) */
 ::-webkit-scrollbar {
   display: none;
@@ -131,4 +140,236 @@ body {
 #loader #Rayo {
   -webkit-transform-origin: center;
           transform-origin: center;
+}
+
+/* El fondo del modal */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed; /* Posición fija */
+  z-index: 1000; /* Asegura que esté por delante de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Alto completo */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; /* Centrado horizontal */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Centrado vertical */
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: white;
+  width: 90%; /* Ocupa el 90% de la pantalla */
+  padding: 20px;
+  border-radius: 12px;
+  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.modal-content h2 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.modal-content .amountEUR {
+  font-size: clamp(1em, 7vw, 3em);
+  font-weight: 600;
+  color: #3479fd;
+}
+.modal-content .amountEUR::after {
+  font-size: 0.7em;
+  content: " €";
+  opacity: 0.7;
+}
+.modal-content .amountSATS {
+  font-size: clamp(1em, 10vw, 2em);
+  font-weight: 600;
+  color: #7f47dd;
+  margin: 0.3rem 0;
+}
+.modal-content .amountSATS::after {
+  font-size: 0.5em;
+  content: " sats";
+  opacity: 0.7;
+}
+.modal-content .count-down {
+  width: 100%;
+  font-weight: 600;
+  font-size: 2vh;
+  color: #777777;
+  text-align: center;
+}
+.modal-content .count-down .time {
+  font-size: 1.2em;
+}
+.modal-content #qrcode {
+  width: 80%;
+  aspect-ratio: 1/1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.modal-content #qrcode-text {
+  width: 80%;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 0.8em;
+  margin: 0.5rem auto;
+  border: 1px solid #777777;
+  opacity: 0.7;
+  padding: 0.2rem;
+  text-align: center;
+}
+.modal-content button.close-qr {
+  background-color: #c31c1c;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  font-size: clamp(1em, 2.1vh, 2em);
+  padding: clamp(0.5em, 1.8vh, 2em);
+  font-weight: 600;
+  width: 90%;
+  margin: 1rem 0 0.5rem 0;
+}
+.modal-content #qrcode-result {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2ca118;
+  width: 100%;
+  text-align: center;
+  display: none;
+  padding: 2rem 0;
+}
+
+/* El fondo del modal */
+.modalPreview {
+  display: none; /* Oculto por defecto */
+  position: fixed; /* Posición fija */
+  z-index: 1000; /* Asegura que esté por delante de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Alto completo */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; /* Centrado horizontal */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Centrado vertical */
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+
+.modalPreview-content {
+  background-color: white;
+  width: 90%;
+  padding: 20px;
+  border-radius: 12px;
+  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 12vh auto;
+}
+.modalPreview-content .refund-amount {
+  font-size: 1.4em;
+  margin-top: 0.5rem;
+  color: #7f47dd;
+  font-weight: bold;
+  text-align: center;
+}
+.modalPreview-content #qrcodePreview {
+  margin: 3vh 0 1vh 0;
+  aspect-ratio: 1/1;
+  width: 90%;
+  background-color: black;
+}
+.modalPreview-content video {
+  margin: 3vh 0 1vh 0;
+  aspect-ratio: 1/1;
+  width: 90%;
+  background-color: black;
+  display: none;
+}
+.modalPreview-content button.close-qr {
+  background-color: #c31c1c;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  font-size: clamp(1em, 2.1vh, 2em);
+  padding: clamp(0.5em, 1.8vh, 2em);
+  font-weight: 600;
+  width: 90%;
+  margin: 1rem 0 0.5rem 0;
+}
+
+#cameraPreview {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  display: none;
+  opacity: 0;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
+}
+
+#overlay {
+  position: absolute;
+  top: 10rem;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 2;
+  display: none;
+}
+
+#capturedImage {
+  display: none;
 }
