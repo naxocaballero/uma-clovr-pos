@@ -31,6 +31,13 @@ Es necesario también un servidor web para ejecutar la aplicación en el caso de
 
 En cada carpeta de este repositorio, hay archivos README 📝 que explican cómo iniciar cada parte del proyecto. Es crucial revisar estos documentos para entender cómo instalar y configurar correctamente la aplicación PoS. También es muy importante hacerlo en el orden que se indica, comenzando con la siguiente sección de **Requisitos y Configuración**.
 
+Sigue el siguiente orden de ejecución de las distintas partes del proyecto:
+1. El proyecto se ha desarrollado en "local" con la dirección IP 192.168.88.135. Es importante, para un correcto funcionamiento, replicar las condiciones del desarrollo (podrás modificar estos valores según sea necesario más adelante).
+2. Instala los requisitos y Configuración (siguiente apartado)
+3. Accede al directorio ***docker*** y ejecuta ```docker-compose up``` para crear el servidor de base de datos PostgreSQL.
+4. Continúa en el directorio ***backend*** y ejecuta la aplicación GO ```go run main.go``` (Tienes algunos detalles adicionales en el Readme de la carpeta *backend*).
+5. Finalmente, lanza un servidor web utilizando los archivos html y demás recursos que se encuentran dentro de la carpeta ***frontend/web***. **Es importante que leas el Readme del directorio *frontend* **.
+
 ## 🛠️ Requisitos y Configuración
 
 El primer requisito para la puesta en marcha es tener instalado **Docker Desktop** para poder ejecutar **Polar Lightning**. En este directorio del repositorio, hay un archivo llamado **UMA-Clovr-PoS.polar.zip** que contiene la configuración a cargar en **Polar Lightning** y que se usará para la puesta en marcha.
