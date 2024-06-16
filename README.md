@@ -1,7 +1,7 @@
 # UMA-Clovr PoS (”punto de venta”)
 
 <div style="text-align: center; width: 100%; padding: 0 auto;">
-   <img src="frontend/docs/imagenes/1.png" alt="" style="width:24%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/2.png" alt="" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/5.png" alt="" style="width:24%; ">
+   <img src="frontend/docs/imagenes/1.png" alt="" style="width:33%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/2.png" alt="" style="width:33%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/5.png" alt="" style="width:33%; ">
 </div>
 
 ## Acerca de la aplicación PoS ("punto de venta")
