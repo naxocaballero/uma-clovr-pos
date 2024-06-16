@@ -1,5 +1,22 @@
 # UMA-Clovr PoS (”punto de venta”)
 
+<div style="text-align: center; width: 100%;">
+   <img src="frontend/docs/imagenes/1.png" alt="Springboard iPhone" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/6.png" alt="" style="width:24%;">
+</div>
+&nbsp;
+&nbsp;
+<div style="text-align: center; width: 100%;">
+   <img src="frontend/docs/imagenes/2.png" alt="" style="width:24%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/3.png" alt="" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/4.png" alt="" style="width:24%; ">
+</div>
+&nbsp;
+
+&nbsp;
+&nbsp;
+<div style="text-align: center; width: 100%;">
+   <img src="frontend/docs/imagenes/5.png" alt="" style="width:24%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="frontend/docs/imagenes/8.png" alt="" style="width:24%;">
+</div>
+&nbsp;
+
 ## Acerca de la aplicación PoS ("punto de venta")
 
 Este proyecto ha sido desarrollado por Ana Gil Orozco, Hector Guzmán Arroyo e Ignacio Caballero Peñalver. La aplicación PoS es una plataforma que permite la creación de facturas y la gestión de transacciones de un punto de venta, como un comercio tradicional.
