@@ -35,15 +35,16 @@ En cada carpeta de este repositorio, hay archivos README 📝 que explican cómo
 
 El primer requisito para la puesta en marcha es tener instalado **Docker Desktop** para poder ejecutar **Polar Lightning**. En este directorio del repositorio, hay un archivo llamado **UMA-Clovr-PoS.polar.zip** que contiene la configuración a cargar en **Polar Lightning** y que se usará para la puesta en marcha.
 
-1. Instalación de **Docker Desktop**
+Instalación de **Docker Desktop**
 
 > https://www.docker.com/products/docker-desktop/
-> 
-1. Instalación de **Polar Lightning**
+ 
+Instalación de **Polar Lightning**
 
 > [https://lightningpolar.com](https://lightningpolar.com/)
-> 
-1. Ejecutar **Polar Lightning** e importar el archivo de configuración **UMA-Clovr-PoS.polar.zip**
+
+Ejecutar **Polar Lightning** e importar el archivo de configuración **UMA-Clovr-PoS.polar.zip**
+
 
 ## 📱 Funcionamiento de la aplicación en iPhone e iPad
 
