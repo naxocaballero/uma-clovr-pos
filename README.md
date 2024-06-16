@@ -29,7 +29,7 @@ Es necesario también un servidor web para ejecutar la aplicación en el caso de
 
 ## 🚀 Puesta en marcha del proyecto
 
-En cada carpeta de este repositorio, hay archivos README 📝 que explican cómo iniciar cada parte del proyecto. Es crucial revisar estos documentos para entender cómo instalar y configurar correctamente la aplicación PoS.
+En cada carpeta de este repositorio, hay archivos README 📝 que explican cómo iniciar cada parte del proyecto. Es crucial revisar estos documentos para entender cómo instalar y configurar correctamente la aplicación PoS. También es muy importante hacerlo en el orden que se indica, comenzando con la siguiente sección de **Requisitos y Configuración**.
 
 ## 🛠️ Requisitos y Configuración
 
