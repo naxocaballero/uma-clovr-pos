@@ -1,70 +1,17 @@
-# UMA Clovr PoS [FrontEnd]
+# Frontend
 
-Interface de usuario usada como FrontEnd para la emisión de facturas y devoluciones a través de la red Bitcoin Lightning.
+## 🖥️ Puesta en marcha
 
-## Clonar el repositorio en local
+Para poner en funcionamiento el frontend, es imprescindible disponer de un servidor web que sea capaz de servir HTTPS. En la carpeta denominada 'ssl', encontrarás tanto el certificado como la clave del servidor. Para un funcionamiento óptimo del frontend, es crucial usar estos archivos. Debes configurar estos archivos en el servidor web que hayas seleccionado.
 
-1. Utilizando VS Code, clonar el repositorio en una carpeta local o copiar los archivos del repositorio y colocarlos en la carpeta local del proyecto.
+Te recordamos que la configuración de un servidor web con estos parámetros supera el alcance de este Readme, por lo que se presupone que el usuario cuenta con los conocimientos suficientes para llevar a cabo esta configuración. 🤓
 
-    `https://github.com/markettes/uma-clovr-pos.git`
+Los archivos de la página web están ubicados en la carpeta 'web'. Estos archivos deben situarse en el directorio 'documentRoot' del servidor web.
 
-## Configuración del entorno de ejecución en local
+Durante el desarrollo de este proyecto, hemos utilizado XAMPP como servidor web (para MacOS). 🍏
 
-### 1. Usando **_VS Code_** _(permite usar la webApp como web clip)_
+## Configuración de SSE para el uso de otro dispositivo (*iPad*) como monitor adicional
 
-Instrucciones para la ejecución del frontend en local usando exclusivamente Visual Studio Code en un equipo que corre sistema operativo MacOS (en un futuro próximo presentaré la versión para Windows cuando avance con el proyecto).
+En la carpeta denominada 'node' se encuentra el archivo sse.js. Se trata de una aplicación desarrollada en node.js y que es la encargada de comunicar el frontend que se ejecuta en el iPhone (PoS) con el frontend ejecutado en el dispositivo adicional (*un iPad, por ejemplo*). Para ello, es necesario tener instalado node.js en la misma máquina local en una versión superior a la 18. Luego ejecutar ```node sse.js```.
 
-1. Instalar PHP en la máquina. En el caso de macOS puedes usar **brew**.
-
-    `brew install php`
-
-2. Instalar la extensión de VSCode **"PHP Server"** _(creada por brapifra)_.
-3. Para ejecutar el archivo **index.php** desde VSCode, hacer clic con el **botón derecho** en cualquier zona del código de **index.php** y ejecutar **_"PHP Server: Serve project"_**.
-
-    <div style="text-align: center;">
-    <img src="docs/imagenes/Captura de pantalla 2024-05-20 a las 18.59.34.png" alt="Cómo ejecutar PHP Server" style="width:60%">
-    </div>
-
-### 2. Usando XAMPP (**_imprescindible y necesario si se desea usar la versión alternativa PWA con service-worker_ offline**)
-
-1. Instalar XAMPP descargándolo desde la web del desarrollador.
-
-    > https://www.apachefriends.org/es/download.html
-
-2. Clonar el contenido de la carpeta web del repositorio dentro de **"/Applications/XAMPP/xamppfiles/htdocs"**
-
-3. Acceder a la web mediante https://localhost _(aceptar el certificado autofirmado)_
-
-## Uso de la aplicación web (Navegador y __PWA__)
-
-Esta webApp puede ser ejecutada en cualquier navegador web. Está preparada para ser instalada como __PWA__ en cualquier dispositivo que lo soporte (Android, iOS, Mac, ...). Es solo un primer ejemplo de interface.
-La versión móvil tendrá el menú en el inferior como la mayoría de aplicaciones nativas y será capaz de mostrarse de manera offline. Queda fuera del alcance de este proyecto la realización de una PWA capaz de trabajar full offline y almacenar operaciones en caso de no tener conexión a internet para "lanzarlas" una vez recupere la conexión.
-
-(___22-05-2024: Actualización de la interface de usuario versión móvil___) Estoy trabajando con la versión para móvil en primer lugar. Pienso que es la opción más versatil en tanto y en cuanto, si se da el caso de realizar una devolución, es útil disponer de una cámara en el mismo dispositivo para escanear el QR de la factura que genere un "cliente" para poder realizarle un abono (salvo que me equivoque, no hay forma de "devolver" una cantidad de dinero a alguien mediante LN pues, a menos que tenga una dirección permanente, el pago siempre se basa en facturas previamente creadas por parte del receptor).
-_(adjunto nuevas capturas de pantalla del Frontend)_
-
-
-<div style="text-align: center; width: 100%;">
-   <img src="docs/imagenes/IMG_1721.png" alt="Springboard iPhone" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/1.png" alt="" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/2.png" alt="" style="width:24%; ">
-</div>
-&nbsp;
-&nbsp;
-<div style="text-align: center; width: 100%;">
-   <img src="docs/imagenes/3.png" alt="" style="width:24%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/4.png" alt="" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/5.png" alt="" style="width:24%; ">
-</div>
-&nbsp;
-
-(___27-05-2024: Actualización sección de transacciones___) Se ha terminado casi el UI y el UX de la sección transacciones. Ya funciona recibiendo por fetch un json con una estructura determinada que se puede modificar en función de cómo lo vaya a entregar el backend.
-_(adjunto nuevas capturas de pantalla del Frontend)_
-
-<div style="text-align: center; width: 100%;">
-   <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.17.30.png" alt="" style="width:24%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.18.52.png" alt="" style="width:24%;">
-</div>
-&nbsp;
-&nbsp;
-<div style="text-align: center; width: 100%;">
-   <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.18.23.png" alt="" style="width:24%; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="docs/imagenes/Captura de pantalla 2024-05-28 a las 4.21.36.png" alt="" style="width:24%;">
-</div>
-&nbsp;
-
-
+En el caso de usar un iPad (o cualquier otro dispositivo), debe abrirse la web ***https://192.168.88.135/client.php***. 
