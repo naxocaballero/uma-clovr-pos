@@ -31,6 +31,20 @@ Es necesario también un servidor web para ejecutar la aplicación en el caso de
 
 En cada carpeta de este repositorio, hay archivos README 📝 que explican cómo iniciar cada parte del proyecto. Es crucial revisar estos documentos para entender cómo instalar y configurar correctamente la aplicación PoS.
 
+## 🛠️ Requisitos y Configuración
+
+El primer requisito para la puesta en marcha es tener instalado **Docker Desktop** para poder ejecutar **Polar Lightning**. En este directorio del repositorio, hay un archivo llamado **UMA-Clovr-PoS.polar.zip** que contiene la configuración a cargar en **Polar Lightning** y que se usará para la puesta en marcha.
+
+1. Instalación de **Docker Desktop**
+
+> https://www.docker.com/products/docker-desktop/
+> 
+1. Instalación de **Polar Lightning**
+
+> [https://lightningpolar.com](https://lightningpolar.com/)
+> 
+1. Ejecutar **Polar Lightning** e importar el archivo de configuración **UMA-Clovr-PoS.polar.zip**
+
 ## 📱 Funcionamiento de la aplicación en iPhone e iPad
 
 El funcionamiento principal de la aplicación se ha basado en el uso de un iPhone y un iPad. En este caso, el iPhone 📱 ejecuta una versión de la aplicación (puede ejecutarse desde safari, usando PWA como Webclip, o incluso embeber todo el proyecto en una aplicación nativa usando Cordova para iOS). Por otro lado, el iPad, y para una mejor visibilidad, ejecuta una versión PWA del archivo client.php.
