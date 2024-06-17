@@ -66,3 +66,26 @@ El iPhone 📱 es el que ejecuta la versión del PoS (punto de venta) y es capaz
 - De las transacciones realizadas, puede realizar abonos usando Bitcoin Lightning Network ⚡💸.
 
 Por otro lado, el iPad funciona como "monitor". En el contexto de un comercio físico, este sería una pantalla donde el cliente puede ver el importe de su compra 💵 y el código QR que tendría que escanear con su billetera para realizar el pago solicitado por el PoS que previamente ha introducido y ha creado el invoice correspondiente 🧾.
+
+
+## 🙏 Agradecimientos
+
+Nos gustaría expresar nuestro más sincero agradecimiento a todas las personas que han colaborado en este proyecto.
+
+### Desarrolladores:
+
+- Ana Gil Orozco
+- Hector Guzmán Arroyo
+- Ignacio Caballero Peñalver
+
+### Empresa que nos ha tutelado:
+
+- Clovr Labs
+    - Aleks Y. (Jefe de Proyecto)
+    - Marcos F. (Director Técnico)
+
+### Universidad de Málaga:
+
+- Isaac Agudo Ruiz (Director del Curso de extensión Universitaria en Tecnologías Blockchain '24)
+
+Cada uno de vosotros ha jugado un papel vital en el desarrollo de este proyecto y estamos agradecidos por su apoyo y contribución.
