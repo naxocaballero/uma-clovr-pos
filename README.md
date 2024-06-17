@@ -6,7 +6,9 @@
 
 ## Acerca de la aplicación PoS ("punto de venta")
 
-Este proyecto ha sido desarrollado por Ana Gil Orozco, Hector Guzmán Arroyo e Ignacio Caballero Peñalver. La aplicación PoS es una plataforma que permite la creación de facturas y la gestión de transacciones de un punto de venta, como un comercio tradicional.
+Este proyecto ha sido desarrollado por **Ana Gil Orozco**, **Hector Guzmán Arroyo** e **Ignacio Caballero Peñalver** con el inestimable apoyo, guía y supervisión de **Aleksandar Y.** (_Clovr Labs_) como ***Jefe de Proyecto*** y **Marcos F.** (_Clovr Labs_) como ***Director Técnico***, sin los que no habría sido posible. 
+
+La aplicación PoS es una plataforma que permite la creación de facturas y la gestión de transacciones de un punto de venta, como un comercio tradicional.
 
 La característica más destacada de esta aplicación es la capacidad de realizar pagos y cobros a través de la red Bitcoin Lightning ⚡. Esta tecnología permite transacciones rápidas y de bajo costo en la red Bitcoin.
 
